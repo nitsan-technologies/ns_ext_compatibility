@@ -1,0 +1,389 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+	<file source-language="en" datatype="plaintext" original="messages" date="2018-02-10T16:41:47Z" product-name="ns_ext_compatibility">
+		<header/>
+		<body>			
+			<trans-unit id="module.title">
+				<source>Extension Report</source>
+			</trans-unit>
+			<trans-unit id="warning.TERUpdateText">
+				<source>Please kindly update your extension table from Extensions Module > Get Extensions, Because your last updated date is %s</source>
+			</trans-unit>
+			<trans-unit id="warning.TERUpdateHeadline">
+				<source>Update your extensions list with live TER (TYO3 Extensions Repository)</source>
+			</trans-unit>
+			<trans-unit id="warning.selectProperTargetVersionText">
+				<source>Target version must be greater than current TYPO3 version, Please select another version of TYPO3.</source>
+			</trans-unit>
+			<trans-unit id="typo3Upgrade6">
+				<source>TYPO3 v6.x</source>
+			</trans-unit>
+			<trans-unit id="typo3Upgrade7">
+				<source>TYPO3 v7.x</source>
+			</trans-unit>
+			<trans-unit id="typo3Upgrade8">
+				<source>TYPO3 v8x</source>
+			</trans-unit>
+			<trans-unit id="typo3Upgrade9">
+				<source>TYPO3 v9.x</source>
+			</trans-unit>
+			<trans-unit id="typo3UpgradeOptLabel">
+				<source>Choose target TYPO3 version to check compatibility : </source>
+			</trans-unit>
+			<trans-unit id="warning.selectProperTargetVersionHeadline">
+				<source>Please select proper target TYPO3 version.</source>
+			</trans-unit>
+			<trans-unit id="btn.export">
+				<source>Export Report</source>
+			</trans-unit>
+			<trans-unit id="pagetitle">
+				<source>TYPO3 Extensions Compatibility Checker</source>
+			</trans-unit>
+			<trans-unit id="langague">
+				<source>Total Languages</source>
+			</trans-unit>
+			<trans-unit id="phpVersion">
+				<source>PHP Version</source>
+			</trans-unit>
+			<trans-unit id="sysInfo">
+				<source>System Information</source>
+			</trans-unit>
+			<trans-unit id="currentTypo3Version">
+				<source>Current TYPO3 Version</source>
+			</trans-unit>
+			<trans-unit id="targetTypo3Version">
+				<source>Target TYPO3 Version</source>
+			</trans-unit>
+			<trans-unit id="totalPagesofSite">
+				<source>Total Pages</source>
+			</trans-unit>
+			<trans-unit id="numberOfDomain">
+				<source>Total Domain</source>
+			</trans-unit>
+			<trans-unit id="overviewReport">
+				<source>Extensions Statistics</source>
+			</trans-unit>
+			<trans-unit id="totalInstalledExt">
+				<source>Total Installed Extension</source>
+			</trans-unit>
+			<trans-unit id="totalNonInstalledExt">
+				<source>Total Not-Installed Extension</source>
+			</trans-unit>
+			<trans-unit id="totalUsed">
+				<source>Total Used Extension</source>
+			</trans-unit>
+			<trans-unit id="totalCompatible4">
+				<source>Total Compatible of TYPO3 4.x</source>
+			</trans-unit>
+			<trans-unit id="totalCompatible6">
+				<source>Total Compatible of TYPO3 6.x</source>
+			</trans-unit>
+			<trans-unit id="totalCompatible7">
+				<source>Total Compatible of TYPO3 7.x</source>
+			</trans-unit>
+			<trans-unit id="totalCompatible8">
+				<source>Total Compatible of TYPO3 8.x</source>
+			</trans-unit>
+			<trans-unit id="totalCompatible9">
+				<source>Total Compatible of TYPO3 9.x</source>
+			</trans-unit>
+			<trans-unit id="extensionlist">
+				<source>TYPO3 Extensions Report</source>
+			</trans-unit>
+			<trans-unit id="srNo">
+				<source>#</source>
+			</trans-unit>
+			<trans-unit id="extkey">
+				<source>Extension Key</source>
+			</trans-unit>
+			<trans-unit id="option.label">
+				<source>TYPO3</source>
+			</trans-unit>
+			<trans-unit id="option.label4">
+				<source>TYPO3 4.x</source>
+			</trans-unit>
+			<trans-unit id="option.label6">
+				<source>TYPO3 6.x</source>
+			</trans-unit>
+			<trans-unit id="option.label7">
+				<source>TYPO3 7.x</source>
+			</trans-unit>
+			<trans-unit id="option.label8">
+				<source>TYPO3 8.x</source>
+			</trans-unit>
+			<trans-unit id="option.label9">
+				<source>TYPO3 9.x</source>
+			</trans-unit>
+			<trans-unit id="compatible6">
+				<source>Compatible 6.x</source>
+			</trans-unit>
+			<trans-unit id="compatible7">
+				<source>Compatible 7.x</source>
+			</trans-unit>
+			<trans-unit id="compatible8">
+				<source>Compatible 8.x</source>
+			</trans-unit>
+			<trans-unit id="compatible9">
+				<source>Compatible 9.x</source>
+			</trans-unit>
+			<trans-unit id="action">
+				<source>Installed</source>
+			</trans-unit>
+			<trans-unit id="currentVersion">
+				<source>Current Version</source>
+			</trans-unit>
+			<trans-unit id="newVersion">
+				<source>Latest Version</source>
+			</trans-unit>
+			<trans-unit id="state">
+				<source>State</source>
+			</trans-unit>
+			<trans-unit id="type">
+				<source>Type</source>
+			</trans-unit>
+			<trans-unit id="viewDetailTooltip">
+				<source>View Extension Detail of %s</source>
+			</trans-unit>
+			<trans-unit id="viewAllVersionTooTip">
+				<source>View All Versions of %s</source>
+			</trans-unit>
+			<trans-unit id="viewTERTooltip">
+				<source>View Extension "%s" at TER</source>
+			</trans-unit>
+			<trans-unit id="viewManualTooltip">
+				<source>Read Documenation</source>
+			</trans-unit>
+			<trans-unit id="contactNote">
+				<source>Do you have any issues or suggestions? Then, Please feel free to connect with us at </source>
+			</trans-unit>
+			<trans-unit id="github">
+				<source>Github</source>
+			</trans-unit>
+			<trans-unit id="detailAction">
+				<source>Actions</source>
+			</trans-unit>
+			<trans-unit id="no">
+				<source>No</source>
+			</trans-unit>
+			<trans-unit id="yes">
+				<source>Yes</source>
+			</trans-unit>
+			<trans-unit id="ter">
+				<source>TER</source>
+			</trans-unit>
+			<trans-unit id="custom">
+				<source>Custom</source>
+			</trans-unit>
+			<trans-unit id="totalPages">
+				<source>Pages where this extension used</source>
+			</trans-unit>
+			<trans-unit id="lastUpdateComment">
+				<source>Last Updated Comment</source>
+			</trans-unit>
+			<trans-unit id="lastUpdateDate">
+				<source>Last Updated Date</source>
+			</trans-unit>
+			<trans-unit id="alldownloadcounter">
+				<source>Total Downloads</source>
+			</trans-unit>
+			<trans-unit id="currentVersionDepend">
+				<source>Current Version Dependency</source>
+			</trans-unit>
+			<trans-unit id="installed">
+				<source>Installed</source>
+			</trans-unit>
+			<trans-unit id="title">
+				<source>Title</source>
+			</trans-unit>
+			<trans-unit id="category">
+				<source>Category</source>
+			</trans-unit>
+			<trans-unit id="description">
+				<source>Description</source>
+			</trans-unit>
+			<trans-unit id="author">
+				<source>Author</source>
+			</trans-unit>
+			<trans-unit id="company">
+				<source>Company</source>
+			</trans-unit>
+			<trans-unit id="conflict">
+				<source>Conflict</source>
+			</trans-unit>
+			<trans-unit id="suggests">
+				<source>Suggests</source>
+			</trans-unit>
+			<trans-unit id="typo3upgrade">
+				<source>TYPO3 Extensions Compatibility Report </source>
+			</trans-unit>
+			<trans-unit id="sheet.filename">
+				<source>TYPO3-Extensions-Compatibility-Report-%s</source>
+			</trans-unit>
+			<trans-unit id="sheet.title">
+				<source>Extension List</source>
+			</trans-unit>
+			<trans-unit id="notes">
+				<source>Notes</source>
+			</trans-unit>
+			<trans-unit id="allVersion.title">
+				<source>Show all versions of</source>
+			</trans-unit>
+			<trans-unit id="allVersion.version">
+				<source>Version</source>
+			</trans-unit>
+			<trans-unit id="allVersion.manual">
+				<source>Manual</source>
+			</trans-unit>
+			<trans-unit id="allVersion.readonline">
+				<source>Read Documenation</source>
+			</trans-unit>
+			<trans-unit id="state.0">
+				<source>alpha</source>
+			</trans-unit>
+			<trans-unit id="state.1">
+				<source>beta</source>
+			</trans-unit>
+			<trans-unit id="state.2">
+				<source>stable</source>
+			</trans-unit>
+			<trans-unit id="state.3">
+				<source>experimental</source>
+			</trans-unit>
+			<trans-unit id="state.4">
+				<source>test</source>
+			</trans-unit>
+			<trans-unit id="state.5">
+				<source>obsolete</source>
+			</trans-unit>
+			<trans-unit id="state.6">
+				<source>excludeFromUpdates</source>
+			</trans-unit>
+			<trans-unit id="state.7">
+				<source>deprecated</source>
+			</trans-unit>
+			<trans-unit id="state.999">
+				<source>n/a</source>
+			</trans-unit>
+			<trans-unit id="category.0">
+				<source>be</source>
+			</trans-unit>
+			<trans-unit id="category.1">
+				<source>module</source>
+			</trans-unit>
+			<trans-unit id="category.2">
+				<source>fe</source>
+			</trans-unit>
+			<trans-unit id="category.3">
+				<source>plugin</source>
+			</trans-unit>
+			<trans-unit id="category.4">
+				<source>misc</source>
+			</trans-unit>
+			<trans-unit id="category.5">
+				<source>services</source>
+			</trans-unit>
+			<trans-unit id="category.6">
+				<source>templates</source>
+			</trans-unit>
+			<trans-unit id="category.7">
+				<source>doc</source>
+			</trans-unit>
+			<trans-unit id="category.8">
+				<source>example</source>
+			</trans-unit>
+			<trans-unit id="category.9">
+				<source>distribution</source>
+			</trans-unit>
+			<trans-unit id="targetSystemRequirement">
+				<source>Server compatibility report of TYPO3 </source>
+			</trans-unit>
+			<trans-unit id="targetSystemRequirement.postMaxSize">
+				<source>Post Max Size</source>
+			</trans-unit>
+			<trans-unit id="targetSystemRequirement.uploadMaxSize">
+				<source>Upload Max Filesize</source>
+			</trans-unit>
+			<trans-unit id="targetSystemRequirement.maxInputVars">
+				<source>Max Input Vars</source>
+			</trans-unit>
+			<trans-unit id="targetSystemRequirement.memoryLimit">
+				<source>Memory Limit</source>
+			</trans-unit>
+			<trans-unit id="targetSystemRequirement.maxExecutionTime">
+				<source>Max Execution Time</source>
+			</trans-unit>
+			<trans-unit id="targetSystemRequirement.imageMagick">
+				<source>ImageMagick</source>
+			</trans-unit>
+			<trans-unit id="targetSystemRequirement.mysql">
+				<source>Mysql</source>
+			</trans-unit>
+			<trans-unit id="targetSystemRequirement.php">
+				<source>PHP</source>
+			</trans-unit>
+			<trans-unit id="targetSystemRequirement.current">
+				<source>Current</source>
+			</trans-unit>
+			<trans-unit id="targetSystemRequirement.required">
+				<source>Required</source>
+			</trans-unit>
+			<trans-unit id="targetSystemRequirement.module">
+				<source>Module</source>
+			</trans-unit>
+			<trans-unit id="task.sendExtensionsReportTask.title">
+				<source>TYPO3 Extensions Compatibility Report via Email Notification</source>
+			</trans-unit>
+			<trans-unit id="task.sendExtensionsReportTask.description">
+				<source>To check any new version of TYPO3 core and extensions, Whenever new updates available then send complete report notification via Email.</source>
+			</trans-unit>
+			<trans-unit id="task.sendExtensionsReportTask.additionalFields.mailSubject.label">
+				<source>Email Subject</source>
+			</trans-unit>
+			<trans-unit id="task.sendExtensionsReportTask.additionalFields.mailSender.label">
+				<source>From To Email Address</source>
+			</trans-unit>
+			<trans-unit id="task.sendExtensionsReportTask.additionalFields.mailTo.label">
+				<source>Send To Email Address (use comma(,) to set multiple email address).</source>
+			</trans-unit>
+			<trans-unit id="task.sendExtensionsReportTask.additionalFields.excludeExtensionsFromCheck.label">
+				<source>Exclude extensions key (use comma(,) to set multiple extensions).</source>
+			</trans-unit>
+			<trans-unit id="task.sendExtensionsReportTask.additionalFields.emailSubject.validation">
+				<source>Email address is not valid</source>
+			</trans-unit>
+			<trans-unit id="task.sendExtensionsReportTask.additionalFields.emailMail.validation">
+				<source>Email address is not valid</source>
+			</trans-unit>
+			<trans-unit id="task.checkExtensionsTask.maiSubject">
+				<source>[%s] New Version of TYPO3 Core and/or Extensions Is Available!</source>
+			</trans-unit>
+			<trans-unit id="task.mail.hithere">
+				<source>Hi there,</source>
+			</trans-unit>
+			<trans-unit id="task.mail.description1" approved="yes">
+				<source>At your TYPO3 website </source>
+			</trans-unit>
+			<trans-unit id="task.mail.description2" approved="yes">
+				<source> a new version of TYPO3 core and/or extensions is available!</source>
+			</trans-unit>
+			<trans-unit id="task.mail.contactonGit">
+				<source>PS: This email was auto-generated from extension ns_ext_compatibility, Please feel free to connect with us at </source>
+			</trans-unit>
+			<trans-unit id="task.mail.moreInfo">
+				<source>For more information, Login to your TYPO3 backend at</source>
+			</trans-unit>
+			<trans-unit id="task.mail.moreInfo1">
+				<source> You may take a detailed report at </source>
+			</trans-unit>
+			<trans-unit id="task.mail.moreInfo2">
+				<source> module, Thank you!</source>
+			</trans-unit>
+			<trans-unit id="task.mail.newstate">
+				<source>New State</source>
+			</trans-unit>
+			<trans-unit id="task.mail.noUpdate">
+				<source>No update available!</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

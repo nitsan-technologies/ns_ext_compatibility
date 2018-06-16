@@ -1,0 +1,21 @@
+<table class="typo3-extension-list t3-table table table-striped table-hover" cellspacing="0">
+	<thead>
+		<tr class="x-grid3-header">
+			<th colspan="3"><h2><f:translate key="targetSystemRequirement"/>{targetVersion}</h2></th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td width="40%"><strong><f:translate key="targetSystemRequirement.module"/></strong></td>
+			<td><strong><f:translate key="targetSystemRequirement.current"/></strong></th>
+			<td><strong><f:translate key="targetSystemRequirement.required"/></strong></th>
+		</tr>
+		<f:for each="{targetSystemRequirement}" key='name' as="module">
+			<tr {f:if(condition:iter.isOdd, then: 'class="bgColor6"', else:'class="bgColor4"' )}>
+				<td><f:translate key="targetSystemRequirement.{name}"/></td>
+				<td  width="30%"><strong>{module.current}</strong></td>
+				<td><strong>{module.required}</strong></td>
+			</tr>
+		</f:for>
+	</tbody>
+</table>

@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="de" xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
+    <head>
+        <meta charset="utf-8"> <!-- utf-8 works for most cases -->
+        <meta name="viewport" content="width=device-width"> <!-- Forcing initial-scale shouldn't be necessary -->
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"> <!-- Use the latest (edge) version of IE rendering engine -->
+        <meta name="x-apple-disable-message-reformatting">  <!-- Disable auto-scale in iOS 10 Mail entirely -->
+        <title><f:translate key="pagetitle"/></title> <!-- The title tag shows in email notifications, like Android 4.4. -->
+
+        <!-- Web Font / @font-face : BEGIN -->
+        <!-- NOTE: If web fonts are not required, lines 10 - 27 can be safely removed. -->
+
+        <!-- Desktop Outlook chokes on web font references and defaults to Times New Roman, so we force a safe fallback font. -->
+        <!--[if mso]>
+            <style>
+                * {
+                    font-family: sans-serif !important;
+                }
+            </style>
+        <![endif]-->
+
+        <!-- Web Font / @font-face : END -->
+
+        <!-- CSS Reset : BEGIN -->
+        <style>
+
+            /* What it does: Remove spaces around the email design added by some email clients. */
+            /* Beware: It can remove the padding / margin and add a background color to the compose a reply window. */
+            html,
+            body {
+                margin: 0 auto !important;
+                padding: 0 !important;
+                height: 100% !important;
+                width: 100% !important;
+            }
+
+            /* What it does: Stops email clients resizing small text. */
+            * {
+                -ms-text-size-adjust: 100%;
+                -webkit-text-size-adjust: 100%;
+            }
+
+            /* What it does: Centers email on Android 4.4 */
+            div[style*="margin: 16px 0"] {
+                margin: 0 !important;
+            }
+
+            /* What it does: Stops Outlook from adding extra spacing to tables. */
+            table,
+            td {
+                mso-table-lspace: 0pt !important;
+                mso-table-rspace: 0pt !important;
+            }
+
+            /* What it does: Fixes webkit padding issue. Fix for Yahoo mail table alignment bug. Applies table-layout to the first 2 tables then removes for anything nested deeper. */
+            table {
+                border-spacing: 0 !important;
+                border-collapse: collapse !important;
+                table-layout: fixed !important;
+                margin: 0 auto !important;
+            }
+            table table table {
+                table-layout: auto;
+            }
+
+            /* What it does: Uses a better rendering method when resizing images in IE. */
+            img {
+                -ms-interpolation-mode:bicubic;
+            }
+
+            /* What it does: A work-around for email clients meddling in triggered links. */
+            *[x-apple-data-detectors],  /* iOS */
+            .x-gmail-data-detectors,    /* Gmail */
+            .x-gmail-data-detectors *,
+            .aBn {
+                border-bottom: 0 !important;
+                cursor: default !important;
+                color: inherit !important;
+                text-decoration: none !important;
+                font-size: inherit !important;
+                font-family: inherit !important;
+                font-weight: inherit !important;
+                line-height: inherit !important;
+            }
+
+            /* What it does: Prevents Gmail from displaying an download button on large, non-linked images. */
+            .a6S {
+                display: none !important;
+                opacity: 0.01 !important;
+            }
+            /* If the above doesn't work, add a .g-img class to any image in question. */
+            img.g-img + div {
+                display: none !important;
+            }
+
+            /* What it does: Removes right gutter in Gmail iOS app: https://github.com/TedGoas/Cerberus/issues/89  */
+            /* Create one of these media queries for each additional viewport size you'd like to fix */
+            /* Thanks to Eric Lepetit (@ericlepetitsf) for help troubleshooting */
+            @media only screen and (min-device-width: 375px) and (max-device-width: 413px) { /* iPhone 6 and 6+ */
+                .email-container {
+                    min-width: 375px !important;
+                }
+            }
+
+        </style>
+        <!-- CSS Reset : END -->
+
+        <!-- Progressive Enhancements : BEGIN -->
+        <style>
+
+            /* Media Queries */
+            @media screen and (min-width: 767px) and (max-width: 992px) {
+                .email-container p,
+                .email-container a{
+                    font-size: 20px !important;
+                    line-height: 24px !important;
+                }
+            }
+            @media screen and (max-width: 616px) {
+                .header{
+                    padding: 14px 14px 0 !important;
+                    text-align: center !important;
+                }
+                .heading.headernext{
+                    padding: 10px 14px 3px !important;
+                }
+                .top-spacer{
+                    padding: 0 !important;
+                }
+                .email-container {
+                    width: 100% !important;
+                    margin: auto !important;
+                }
+
+                /* What it does: Adjust typography on small screens to improve readability */
+                .email-container p,
+                .email-container a{
+                    font-size: 12px !important;
+                    line-height: 18px !important;
+                }
+
+                .heading {
+                    padding: 30px 14px 15px !important;
+                }
+                .heading td{
+                    padding: 0 !important;
+                }
+                .content-block{
+                    padding: 0 14px 20px !important;
+                }
+            }
+        </style>
+        <!-- Progressive Enhancements : END -->
+
+        <!-- What it does: Makes background images in 72ppi Outlook render at correct size. -->
+        <!--[if gte mso 9]>
+        <xml>
+            <o:OfficeDocumentSettings>
+                <o:AllowPNG/>
+                <o:PixelsPerInch>96</o:PixelsPerInch>
+            </o:OfficeDocumentSettings>
+        </xml>
+        <![endif]-->
+
+    </head>
+    <body width="100%" bgcolor="#f3f3f3" style="margin: 0; mso-line-height-rule: exactly;">
+        <center style="width: 100%; background: #f3f3f3; text-align: left;">
+
+            <!-- Email Body : BEGIN -->
+            <table role="presentation" cellspacing="0" cellpadding="0" border="0" align="center" width="800" style="margin: auto;" class="email-container">
+
+
+                <!-- 1 Column Text : BEGIN -->
+                <tr>
+                    <td bgcolor="#f3f3f3" style="padding: 25px 30px 5px;" class="top-spacer">
+                    </td>
+                </tr>
+                <!-- 1 Column Text : END -->
+
+                <!-- 1 Column Text : BEGIN -->
+                <tr>
+                    <td bgcolor="#ffffff" style="padding: 15px 30px 0; text-align: left;" class="heading headernext">
+                        <p style="margin: 15px 0 20px; font-family: sans-serif; font-size: 15px; line-height: 20px; color: #5c5c5b; font-weight: normal;"><f:translate key="task.mail.hithere"/></p>
+                        <p style="margin: 15px 0 10px; font-family: sans-serif; font-size: 15px; line-height: 20px; color: #5c5c5b; font-weight: normal;"><f:translate key="task.mail.description1"/> <b>{projectName}</b>, <f:translate key="task.mail.description2"/></p>
+                    </td>
+                </tr>
+                <!-- 1 Column Text : END -->
+                <!-- Overall Extensions : BEGIN -->
+                <f:if condition="{extReports}">
+                    <f:then>
+                        <tr>
+                            <td bgcolor="#ffffff"><h2 style="font-family: sans-serif; text-align:center;font-size: 18px; line-height: 24px; color: #424242;"><f:translate key="extensionlist"/></h2></td>
+                        </tr>
+                        <tr>
+                            <td width="100%" style="text-align: left; padding: 15px 30px;" bgcolor="#ffffff" class="content-block">
+
+                                <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="border: 1px solid #cccccc;">
+                                    <tbody>
+                                        <!-- Title: BEGIN -->
+                                        <tr style="background-color: #ededed;">
+                                            <th width="20%" valign="middle" style="text-align: left; padding: 10px; border: 1px solid #cccccc;">
+                                                <p style="margin: 0; font-family: sans-serif; font-size: 13px; line-height: 18px; color: #424242; font-weight: normal;"><b><f:translate key="title"/></b></p>
+                                            </th>
+                                            <th width="35%" valign="middle" style="text-align: left; padding: 10px; border: 1px solid #cccccc;">
+                                                <p style="margin: 0; font-family: sans-serif; font-size: 13px; line-height: 18px; color: #424242; font-weight: normal;"><b><f:translate key="extkey"/></b></p>
+                                            </th>
+                                            <th width="10%" valign="middle" style="text-align: left; padding: 10px; border: 1px solid #cccccc;">
+                                                <p style="margin: 0; font-family: sans-serif; font-size: 13px; line-height: 18px; color: #424242; font-weight: normal; text-transform: capitalize;"><b><f:translate key="state"/></b></p>
+                                            </th>
+                                            <th width="20%" valign="middle" style="text-align: left; padding: 10px; border: 1px solid #cccccc;">
+                                                <p style="margin: 0; font-family: sans-serif; font-size: 13px; line-height: 18px; color: #424242; font-weight: normal;"><b><f:translate key="currentVersion"/></b></p>
+                                            </th>
+                                            <th width="20%" valign="middle" style="text-align: left; padding: 10px; border: 1px solid #cccccc;">
+                                                <p style="margin: 0; font-family: sans-serif; font-size: 13px; line-height: 18px; color: #424242; font-weight: normal;"><b><f:translate key="newVersion"/></b></p>
+                                            </th>
+                                            <th width="10%" valign="middle" style="text-align: left; padding: 10px; border: 1px solid #cccccc;">
+                                                <p style="margin: 0; font-family: sans-serif; font-size: 13px; line-height: 18px; color: #424242; font-weight: normal; text-transform: capitalize;"><b><f:translate key="task.mail.newstate"/></b></p>
+                                            </th>
+                                        </tr>
+                                        <!-- Title: END -->
+
+                                        <!-- Extensions details : BEGIN -->
+                                        <f:for each="{extReports}" as="extReport" iteration="iter">
+                                            <tr {f:if(condition:iter.isOdd, then: 'style="background-color: #F7F7F7;"', else:'style="background-color: #FAFAFA;"' )} >
+                                                <td width="20%" valign="middle" style="text-align: left; padding: 10px; border: 1px solid #cccccc;">
+                                                    <p style="margin: 0; font-family: sans-serif; font-size: 13px; line-height: 18px; color: #424242; font-weight: normal; text-transform: capitalize;">{extReport.title}</p>
+                                                </td>
+                                                <td width="35%" valign="middle" style="text-align: left; padding: 10px; border: 1px solid #cccccc;">
+                                                    <p style="margin: 0; font-family: sans-serif; font-size: 13px; line-height: 18px; color: #424242; font-weight: normal;">{extReport.key}</p>
+                                                </td>
+                                                <td width="10%" valign="middle" style="text-align: left; padding: 10px; border: 1px solid #cccccc;">
+                                                    <p style="margin: 0; font-family: sans-serif; font-size: 13px; line-height: 18px; color: #424242; font-weight: normal;  text-transform: capitalize;">{extReport.state}</p>
+                                                </td>
+                                                <td width="20%" valign="middle" style="text-align: left; padding: 10px; border: 1px solid #cccccc;">
+                                                    <p style="margin: 0; font-family: sans-serif; font-size: 13px; line-height: 18px; color: #424242; font-weight: normal;">{extReport.version}</p>
+                                                </td>
+                                                <td width="10%" valign="middle" style="text-align: left; padding: 10px; border: 1px solid #cccccc;">
+                                                    <p style="margin: 0; font-family: sans-serif; font-size: 13px; line-height: 18px; color: #424242; font-weight: normal;">{extReport.newVersion}</p>
+                                                </td>
+                                                <td width="10%" valign="middle" style="text-align: left; padding: 10px; border: 1px solid #cccccc;">
+                                                    <p style="margin: 0; font-family: sans-serif; font-size: 13px; line-height: 18px; color: #424242; font-weight: normal;  text-transform: capitalize;">{f:translate(key: 'state.{extReport.newState}')}</p>
+                                                </td>
+                                            </tr>
+                                        </f:for>
+                                        <!-- Extensions details : END -->
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                    </f:then>
+                    <f:else>
+                         <tr>
+                            <td bgcolor="#ffffff" style="padding: 15px 30px; text-align: left;" class="heading headernext">
+                                <p style="margin: 15px 0 20px; font-family: sans-serif; font-size: 15px; line-height: 20px; color: #5c5c5b; font-weight: normal;"><f:format.html><f:translate key="task.mail.noUpdate"/></f:format.html></p>
+                            </td>
+                        </tr>
+                    </f:else>
+                </f:if>
+                <!-- Overall Extensions : END -->
+                <!-- 1 Column Text : BEGIN -->
+                <tr>
+                    <td bgcolor="#ffffff" style="padding: 15px 30px; text-align: left;" class="heading headernext">
+                        <p style="margin: 15px 0 20px; font-family: sans-serif; font-size: 15px; line-height: 20px; color: #5c5c5b; font-weight: normal;"><f:translate key="task.mail.moreInfo"/> <a href="{beDomain}" target="_blank">{beDomain}</a>, <f:translate key="task.mail.moreInfo1"/> <b><f:translate key="module.title"/></b><f:translate key="task.mail.moreInfo2"/></p>
+                        <p style="margin: 15px 0 20px; font-family: sans-serif; font-size: 15px; line-height: 20px; color: #5c5c5b; font-weight: normal;"><f:translate key="task.mail.contactonGit"/><a href="https://github.com/nitsan-technologies/ns_ext_compatibility" target="_blank">Github</a></p>
+                    </td>
+                </tr>
+                <!-- 1 Column Text : END -->
+
+        </center>
+    </body>
+</html>

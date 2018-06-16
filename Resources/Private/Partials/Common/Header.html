@@ -1,0 +1,33 @@
+<h1><f:translate key="typo3upgrade"/></h1>
+ <f:link.action action="exportXls"  class="btn-export" arguments="{targetVersion:sysDetail.targetVersion}" ><f:translate key="btn.export"/></f:link.action>
+<f:form id="changeTargtVersion" action="list" class="form-inline">
+    <select class="form-control" id="targetVersion" onchange="this.form.submit()" name="tx_nsextcompatibility_tools_nsextcompatibilitynsextcompatibility[targetVersion]">
+        <option value="{sysDetail.targetVersion}"><f:translate key="option.label"/> {sysDetail.targetVersion}</option>
+        <f:if condition="{sysDetail.typo3version}<6">
+            <f:if condition="{sysDetail.targetVersion}!='4.x'">
+                <option value="4.x"><f:translate key="option.label4"/></option>
+            </f:if>
+        </f:if>
+        <f:if condition="{sysDetail.typo3version}<7">
+            <f:if condition="{sysDetail.targetVersion}!=6.x">
+                <option value="6.x"><f:translate key="option.label6"/></option>
+            </f:if>
+        </f:if>
+        <f:if condition="{sysDetail.typo3version}<8">
+            <f:if condition="{sysDetail.targetVersion}!='7.x'">
+                <option value="7.x"><f:translate key="option.label7"/></option>
+            </f:if>
+        </f:if>
+        <f:if condition="{sysDetail.typo3version}<9">
+            <f:if condition="{sysDetail.targetVersion}!='8.x'">
+                <option value="8.x"><f:translate key="option.label8"/></option>
+            </f:if>
+        </f:if>
+        <f:if condition="{sysDetail.typo3version}<10">
+            <f:if condition="{sysDetail.targetVersion}!='9.x'">
+                <option value="9.x"><f:translate key="option.label9"/></option>
+            </f:if>
+        </f:if>
+    </select>
+</f:form>
+<p class="upgradeLabel"><f:translate key="typo3UpgradeOptLabel"/></p>

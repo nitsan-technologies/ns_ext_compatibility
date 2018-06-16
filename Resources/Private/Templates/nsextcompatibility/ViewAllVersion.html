@@ -1,0 +1,72 @@
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal">&times;</button>
+    <h4 class="modal-title"><f:translate key="allVersion.title"/> {allVersions.0.title}</h4>
+</div>
+<div class="modal-body">
+    <div id="extensionAllVersionlistModal" class="extAllVersionHeaderTable">
+        <table class="typo3-extension-list viewAllVersionExtDetail t3-table table table-striped table-hover" cellspacing="0" cellpadding="0" width="50%">
+            <tbody>
+                <tr class="ter-ext-single-info-key">
+                    <td><f:translate key="extkey"/></td>
+                    <td><strong>{compatVersion.extensionKey}</strong></td>
+                </tr>
+                <tr>
+                    <td><f:translate key="allVersion.version"/></td>
+                    <td>
+                        {compatVersion.version}
+                        <span class="ter-ext-state ter-ext-state-{f:translate(key: 'state.{compatVersion.state}')}">{f:translate(key: 'state.{compatVersion.state}')}</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td><f:translate key="lastUpdateDate"/></td>
+                    <td><f:format.date format="d.m.Y">{compatVersion.lastUpdated}</f:format.date></td>
+                </tr>
+                <f:if condition="{compatVersion.alldownloadcounter}>0">
+                    <tr>
+                        <td><f:translate key="alldownloadcounter"/></td>
+                        <td>{compatVersion.alldownloadcounter}</td>
+                    </tr>
+                </f:if>
+                <tr>
+                    <td><f:translate key="category"/></td>
+                    <td>{f:translate(key: 'category.{compatVersion.category}')}</td>
+                </tr>
+                <tr class="ter-ext-single-info-manual">
+                    <td><f:translate key="allVersion.manual"/></td>
+                    <td>
+                       <f:link.external uri="https://docs.typo3.org/typo3cms/extensions/{extension.key}" title="{f:translate(key: 'viewManualTooltip')}" target="_blank">
+                         <f:translate key="allVersion.readonline"/>
+                        </f:link.external>
+                    </td>
+                </tr>
+                <tr>
+                    <td><f:translate key="author"/></td>
+                    <td>{compatVersion.authorName}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <table id="extensionAllVersionlist" class="typo3-extension-list t3-table table table-striped table-hover" width="100%">
+        <thead>
+            <tr class="head">
+                <th width="10%"><f:translate key="srNo"/></th>
+                <th><f:translate key="allVersion.version"/></th>
+                <th><f:translate key="lastUpdateComment"/></th>
+                <th><f:translate key="lastUpdateDate"/></th>
+                <th><f:translate key="state"/></th>
+            </tr>
+        </thead>
+        <tbody>
+            <f:for each="{allVersions}" as="extension" iteration="iter">
+                <tr>
+                    <td>{iter.cycle}</td>
+                    <td>{extension.version}
+                    </td>
+                    <td>{extension.updateComment}</td>
+                    <td><f:format.date format="d.m.Y">{extension.lastUpdated}</f:format.date></td>
+                    <td><span class="ter-ext-state ter-ext-state-{f:translate(key: 'state.{allVersions.0.state}')}">{f:translate(key: 'state.{allVersions.0.state}')}</span></td>
+               </tr>
+            </f:for>
+        </tbody>
+    </table>
+</div>

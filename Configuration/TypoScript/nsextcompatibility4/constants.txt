@@ -1,0 +1,14 @@
+module.tx_nsextcompatibility {
+	view {
+		# cat=module.tx_nsextcompatibility/file; type=string; label=Path to template root (BE)
+		templateRootPath = EXT:ns_ext_compatibility/Resources/Private/Templates/
+		# cat=module.tx_nsextcompatibility/file; type=string; label=Path to template partials (BE)
+		partialRootPath = EXT:ns_ext_compatibility/Resources/Private/Partials/
+		# cat=module.tx_nsextcompatibility/file; type=string; label=Path to template layouts (BE)
+		layoutRootPath = EXT:ns_ext_compatibility/Resources/Private/Layouts/
+	}
+	persistence {
+		# cat=module.tx_nsextcompatibility//a; type=string; label=Default storage PID
+		storagePid =
+	}
+}

@@ -1,0 +1,19 @@
+<f:be.container 
+pageTitle="{f:translate(key: 'pagetitle')}" 
+enableJumpToUrl="false" 
+enableClickMenu="false" 
+loadPrototype="false" 
+loadScriptaculous="false" 
+loadExtJs="true" 
+loadExtJsTheme="false"  
+addCssFile="{f:uri.resource(path:'nsextcompatibility4/Css/main.css')}" 
+addJsFile="{f:uri.resource(path:'nsextcompatibility4/JavaScript/Main.js')}">
+   <div id="typo3-docbody">
+        <div id="typo3-inner-docbody">
+			<div id="typo3-inner-docbody">
+				<f:flashMessages renderMode="div" />
+				<f:render section="content" />
+			</div>
+		</div>
+	</div>
+</f:be.container>

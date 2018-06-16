@@ -1,0 +1,14 @@
+# Module configuration
+module.tx_nsextcompatibility {
+	persistence {
+		storagePid = {$module.tx_nsextcompatibility.persistence.storagePid}
+	}
+	view {
+		templateRootPath = {$module.tx_nsextcompatibility.view.templateRootPath}
+		partialRootPath = {$module.tx_nsextcompatibility.view.partialRootPath}
+		layoutRootPath = {$module.tx_nsextcompatibility.view.layoutRootPath}
+	}
+}
+
+
+

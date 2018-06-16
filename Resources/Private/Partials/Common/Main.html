@@ -1,0 +1,25 @@
+<div class="ext-wrapper">
+    <img src="../typo3conf/ext/ns_ext_compatibility/Resources/Public/Icons/loader.svg" alt="Loading...">
+</div>
+<div class="ext-title">
+     <f:render partial="Common/Header" arguments="{sysDetail:sysDetail}"/>
+</div>
+<div class="ns-table-wrap">
+    <div class="row">
+        <div class="col-sm-4">
+            <div class="ext-report-wrapper">
+                <f:render partial="Common/SysInformation" arguments="{sysDetail:sysDetail}"/>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="ext-report-wrapper">
+                <f:render partial="Common/ExtOverviewReport" arguments="{overviewReport:overviewReport,targetVersion:sysDetail.targetVersion,typo3version:sysDetail.typo3version}"/>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="ext-report-wrapper">
+                <f:render partial="Common/TargetSystemRequirement" arguments="{targetSystemRequirement:targetSystemRequirement,targetVersion:sysDetail.targetVersion}"/>
+            </div>
+        </div>
+    </div>
+</div>

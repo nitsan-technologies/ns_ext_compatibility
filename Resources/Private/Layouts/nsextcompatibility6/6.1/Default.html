@@ -1,0 +1,29 @@
+{namespace em=TYPO3\CMS\Extensionmanager\ViewHelpers}
+<em:be.container 
+	pageTitle="{f:translate(key: 'pagetitle')}" 
+	enableJumpToUrl="true" 
+	enableClickMenu="false" 
+	loadPrototype="false" 
+	loadScriptaculous="false" 
+	loadExtJs="false" 
+	loadExtJsTheme="true"
+	triggers="{triggers}"
+	addCssFiles="{
+		0:'{f:uri.resource(path:\'nsextcompatibility6/Css/Vendors/main.css\')}',
+		3:'{f:uri.resource(path:\'nsextcompatibility6/Css/main.css\')}'
+		4:'{f:uri.resource(path:\'nsextcompatibility6/Css/6.1/custom.css\')}'
+	}"
+	addJsFiles="{
+		0:'{f:uri.resource(path:\'nsextcompatibility6/JavaScript/Vendors/jquery-1.8.2.min.js\')}',
+		1:'{f:uri.resource(path:\'nsextcompatibility6/JavaScript/Vendors/jquery.dataTables-1.9.4.min.js\')}',
+		3:'{f:uri.resource(path:\'nsextcompatibility6/JavaScript/Vendors/jquery.clearable.js\')}',
+		10:'{f:uri.resource(path:\'nsextcompatibility6/JavaScript/main.js\')}'
+	}">
+
+		<div id="typo3-docbody">
+			<div id="typo3-inner-docbody" class="typo3-extension-manager">
+				<f:flashMessages renderMode="div" />
+            <f:render section="Content" />
+			</div>
+		</div>
+</em:be.container>

@@ -1,0 +1,520 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto:400,500,700');
+html {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+*, *:before, *:after {
+  -webkit-box-sizing: inherit;
+  -moz-box-sizing: inherit;
+  box-sizing: inherit;
+  }
+body {
+    font-size: 13px !important;
+    line-height: 1.5em !important; 
+    color: #000 !important;
+    font-weight: 400 !important;
+    font-family:'Roboto', sans-serif !important;
+}
+h1, h2, h3, h4 {
+    font-weight: 500;
+    color: #555555;
+    font-family: Verdana,Arial,Helvetica,sans-serif;
+}
+h1 {
+    font-size: 2.3em !important;
+    line-height: 1.1em !important;
+    margin: 0 0 30px !important;
+    font-family: Roboto !important;
+}
+h2 {
+    font-size: 1.4em;
+    margin: 24px 0 12px;
+}
+#typo3-extension-list .ext-overview:hover{
+    cursor: pointer;
+}
+.modal {
+    display: none;
+    left: 50%;
+    outline: 0 none;
+    overflow: hidden;
+    position: fixed;
+    top: 0;
+    -webkit-transform: translateX(-50%);
+    transform: translateX(-50%);
+    z-index: 1050;
+    /*width: 100%;*/
+    width: auto;
+}
+.modal-dialog {
+    position: relative;
+    width: 100% !important;
+    max-width: 900px;
+    margin: 60px auto;
+}
+.modal-content {
+    background-clip: padding-box;
+    background-color: #fff;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 6px;
+    box-shadow: 0 3px 9px rgba(0, 0, 0, 0.5);
+    outline: 0 none;
+    position: relative;
+    width: 100%;
+}
+.close {
+    color: #000;
+    float: right;
+    font-size: 30px;
+    font-weight: 700;
+    line-height: 1;
+    opacity: 0.2;
+    text-shadow: 0 1px 0 #fff;
+    background: rgba(0, 0, 0, 0);
+    border: 0 none;
+    cursor: pointer;
+    padding: 0;
+    -webkit-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+}
+.modal-header .close {
+    margin-top: -2px;
+}
+.close:focus, .close:hover {
+    background: rgba(0, 0, 0, 0);
+    color: #000;
+    cursor: pointer;
+    opacity: 0.5;
+    text-decoration: none;
+}
+.modal-body {
+    padding: 2px 16px;
+    max-height: 65vh;
+    overflow: auto;
+    width: 100%;
+    position: relative;
+}
+.modal-body table{
+    width: 100%
+}
+.btn-export{
+    float:right;
+    border: none;
+    color: white;
+    background-color:#2196F3;
+    padding: 10px 28px;
+    text-align: center;
+    display: inline-block;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 1px;
+}
+.btn-export:hover{
+    text-decoration:none;
+    background-color:#4CAF50;
+}
+.text-center{
+    text-align: center !important;
+}
+.text-left{
+    text-align: left !important;
+}
+.text-right{
+    text-align: right !important;
+}
+th {
+    font-weight: 500 !important;
+}
+.ext-report-wrapper {
+    margin: 0 0 30px;
+    position: relative;
+}
+.ext-report-wrapper h2 {
+    margin: 0 0 15px;
+    float:  left;
+}
+.dataTables_filter {
+    position: absolute;
+    right: 0;
+    top: -5px;
+}
+input, textarea, button {
+    border-radius: 0;
+    height: 23px;
+    margin: 0 0 0 8px;
+}
+div#typo3-docbody {
+    bottom: inherit;
+    overflow: inherit;
+    top: 0;
+}
+.modal-overlay {
+    display: none;
+    background-color: rgba(0, 0, 0, 0.8);
+    height: 100%;
+    left: 0;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 99;
+}
+#typo3-docbody + .modal-overlay{
+    display: none !important;
+}
+.modal-header {
+  border-bottom: 1px solid #e5e5e5;
+  min-height: 60px;
+  padding: 15px;
+}
+.modal-body {
+    padding: 15px;
+    position: relative;
+}
+.modal-footer {
+    border-top: 1px solid #e5e5e5;
+    padding: 15px;
+    text-align: right;
+}
+.modal-title {
+    line-height: 1.42857;
+    margin: 0;
+    font-size: 19px;
+}
+strong,b{
+    font-weight: 500;
+}
+.table h2 {
+    color: inherit;
+    margin: 5px 0;
+}
+.ns-table-wrap .row::after {
+    clear: both;
+    content: "";
+    display: table;
+}
+.ns-table-wrap .row{
+    margin-left: -15px;
+    margin-right: -15px;
+}
+.ns-table-wrap .col-sm-6 {
+    width: 48.2%;
+    float: left;
+    min-height: 1px;
+    padding-left: 15px;
+    padding-right: 15px;
+    position: relative;
+}
+a.btn-export.disabled {
+    pointer-events: none;
+}
+.ext-title{
+    display: inline-block;
+    width: 100%;
+}
+.ext-title h1{
+    float: left;
+}
+.ext-title form,
+.ext-title .btn-export{
+    float: right;
+}
+.dataTables_filter  input[type="text"],
+.dataTables_filter  input[type="search"],
+.form-inline  select{
+    font-weight: 500;
+    -moz-appearance: none;
+    -webkit-appearance: none;
+    -appearance: none;
+    background-color: #fff;
+    border: 1px solid #dcdcdc;
+    border-radius: 0;
+    box-shadow: none;
+    color: #000000;
+    font-size: 14px;
+    height: 38px;
+    outline: medium none;
+    padding: 0 15px;
+    min-width: 120px;
+    display: block;
+    margin: 0;
+    line-height: 1.5;
+    width: 100%;
+    -webkit-transition: all 0.2s ease;
+    transition: all 0.2s ease;
+}
+.dataTables_filter input.t3-clearable[type="text"] {
+  margin-top: -4px;
+}
+.ext-title form, .ext-title .btn-export {
+    float: right;
+    margin-left: 20px;
+}
+.ns-btn,.btn-export{
+    background-color: #222222;
+    border: 1px solid #222222;
+    border-radius: 3px;
+    color: #fff;
+    display: inline-block;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.5;
+    min-width: 120px;
+    padding: 7px 20px;
+    text-align: center;
+    text-decoration: none;
+    white-space: normal;
+    -webkit-transition: all 0.2s ease;
+    transition: all 0.2s ease;
+}
+.btn-export:hover,
+.btn-export:focus,
+.ns-btn:hover,
+.ns-btn:focus{
+    background-color: #000;
+    color: #fff;
+    text-decoration: none;
+}
+
+select.form-control:not([size]):not(.form-select-no-siblings), select.form-control[size="1"]:not(.form-select-no-siblings) {
+    background-image: url('../../../Public/Icons/actions-view-list-expand.svg');
+    background-position: right 4px center;
+    background-repeat: no-repeat;
+    background-size: 16px 16px;
+    padding-right: 24px;
+}
+.dataTables_filter .t3-clearable-wrapper {
+    float: right;
+    margin-left: 13px;
+    position: relative;
+    top: -3px;
+}
+.t3-clearable-wrapper .close {
+    height: 16px;
+    position: absolute;
+    right: 0.5em;
+    top: 50%;
+    -webkit-transform: translate(0px, -50%);
+    transform: translate(0px, -50%);
+    z-index: 3;
+}
+button.close {
+    background: rgba(0, 0, 0, 0) none repeat scroll 0 0;
+    border: 0 none;
+    cursor: pointer;
+    padding: 0;
+}
+.dataTables_filter .t3-icon {
+    /*display: block !important;*/
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    z-index: 9;
+}
+table{
+    border: 0px;
+    cellspacing:0px;
+}
+.ter-ext-state.ter-ext-state-stable, .ext-status-Stable{
+    color:#3db900!important;
+}
+.ter-ext-state.ter-ext-state-beta, .ext-status-Beta{
+    color:#f4bd00!important;
+}
+.ter-ext-state.ter-ext-state-alpha, .ext-status-Alpha{
+    color:#f14400!important;
+}
+.hide-label,.dataTables_info{
+    display: none;
+}
+.terLink{
+    margin-left: 5px;
+}
+.contactnote{
+   text-align: center;
+}
+.contactnote a{
+    color:#5f8c9f;
+}
+.upgradeLabel{
+  float: right;
+    margin:10px -12px;
+}
+#extensionAllVersionlist_filter{
+    position: relative;
+    float: right;
+}
+
+.allVersionModelboxTitle{
+    margin-bottom:0px;
+}
+.extAllVersionHeaderTable{
+    width: 50%;
+}
+
+/* 4th version */
+
+.dataTables_wrapper {
+    padding: 40px 0 0 0;
+    position: relative;
+}
+body {
+    background-color: #fff;
+}
+table{
+    border-collapse: collapse;
+    border-spacing: 0;
+    border: medium none;
+    margin-bottom: 1.5em;
+    width: 100%;
+    border: 1px solid #d7d7d7;
+}
+table th,
+table td{
+    min-height: 16px;
+    padding: 6px;
+    text-align: left;
+}
+table thead th,
+table thead td {
+    background-color: #666;
+    color: #fff;
+    font-weight: normal;
+}
+table tr th:first-child,
+table tr td:first-child{
+    padding-left: 12px;
+}
+table tr th:last-child,
+table tr td:last-child {
+    padding-right: 12px;
+}
+table tbody tr:nth-child(2n+1) td{
+    background-color: #f7f7f7;
+}
+table tbody tr:nth-child(2n) td {
+    background-color: #fff;
+}
+.dataTables_filter input[type="search"] {
+    float: right;
+    margin-left: 14px;
+    min-width: 1px;
+    position: relative;
+    top: -4px;
+    background-color: #fefefe;
+    border: 1px solid #7c7c7c;
+    height: 32px;
+    width: 171px;
+}
+.t3-button, input, textarea, button {
+    display: inline-block;
+    padding: 3px 6px;
+    vertical-align: middle;
+    background-color: #fefefe;
+    border: 1px solid #7c7c7c;
+    border-radius: 2px;
+    height: 23px;
+    margin: 0 0 0 8px;
+}
+.action-links a{
+    display: inline-block;
+    margin-left: 5px;
+    vertical-align: middle;
+}
+.x-grid3-header{
+    background: #666;
+}
+
+.modal .dataTables_wrapper {
+  padding: 0 0 20px;
+}
+.allVersionModelboxTitle {
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+  text-align: left;
+}
+table.t3-table tbody td a {
+ text-decoration: none;
+}
+#extensionAllVersionlistModal table.dataTable th,table.dataTable th{
+    cursor: pointer;
+}
+
+.modal-body .viewAllVersionExtDetail {
+    width: 60%
+}
+
+.ext-wrapper {
+    background-color: rgba(0, 0, 0, 0.8);
+    height: 100%;
+    left: 0;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 9999;
+    display: none;
+}
+.ext-wrapper img {
+    left: 50%;
+    max-width: 100px;
+    position: absolute;
+    top: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+}
+.col-sm-4 {
+    position: relative;
+    min-height: 1px;
+    padding-left: 15px;
+    padding-right: 15px;
+    width: 33.33%;
+    float: left;
+}
+.typo3-messages {
+  margin: 0 0 30px;
+}
+.ext-wrapper {
+    background-color: rgba(0, 0, 0, 0.8);
+    height: 100%;
+    left: 0;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 9999;
+    display: none;
+}
+.ext-wrapper img {
+    left: 50%;
+    max-width: 100px;
+    position: absolute;
+    top: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+}
+input::-moz-focus-inner,
+textarea::-moz-focus-inner {
+    border: 0;
+    padding: 0;
+}
+select::-ms-expand {
+    display: none;
+}
+
+input[type="password"], input[type="text"], input[type="email"], button, select, textarea {
+    -moz-appearance: none;
+    box-shadow: none;
+}
+.ext-ie select{
+    background: none;
+    padding-right: 0;
+}
+div#typo3-inner-docbody {
+  padding: 15px 40px;
+}
+.dataTables_filter .t3-clearable-wrapper {
+    float: right;
+    margin-left: 13px;
+    position: relative;
+    top: -8px;
+}

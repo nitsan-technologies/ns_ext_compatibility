@@ -1,0 +1,58 @@
+<table class="typo3-extension-list t3-table table table-striped table-hover" cellspacing="0">
+	<thead>
+		<tr class="x-grid3-header">
+			<th colspan="2"><h2><f:translate key="overviewReport"/></h2></th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr class="bgColor6">
+			<td width="50%"><f:translate key="totalInstalledExt"/></td>
+			<td><strong>{overviewReport.totalInstalled}</strong></td>
+		</tr>
+		<tr class="bgColor4">
+			<td><f:translate key="totalNonInstalledExt"/></td>
+			<td><strong>{overviewReport.totalNonInstalled}</strong></td>
+		</tr>
+		<f:if condition="{typo3version}<6">
+			<f:if condition="{targetVersion}>=4">
+				<tr  class="bgColor6" >
+					<td><f:translate key="totalCompatible4"/></td>
+					<td><strong>{overviewReport.totalCompatible4}</strong></td>
+				</tr>
+			</f:if>
+		</f:if>
+		<f:if condition="{typo3version}<7">
+			<f:if condition="{targetVersion}>=6">
+				<tr  class="bgColor4" >
+					<td><f:translate key="totalCompatible6"/></td>
+					<td><strong>{overviewReport.totalCompatible6}</strong></td>
+				</tr>
+			</f:if>
+		</f:if>
+		<f:if condition="{typo3version}<8">
+			<f:if condition="{targetVersion}>=7">
+				<tr  class="bgColor6" >
+					<td><f:translate key="totalCompatible7"/></td>
+					<td><strong>{overviewReport.totalCompatible7}</strong></td>
+				</tr>
+			</f:if>
+		</f:if>
+		<f:if condition="{typo3version}<9">
+			<f:if condition="{targetVersion}>=8">
+				<tr  class="bgColor4" >
+					<td><f:translate key="totalCompatible8"/></td>
+					<td><strong>{overviewReport.totalCompatible8}</strong></td>
+				</tr>
+			</f:if>
+		</f:if>
+		<f:if condition="{typo3version}<10">
+			<f:if condition="{targetVersion}>=9">
+				<tr  class="bgColor6" >
+					<td><f:translate key="totalCompatible9"/></td>
+					<td><strong>{overviewReport.totalCompatible9}</strong></td>
+				</tr>
+			</f:if>
+		</f:if>
+		</tr>
+	</tbody>
+</table>

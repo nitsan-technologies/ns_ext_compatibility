@@ -1,0 +1,17 @@
+<f:layout name="Default" />
+  
+<f:section name="Content">
+    <f:render partial="Common/Main" arguments="{overviewReport:overviewReport,sysDetail:sysDetail,targetSystemRequirement:targetSystemRequirement}"/>
+    <div class="ext-report-wrapper">
+        <h2><f:translate key="extensionlist"/></h2>
+        <f:comment>
+           <!-- Render Extension table Start -->
+        </f:comment>
+            <f:render partial="ExtTable" arguments="{_all}"/>
+        <f:comment>
+           <!-- Render Extension table End -->
+        </f:comment>
+        <p class="contactnote"><f:translate key="contactNote"/><f:link.external  uri="https://github.com/nitsan-technologies/ns_ext_compatibility/issues/"  target="_blank"><f:translate key="github"/></f:link.external></p>
+    </div>
+    <f:render partial="Common/NsModel" />
+</f:section>
