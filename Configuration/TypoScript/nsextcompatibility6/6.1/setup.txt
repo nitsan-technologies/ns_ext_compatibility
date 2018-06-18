@@ -1,11 +1,9 @@
 # Module configuration
 module.tx_nsextcompatibility {
-	persistence {
-		storagePid = {$module.tx_nsextcompatibility.persistence.storagePid}
-	}
+	
 	view {
-		templateRootPath = {$module.tx_nsextcompatibility.view.templateRootPath}
-		partialRootPath = {$module.tx_nsextcompatibility.view.partialRootPath}
-		layoutRootPath = {$module.tx_nsextcompatibility.view.layoutRootPath}
+		templateRootPath =  EXT:ns_ext_compatibility/Resources/Private/Templates/
+		partialRootPath = EXT:ns_ext_compatibility/Resources/Private/Partials/
+		layoutRootPath = EXT:ns_ext_compatibility/Resources/Private/Layouts/nsextcompatibility6/6.1/
 	}
 }

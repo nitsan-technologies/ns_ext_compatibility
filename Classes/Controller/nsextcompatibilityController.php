@@ -796,7 +796,7 @@ class nsextcompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
     * This method is used for get System requirement for target typo3 version
     **/
     public function getSysRequirementForTargetVersion ($targetVersion) {
-       exec('convert -version',$imgmagic);
+        exec('convert -version',$imgmagic);
         preg_match('@[0-9]+\.[0-9]+\.[0-9]+@', shell_exec( 'mysql -V'), $mysqlVersion);
 
         $typo3Config=array(

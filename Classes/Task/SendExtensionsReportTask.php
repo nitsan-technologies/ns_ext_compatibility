@@ -16,7 +16,7 @@ use \TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Extensionmanager\Domain\Repository\ExtensionRepository;
 use TYPO3\CMS\fluid\View\StandaloneView;
 use TYPO3\CMS\Core\Mail\MailMessage;
-use TYPO3\CMS\Extbase\Utility\DebuggerUtility as debug;
+
 
 class SendExtensionsReportTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask
 {

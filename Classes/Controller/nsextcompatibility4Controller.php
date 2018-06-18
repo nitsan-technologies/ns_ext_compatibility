@@ -42,14 +42,14 @@ class Tx_NsExtCompatibility_Controller_nsextcompatibility4Controller extends Tx_
         $this->extRepo = t3lib_div::makeInstance('tx_em_Connection_ExtDirectServer');
     }
 
-	/**
-	 * action list
-	 *
-	 * @return void
-	*/
-	public function listAction() {
+    /**
+     * action list
+     *
+     * @return void
+    */
+    public function listAction() {
         
-		$sysDetail=$this->getSysDetail();
+        $sysDetail=$this->getSysDetail();
         //Get typo3 target version from argument and set new target version start
         $arguments= $this->request->getArguments();
         $targetVersion=$arguments['targetVersion'];
@@ -58,13 +58,14 @@ class Tx_NsExtCompatibility_Controller_nsextcompatibility4Controller extends Tx_
         }
         //Get typo3 target version from argument and set new target version end
         $terRepo=$this->extRepo->getRepositories();
+
         if($terRepo!=null){
             $date = str_replace('/', '-', $terRepo['data']['0']['updated']);
             $date1= date('Y-m-d', strtotime($date));
             $date1=date_create($date1);
             $currentDate=date_create(date("Y-m-d",strtotime('-30 days')));
             $diff=date_diff($date1,$currentDate);
-            if($diff->format("%R%a")<'-30'){
+            if($diff->format("%R%a")>'+1'){
                 $this->flashMessageContainer->add($this->translate('warning.TERUpdateText',array('date'=>$date)), $this->translate('warning.TERUpdateHeadline'),t3lib_FlashMessage::WARNING);
             }
         }
@@ -87,7 +88,7 @@ class Tx_NsExtCompatibility_Controller_nsextcompatibility4Controller extends Tx_
         $assignArray['targetSystemRequirement']=$targetSystemRequirement;
 
         $this->view->assignMultiple($assignArray);
-	}
+    }
 
     /*
     * This method is used for fetch all version of passed extension
@@ -560,7 +561,7 @@ class Tx_NsExtCompatibility_Controller_nsextcompatibility4Controller extends Tx_
     }
 
 
-	/**
+    /**
      * This method is used for  get detail list of local extension
     */
     public function getAllExtensions($myTargetVersion)
@@ -568,15 +569,15 @@ class Tx_NsExtCompatibility_Controller_nsextcompatibility4Controller extends Tx_
         $i=1;
         $totalCompatible4=$totalCompatible6=$totalCompatible7=$totalCompatible8=$totalCompatible9=$totalInstalled=$totalNonInstalled=0;
         $assignArray=$extensionlist=$overviewReport = array();
-		
-		$extensionlists =$this->extRepo->getExtensionDetails();
-		$localExtList= array();
-		foreach ($extensionlists['data'] as $key => $extension) {
-			if($extension['doubleInstall']=='Local' && $extension['extkey']!='ns_ext_compatibility'){
-				$updateToVersion= $this->nsExtRepo->getLatestVersionsofExtension($extension['extkey']);
+        
+        $extensionlists =$this->extRepo->getExtensionDetails();
+        $localExtList= array();
+        foreach ($extensionlists['data'] as $key => $extension) {
+            if($extension['doubleInstall']=='Local' && $extension['extkey']!='ns_ext_compatibility'){
+                $updateToVersion= $this->nsExtRepo->getLatestVersionsofExtension($extension['extkey']);
 
                 $newNsVersion=0;
-				if(!empty($updateToVersion)){
+                if(!empty($updateToVersion)){
                     foreach ($updateToVersion as $key => $updExt) {
                         $dependencies = unserialize($updExt['dependencies']);
                         if(!empty($dependencies)){
@@ -614,15 +615,15 @@ class Tx_NsExtCompatibility_Controller_nsextcompatibility4Controller extends Tx_
                                 $extension['compatible4']=1;
                             }
                         }
-    					$extension['updateToVersion'] =$updateToVersion[0];
+                        $extension['updateToVersion'] =$updateToVersion[0];
                     }
-					$extension['type']="TER";
-				}else{
+                    $extension['type']="TER";
+                }else{
                     if(TYPO3_branch<6){
                         $extension['compatible4']=1;
                     }
-					$extension['type']="Custom";
-				}
+                    $extension['type']="Custom";
+                }
                 //Count Total compatibility Start
                 if($extension['compatible4']==1){
                     $totalCompatible4++;
@@ -639,16 +640,16 @@ class Tx_NsExtCompatibility_Controller_nsextcompatibility4Controller extends Tx_
                 if($extension['compatible9']==1){
                     $totalCompatible9++;
                 }
-				if($extension['installed']==1){
+                if($extension['installed']==1){
                    $totalInstalled++;
                 }else{
                    $totalNonInstalled++;
                 }
                 //Count Total compatibility End
                  
-				$localExtList[$key]=$extension;
-			}
-		}
+                $localExtList[$key]=$extension;
+            }
+        }
         //Set overview array start
         $overviewReport['totalInstalled']=$totalInstalled;
         $overviewReport['totalNonInstalled']=$totalNonInstalled;
@@ -666,12 +667,12 @@ class Tx_NsExtCompatibility_Controller_nsextcompatibility4Controller extends Tx_
     }
 
 
-	/**
+    /**
      * This method is used of get sysimformation
     */
     public function getSysDetail()
     {   
-    	
+        
         $sysDetail = array();
         $extConfig= unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['ns_ext_compatibility']);
         $sysDetail['phpversion']=substr(phpversion(), 0, 6);

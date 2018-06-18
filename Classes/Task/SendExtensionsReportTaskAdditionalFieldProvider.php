@@ -7,7 +7,7 @@ namespace NITSAN\NsExtCompatibility\Task;
  * @author Peter Benke <info@typomotor.de>
  */
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility as Localize;
-use TYPO3\CMS\Extbase\Utility\DebuggerUtility as debug;
+
 
 class SendExtensionsReportTaskAdditionalFieldProvider implements \TYPO3\CMS\Scheduler\AdditionalFieldProviderInterface {
 
