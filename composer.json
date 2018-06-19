@@ -28,7 +28,7 @@
     }
   },
   "replace": {
-    "news": "self.version",
+    "ns_ext_compatibility": "self.version",
     "typo3-ter/ns_ext_compatibility": "self.version"
   },
   "config": {
