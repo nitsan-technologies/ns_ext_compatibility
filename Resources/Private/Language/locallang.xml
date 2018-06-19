@@ -46,7 +46,7 @@
 			<label index="extkey">Extension Key</label>
 			<label index="compatible4">Compatible 4.x</label>
 			<label index="compatible6">Compatible 6.x</label>
-			<label index="compatible7">Compatible 7-.x</label>
+			<label index="compatible7">Compatible 7.x</label>
 			<label index="compatible8">Compatible 8.x</label>
 			<label index="compatible9">Compatible 9.x</label>
 			<label index="action">Installed</label>
