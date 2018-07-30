@@ -1,5 +1,5 @@
 {
-  "name": "nitsan/ns_ext_compatibility",
+  "name": "nitsan/ns-ext-compatibility",
   "type": "typo3-cms-extension",
   "description": "One of the only TYPO3 extension which provides all the features like TYPO3 Extensions Compatibility Report, Notification of new update via Email, System overview report, Compatible with all major version of TYPO3 from 4.x to 8.x. This extension will help you to check TYPO3 upgrade feasibility and complexity to analyze upgrade estimation and define a perfect upgrade workflow.",
   "keywords": [
@@ -18,7 +18,7 @@
   ],
   "license": ["GPL-2.0-or-later"],
   "require": {
-    "typo3/cms-core": "^4.5.0|| >=8.7.16"
+    "typo3/cms-core": "^4.5.0|| >=8.7.17"
   },
   "conflict": {
   },
@@ -29,7 +29,7 @@
   },
   "replace": {
     "ns_ext_compatibility": "self.version",
-    "typo3-ter/ns_ext_compatibility": "self.version"
+    "typo3-ter/ns-ext-compatibility": "self.version"
   },
   "config": {
     "vendor-dir": ".Build/vendor",
