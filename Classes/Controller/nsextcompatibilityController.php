@@ -744,14 +744,7 @@ class nsextcompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
                     }
                 //Count Total compatibility End
 
-
-                if($nsExt['installed']==1){
-                   $totalInstalled++;
-                }else{
-                   $totalNonInstalled++;
-                }
                 // Set overview Report end
-
                 $extensionlist[$i] = $nsExt;
                 $i++;
             }

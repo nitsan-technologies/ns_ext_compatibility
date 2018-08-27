@@ -6,8 +6,8 @@
 conf.py:
   copyright: 2018
   project: [NITSAN] TYPO3 Extensions Compatibility
-  version: 1.1
-  release: 1.1.0
+  version: 1.2
+  release: 1.1.1
   latex_documents:
   - - Index
     - ns_ext_compatibility.tex

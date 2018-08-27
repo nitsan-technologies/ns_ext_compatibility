@@ -1,5 +1,7 @@
-﻿.. include:: Includes.txt
-
+﻿.. ==================================================
+.. FOR YOUR INFORMATION
+.. --------------------------------------------------
+.. -*- coding: utf-8 -*- with BOM.
 
 .. _start:
 
@@ -40,19 +42,13 @@ Documentation for ext:ns_ext_compatibility
 :Rendered:     |today|
 
 
-
 .. |cc-license| image:: license.png
                 :alt: alt="Creative Commons License"
                 :target: http://creativecommons.org/licenses/by/4.0/
 
 
 .. toctree::
-   :hidden:
+    :hidden:
 
-   Sitemap/Index
-   Introduction/Index
-   Installation/Index
-   Configuration/Index
-   ActionResults/Index
-   Support
-   Targets
+    Documentation
+    Support
