@@ -6,7 +6,7 @@ namespace NITSAN\NsExtCompatibility\Controller;
  *  Copyright notice
  *
  *  (c) 2018 Sanjay Chauhan <sanjay@nitsan.in>, NITSAN Technologies
- *  
+ *
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -45,13 +45,13 @@ use TYPO3\CMS\Extbase\Utility\LocalizationUtility as Localize;
  */
 class nsextcompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 {
-  
+
     /**
      * @var \TYPO3\CMS\Extensionmanager\Domain\Repository\ExtensionRepository
      * @inject
     */
     protected $extensionRepository;
-    
+
     /**
      * @var \TYPO3\CMS\Extensionmanager\Domain\Repository\RepositoryRepository
      * @inject
@@ -63,13 +63,13 @@ class nsextcompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
      * @inject
     */
     protected $NsExtCompatibilityRepository;
-   
-   
+
+
     /**
      * This method is used for fetch list of local extension
     */
     public function listAction()
-    {   
+    {
 
         $sysDetail=$this->getSysDetail();
         //Get typo3 target version from argument and set new target version start
@@ -90,7 +90,7 @@ class nsextcompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
                     $this->translate('warning.TERUpdateText',array('date'=>$lastUpdatedTime->format('Y-m-d'))),
                     $this->translate('warning.TERUpdateHeadline'), // the header is optional
                     \TYPO3\CMS\Core\Messaging\FlashMessage::WARNING);
-                    
+
                     \TYPO3\CMS\Core\Messaging\FlashMessageQueue::addMessage($TERUpdateMessage);
                 }
 
@@ -109,7 +109,7 @@ class nsextcompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
                 $this->translate('warning.selectProperTargetVersionText'),
                 $this->translate('warning.selectProperTargetVersionHeadline'), // the header is optional
                 \TYPO3\CMS\Core\Messaging\FlashMessage::WARNING);
-                
+
                 \TYPO3\CMS\Core\Messaging\FlashMessageQueue::addMessage($selectProperTargetVersionMessage);
             }
         }else{
@@ -126,7 +126,7 @@ class nsextcompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
         $assignArray['sysDetail']=$sysDetail;
         $assignArray['targetSystemRequirement']=$targetSystemRequirement;
         $this->view->assignMultiple($assignArray);
-       
+
     }
 
     /*
@@ -175,7 +175,7 @@ class nsextcompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
             $newNsVersion=0;
             //Filter all local extension for whole TER data start
             if (strtolower($nsExt['type']) == 'local' && $nsExt['key']==$extKey) {
-                $extArray = $this->extensionRepository->findByExtensionKeyOrderedByVersion($nsExt['key']);  
+                $extArray = $this->extensionRepository->findByExtensionKeyOrderedByVersion($nsExt['key']);
                 //Fetch typo3 depency of extesion  start
                 if(count($extArray)!=0){
                     foreach ($extArray as $extension) {
@@ -224,7 +224,7 @@ class nsextcompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
                             }
                             if($version[0]<=10 && $version[1]>=9){
                                 $nsExt['compatible9']=1;
-                            } 
+                            }
 
                         }
                     }
@@ -237,12 +237,12 @@ class nsextcompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
                    $nsExt['newVersion']=$extArray[0]->getVersion();
                 }
                 if($extArray[0]){
-                   
+
                     $nsExt['newUplaodComment']=$extArray[0]->getUpdateComment();
                     $nsExt['newLastDate']=$extArray[0]->getLastUpdated();
                     $nsExt['newAlldownloadcounter']=$extArray[0]->getAlldownloadcounter();
                 }
-                
+
                 //Count Total compatibility Start
                     if($nsExt['compatible4']==1){
                         $totalCompatible4++;
@@ -270,21 +270,21 @@ class nsextcompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
                 $extension=$nsExt;
             }
             //Filter all local extension for whole TER data end
-  
+
         }
         $sysDetail=$this->getSysDetail();
-       
+
         $sysDetail['targetVersion']=$detailTargetVersion;
         $this->view->assign('sysDetail',$sysDetail);
         $this->view->assign('extension',$extension);
     }
-   
+
 
     /**
      * This extension is used for export extension report
     */
     public function exportXlsAction()
-    {   
+    {
 
         $arguments= $this->request->getArguments();
         $targetVersion=$arguments['targetVersion'];
@@ -315,7 +315,7 @@ class nsextcompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
                 'horizontal' => \PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
                 'vertical' => \PHPExcel_Style_Alignment::VERTICAL_CENTER,
             ),
-        );    
+        );
         $overviewReportStyle = array(
             'font'  => array(
                 'bold'  => false,
@@ -405,9 +405,9 @@ class nsextcompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
 
         //Excel Basic Settings Start
         header("Content-Type: application/vnd.ms-excel");
-        header("Content-Disposition: attachment; filename=".$this->translate('sheet.filename',array('sitename'=>$filename)).".xlsx"); 
-        header("Pragma: no-cache"); 
-        header("Expires: 0"); 
+        header("Content-Disposition: attachment; filename=".$this->translate('sheet.filename',array('sitename'=>$filename)).".xlsx");
+        header("Pragma: no-cache");
+        header("Expires: 0");
         $excel = $this->objectManager->get('PHPExcel');
 
 
@@ -415,14 +415,14 @@ class nsextcompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
                  ->setLastModifiedBy("ns_ext_compatibility")
                  ->setTitle($this->translate('sheet.filename',array('sitename'=>$filename)));
         $excel->setActiveSheetIndex(0);
-       
+
 
         $excel->getDefaultStyle()->applyFromArray($mainstyle);
         //Excel Basic Settings End
 
         //Style of Project title start
         $excel->setActiveSheetIndex(0)->mergeCells('A2:M2');
-        
+
         $excel->getActiveSheet()->getStyle('A2')->applyFromArray($projectTitle);
         $excel->getActiveSheet()->getRowDimension('2')->setRowHeight(30);
         //Style of Project title end
@@ -442,13 +442,13 @@ class nsextcompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
         $sysRow->setCellValue("C8", $sysDetail['totalPages']);
         $sysRow->setCellValue("B9",$this->translate('numberOfDomain'));
         $sysRow->setCellValue("C9", $sysDetail['totalDomain']);
-       
+
         $excel->getActiveSheet()->getStyle('B4:C9')->applyFromArray($sysTableStyle);
         //Rows of system detail End
-       
+
         //Excel Extension Table heading style Start
         $extTableHeader = $excel->setActiveSheetIndex(0);
-       
+
         $excel->getActiveSheet()->getRowDimension('11')->setRowHeight(30);
         $excel->getActiveSheet()->getColumnDimension('B')->setWidth(30);
         $excel->getActiveSheet()->getColumnDimension('C')->setWidth(24);
@@ -462,9 +462,9 @@ class nsextcompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
         $excel->getActiveSheet()->getColumnDimension('K')->setWidth(7);
         $excel->getActiveSheet()->getColumnDimension('L')->setWidth(7);
         $excel->getActiveSheet()->getColumnDimension('M')->setWidth(30);
-       
+
         $excel->getActiveSheet()->getStyle('A11:M11')->applyFromArray($extTableHeadingStype);
-    
+
         //Excel Extension Table heading style End
 
         //Excel Extension Table heading Start
@@ -481,8 +481,8 @@ class nsextcompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
         $extTableHeader->setCellValue("K11",$this->translate('state'));
         $extTableHeader->setCellValue("L11",$this->translate('type'));
         $extTableHeader->setCellValue("M11",$this->translate('notes'));
-       
-      
+
+
         //Hide Compatibility columns start
         if($sysDetail['typo3version']<7 && $sysDetail['targetVersion']>=6){
             $excel->getActiveSheet()->getColumnDimension('E')->setVisible(true);
@@ -507,9 +507,9 @@ class nsextcompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
         //Hide Compatibility columns end
 
         //Excel Extension Table heading end
-                    
+
        //Add Data in Excel From array $extensionlist end
-        
+
         $i=12;
         $k=1;
         foreach ($extensionlist as $key=> $extension) {
@@ -553,7 +553,7 @@ class nsextcompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
                     $row->setCellValue("H$i",$this->translate('no'));
                     $excel->getActiveSheet()->getStyle("H$i")->applyFromArray($syleNo);
                 }
-               
+
                 $row->setCellValue("I$i",$extension['version']);
                 if($extension['newVersion']>$extension['version']){
                      $row->setCellValue("J$i",$extension['newVersion']);
@@ -597,7 +597,7 @@ class nsextcompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
         $excel->getActiveSheet()->getStyle("B11:B$i")->applyFromArray($titleStyle);
         $excel->getActiveSheet()->getStyle("C11:C$i")->applyFromArray($titleStyle);
         $excel->getActiveSheet()->getStyle("A$i:M$i")->applyFromArray($overviewReportStyle);
-       
+
         //Set OverviewReport End
 
          //Set System Requirement Start
@@ -612,7 +612,7 @@ class nsextcompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
         $row->setCellValue("B$k",$this->translate('targetSystemRequirement.module'));
         $row->setCellValue("C$k",$this->translate('targetSystemRequirement.current'));
         $row->setCellValue("D$k",$this->translate('targetSystemRequirement.required'));
-        
+
         foreach ($targetSystemRequirement as $key => $module) {
             $row->setCellValue("B$l",$this->translate('targetSystemRequirement.'.$key));
             $row->setCellValue("C$l",$module['current']);
@@ -627,7 +627,7 @@ class nsextcompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
         $excel->setActiveSheetIndex(0);
         ob_start();
         $objWriter = \PHPExcel_IOFactory::createWriter($excel, 'Excel2007');
-        
+
         $objWriter->save("php://output");
         $xlsData = ob_get_contents();
         ob_end_clean();
@@ -638,7 +638,7 @@ class nsextcompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
      * This method is used for  get detail list of local extension
     */
     public function getAllExtensions($myTargetVersion)
-    { 
+    {
         $i=1;
         $totalCompatible6=0;
         $totalCompatible7=0;
@@ -648,7 +648,7 @@ class nsextcompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
         $assignArray = array();
         $extensionlist = array();
         $overviewReport = array();
-        
+
 
         //Get extension list
         $myExtList = $this->objectManager->get(ListUtility::class);
@@ -657,7 +657,7 @@ class nsextcompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
             //Filter all local extension for whole TER data start
             if (strtolower($nsExt['type']) == 'local' && $nsExt['key']!='ns_ext_compatibility') {
                 $newNsVersion=0;
-                $extArray = $this->extensionRepository->findByExtensionKeyOrderedByVersion($nsExt['key']);  
+                $extArray = $this->extensionRepository->findByExtensionKeyOrderedByVersion($nsExt['key']);
                 //Fetch typo3 depency of extesion  start
                 if(count($extArray)!=0){
                     foreach ($extArray as $extension) {
@@ -667,7 +667,7 @@ class nsextcompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
                                 $minVersion= $dependency->getLowestVersion();
                                 // Extract max TYPO3 CMS version (higherst)
                                 $maxVersion=$dependency->getHighestVersion();
-                                
+
                                 if($minVersion<=7 &&  $maxVersion>=6){
                                     $nsExt['compatible6']=1;
                                 }
@@ -715,12 +715,12 @@ class nsextcompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
                 //Fetch typo3 depency of extesion  end
 
                 // Set overview Report start
-              
-                
+
+
                 if($extArray[0] && empty($nsExt['newVersion'])){
                     $nsExt['newVersion']=$extArray[0]->getVersion();
                 }
-            
+
                 //Count Total compatibility Start
                     if($nsExt['compatible4']==1){
                         $totalCompatible4++;
@@ -749,7 +749,7 @@ class nsextcompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
                 $i++;
             }
             //Filter all local extension for whole TER data end
-  
+
         }
         //Set overview array start
         $overviewReport['totalInstalled']=$totalInstalled;
@@ -759,7 +759,7 @@ class nsextcompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
         $overviewReport['totalCompatible8']=$totalCompatible8;
         $overviewReport['totalCompatible9']=$totalCompatible9;
         //Set overview array end
-       
+
         $assignArray['overviewReport']=$overviewReport;
         $assignArray['extensionlist']=$extensionlist;
 
@@ -770,7 +770,7 @@ class nsextcompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
      * This method is used of get sysimformation
     */
     public function getSysDetail()
-    {   
+    {
         $sysDetail = array();
         $extConfig= unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['ns_ext_compatibility']);
         $sysDetail['phpversion']=substr(phpversion(), 0, 6);;
@@ -808,24 +808,24 @@ class nsextcompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
                 ),
                 'maxExecutionTime' => array(
                     'required'=>'240',
-                    'current'=>ini_get(max_execution_time)
+                    'current'=>ini_get('max_execution_time')
                 ),
 
                 'memoryLimit' => array(
                     'required'=>'128M',
-                    'current'=>ini_get(memory_limit)
+                    'current'=>ini_get('memory_limit')
                 ),
                 'maxInputVars' => array(
                     'required'=>'1500',
-                    'current'=>ini_get(max_input_vars) 
+                    'current'=>ini_get('max_input_vars')
                 ),
                 'uploadMaxSize' => array(
                     'required'=>'200M',
-                    'current'=>ini_get(upload_max_filesize)
+                    'current'=>ini_get('upload_max_filesize')
                 ),
-                'postMaxSize' =>array( 
+                'postMaxSize' =>array(
                     'required'=>'800M',
-                    'current'=>ini_get(post_max_size)
+                    'current'=>ini_get('post_max_size')
                 )
             ),
             '6.x' => array(
@@ -843,24 +843,24 @@ class nsextcompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
                 ),
                 'maxExecutionTime' => array(
                     'required'=>'240',
-                    'current'=>ini_get(max_execution_time)
+                    'current'=>ini_get('max_execution_time')
                 ),
 
                 'memoryLimit' => array(
                     'required'=>'128M',
-                    'current'=>ini_get(memory_limit)
+                    'current'=>ini_get('memory_limit')
                 ),
                 'maxInputVars' => array(
                     'required'=>'1500',
-                    'current'=>ini_get(max_input_vars) 
+                    'current'=>ini_get('max_input_vars')
                 ),
                 'uploadMaxSize' => array(
                     'required'=>'200M',
-                    'current'=>ini_get(upload_max_filesize)
+                    'current'=>ini_get('upload_max_filesize')
                 ),
-                'postMaxSize' =>array( 
+                'postMaxSize' =>array(
                     'required'=>'800M',
-                    'current'=>ini_get(post_max_size)
+                    'current'=>ini_get('post_max_size')
                 )
             ),
             '7.x' => array(
@@ -878,24 +878,24 @@ class nsextcompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
                 ),
                 'maxExecutionTime' => array(
                     'required'=>'240',
-                    'current'=>ini_get(max_execution_time)
+                    'current'=>ini_get('max_execution_time')
                 ),
 
                 'memoryLimit' => array(
                     'required'=>'128M',
-                    'current'=>ini_get(memory_limit)
+                    'current'=>ini_get('memory_limit')
                 ),
                 'maxInputVars' => array(
                     'required'=>'1500',
-                    'current'=>ini_get(max_input_vars) 
+                    'current'=>ini_get('max_input_vars')
                 ),
                 'uploadMaxSize' => array(
                     'required'=>'200M',
-                    'current'=>ini_get(upload_max_filesize)
+                    'current'=>ini_get('upload_max_filesize')
                 ),
-                'postMaxSize' =>array( 
+                'postMaxSize' =>array(
                     'required'=>'800M',
-                    'current'=>ini_get(post_max_size)
+                    'current'=>ini_get('post_max_size')
                 )
             ),
             '8.x' => array(
@@ -913,24 +913,24 @@ class nsextcompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
                 ),
                 'maxExecutionTime' => array(
                     'required'=>'240',
-                    'current'=>ini_get(max_execution_time)
+                    'current'=>ini_get('max_execution_time')
                 ),
 
                 'memoryLimit' => array(
                     'required'=>'128M',
-                    'current'=>ini_get(memory_limit)
+                    'current'=>ini_get('memory_limit')
                 ),
                 'maxInputVars' => array(
                     'required'=>'1500',
-                    'current'=>ini_get(max_input_vars) 
+                    'current'=>ini_get('max_input_vars')
                 ),
                 'uploadMaxSize' => array(
                     'required'=>'200M',
-                    'current'=>ini_get(upload_max_filesize)
+                    'current'=>ini_get('upload_max_filesize')
                 ),
-                'postMaxSize' =>array( 
+                'postMaxSize' =>array(
                     'required'=>'800M',
-                    'current'=>ini_get(post_max_size)
+                    'current'=>ini_get('post_max_size')
                 )
             ),
             '9.x' => array(
@@ -948,31 +948,31 @@ class nsextcompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
                 ),
                 'maxExecutionTime' => array(
                     'required'=>'240',
-                    'current'=>ini_get(max_execution_time)
+                    'current'=>ini_get('max_execution_time')
                 ),
 
                 'memoryLimit' => array(
                     'required'=>'128M',
-                    'current'=>ini_get(memory_limit)
+                    'current'=>ini_get('memory_limit')
                 ),
                 'maxInputVars' => array(
                     'required'=>'1500',
-                    'current'=>ini_get(max_input_vars) 
+                    'current'=>ini_get('max_input_vars')
                 ),
                 'uploadMaxSize' => array(
                     'required'=>'200M',
-                    'current'=>ini_get(upload_max_filesize)
+                    'current'=>ini_get('upload_max_filesize')
                 ),
-                'postMaxSize' =>array( 
+                'postMaxSize' =>array(
                     'required'=>'800M',
-                    'current'=>ini_get(post_max_size)
+                    'current'=>ini_get('post_max_size')
                 )
             ),
         );
        return $typo3Config[$targetVersion];
     }
 
-    
+
     /**
      * @param string $key
      * @return null|string
