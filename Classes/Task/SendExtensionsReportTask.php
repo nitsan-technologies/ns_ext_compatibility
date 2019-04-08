@@ -12,9 +12,9 @@ use NITSAN\NsExtCompatibility\Utility\Extension;
 use TYPO3\CMS\Extensionmanager\Utility\ListUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Core\Utility\VersionNumberUtility;
-use \TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Extensionmanager\Domain\Repository\ExtensionRepository;
-use TYPO3\CMS\fluid\View\StandaloneView;
+use TYPO3\CMS\Fluid\View\StandaloneView;
 use TYPO3\CMS\Core\Mail\MailMessage;
 
 
