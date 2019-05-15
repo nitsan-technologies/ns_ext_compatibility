@@ -29,9 +29,15 @@
     "ns_ext_compatibility": "self.version",
     "nitsan/ns_ext_compatibility": "self.version"
   },
+  "config": {
+    "vendor-dir": ".Build/vendor/",
+    "bin-dir": ".Build/bin/"
+  },
   "extra": {
     "typo3/cms": {
-      "extension-key": "ns_ext_compatibility"
+        "cms-package-dir": "{$vendor-dir}/typo3/cms",
+        "web-dir": ".Build/public",
+        "extension-key": "ns_news_comments"
     }
   }
 }
