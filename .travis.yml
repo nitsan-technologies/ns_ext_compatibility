@@ -1,0 +1,26 @@
+language: php
+
+php:
+  - 7.2
+
+#env:
+#  - TYPO3_VERSON="9.5"
+
+sudo: false
+
+addons:
+  apt:
+    packages:
+      - parallel
+
+cache:
+  directories:
+    - $HOME/.composer/cache
+
+before_script:
+  #- composer require typo3/minimal ${TYPO3_VERSON} --update-with-dependencies
+  #- composer require nimut/testing-framework
+  - composer require squizlabs/php_codesniffer
+
+script:
+  - .Build/bin/phpcs --standard=PSR2 --extensions=php *
