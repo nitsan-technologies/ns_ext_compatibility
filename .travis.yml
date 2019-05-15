@@ -8,6 +8,9 @@ php:
 
 sudo: false
 
+notifications:
+  email: false
+
 addons:
   apt:
     packages:
