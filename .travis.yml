@@ -27,5 +27,5 @@ before_script:
   - composer require --dev helmich/typo3-typoscript-lint
 
 script:
-  - .Build/bin/phpcs --standard=PSR2 --extensions=php *
+  - .Build/bin/phpcs --standard=PSR2 --warning-severity=0 --extensions=php *
   - .Build/bin/typoscript-lint -c tslint.yaml
