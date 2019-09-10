@@ -1,7 +1,6 @@
 <?php
 namespace  NITSAN\NsExtCompatibility\Domain\Repository;
 
-use TYPO3\CMS\Extbase\Utility\DebuggerUtility as debug;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 /***************************************************************
  *  Copyright notice
