@@ -1,6 +1,8 @@
 <?php
 namespace  NITSAN\NsExtCompatibility\Domain\Repository;
 
+use TYPO3\CMS\Extbase\Utility\DebuggerUtility as debug;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 /***************************************************************
  *  Copyright notice
  *
@@ -39,15 +41,36 @@ class NsExtCompatibilityRepository extends \TYPO3\CMS\Extbase\Persistence\Reposi
 	 * This method is used for get all pages of site
 	*/
 	public function countPages(){
-		$totolPages= $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('*','pages','deleted=0');
-        return $totolPages;
+		if (version_compare(TYPO3_branch, '9.0', '<')) {
+			$totolPages= $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('*','pages','deleted=0');
+		} else {
+			$queryBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Database\ConnectionPool::class)
+            ->getQueryBuilderForTable('pages');
+			$totolPages = $queryBuilder
+                       ->count('uid')
+                       ->from('pages')
+                       ->execute()
+                       ->fetchColumn(0);
+		}
+	    return $totolPages;
 	}
 
 	/*
 	 * This method is used for get all domains of site
 	*/
 	public function countDomain(){
-		$totalDomain= $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('DISTINCT pid','sys_domain','hidden=0');
+		if (version_compare(TYPO3_branch, '9.0', '<')) {
+			$totalDomain = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('DISTINCT pid','sys_domain','hidden=0');
+		} else {
+			$queryBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Database\ConnectionPool::class)
+            ->getQueryBuilderForTable('sys_domain');
+            $totalDomain = $queryBuilder
+                        ->count('pid')
+                        ->from('sys_domain')
+                        ->groupBy('pid')
+                        ->execute()
+                        ->fetchColumn(0);
+		}
 		if($totalDomain>0){
         	return $totalDomain;
 		}else{
@@ -59,7 +82,17 @@ class NsExtCompatibilityRepository extends \TYPO3\CMS\Extbase\Persistence\Reposi
 	 * This method is used for get all system language of site
 	*/
 	public function sysLang(){
-		$totalLang= $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('*','sys_language','hidden=0');
+		if (version_compare(TYPO3_branch, '9.0', '<')) {
+			$totalLang = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('*','sys_language','hidden=0');
+        } else {
+        	$queryBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Database\ConnectionPool::class)
+            ->getQueryBuilderForTable('sys_language');
+			$totalLang = $queryBuilder
+                       ->count('uid')
+                       ->from('sys_language')
+                       ->execute()
+                       ->fetchColumn(0);
+        }
         return $totalLang+1;
 	}
 }
