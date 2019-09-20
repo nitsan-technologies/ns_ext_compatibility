@@ -1,7 +1,69 @@
 <f:layout name="Default" />
   
 <f:section name="Content">
+    <f:if condition="{versionType}=='newVersionSecurityRelevant'">
+        <div class="alert alert-danger alert-dismissible" role="alert">
+            <f:translate key="t3-{versionType}"/> <strong>{newVersion}</strong>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    </f:if>
+    <f:if condition="{versionType}=='newVersion'">
+        <div class="alert alert-warning alert-dismissible" role="alert">
+            <f:translate key="t3-{versionType}"/> <strong>{newVersion}</strong>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    </f:if>
+    <f:if condition="{versionType}=='uptodate'">
+        <div class="alert alert-success alert-dismissible" role="alert">
+            <f:translate key="t3-{versionType}"/> 
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    </f:if>
+    <f:if condition="{versionType}=='versionOutdated'">
+        <div class="alert alert-danger alert-dismissible" role="alert">
+            <f:translate key="t3-{versionType}"/> 
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    </f:if>
+    <f:if condition="{versionType}=='isDevelopmentVersion'">
+        <div class="alert alert-warning alert-dismissible" role="alert">
+            <f:translate key="t3-{versionType}"/> 
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    </f:if>
+
+    <f:if condition="{installedVersion}>'7.2.0'">
+        <f:then>
+            <f:if condition="{installedVersion}<{ltsVersion}">
+                <div class="alert alert-notice alert-dismissible" role="alert">
+                    <f:translate key="t3-ltsVersion" arguments="{s: ltsVersion}"/>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>       
+            </f:if>
+        </f:then>
+        <f:else>
+            <f:if condition="{installedVersion}<{ltsVersion}">
+                <div class="typo3-message message-notice">
+                    <f:translate key="t3-ltsVersion" arguments="{s: ltsVersion}"/>
+                </div>
+            </f:if>
+        </f:else>
+    </f:if>
+
     <f:render partial="Common/Main" arguments="{overviewReport:overviewReport,sysDetail:sysDetail,targetSystemRequirement:targetSystemRequirement}"/>
+    
     <div class="ext-report-wrapper">
         <h2><f:translate key="extensionlist"/></h2>
         <f:comment>

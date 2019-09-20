@@ -384,6 +384,24 @@
 			<trans-unit id="task.mail.noUpdate">
 				<source>No update available!</source>
 			</trans-unit>
+			<trans-unit id="t3-newVersionSecurityRelevant">
+				<source>There is a new version of TYPO3 available, updating is security relevant. Please update to version</source>
+			</trans-unit>
+			<trans-unit id="t3-newVersion">
+				<source>There is a new version of TYPO3 available. You can update to version</source>
+			</trans-unit>
+			<trans-unit id="t3-uptodate">
+				<source>Your TYPO3 version is up-to-date.</source>
+			</trans-unit>
+			<trans-unit id="t3-versionOutdated">
+				<source>The TYPO3 version you're using is not supported anymore. You should update to a supported version.</source>
+			</trans-unit>
+			<trans-unit id="t3-isDevelopmentVersion">
+				<source>This version of TYPO3 seems to be a development version. Thus no update information exists.</source>
+			</trans-unit>
+			<trans-unit id="t3-ltsVersion">
+				<source>New TYPO3 version %s is available.</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

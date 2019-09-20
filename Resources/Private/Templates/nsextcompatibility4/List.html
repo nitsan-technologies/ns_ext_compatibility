@@ -1,17 +1,26 @@
 <f:layout name="Default" />
 
-This Template is responsible for creating a table of domain objects.
-
-If you modify this template, do not forget to change the overwrite settings
-in /Configuration/ExtensionBuilder/settings.yaml:
-  Resources:
-    Private:
-      Templates:
-        List.html: keep
-
-Otherwise your changes will be overwritten the next time you save the extension in the extension builder
-
 <f:section name="content">
+	<f:if condition="{installedVersion}>'7.2.0'">
+        <f:then>
+            <f:if condition="{installedVersion}<{ltsVersion}">
+                <div class="alert alert-notice alert-dismissible" role="alert">
+                    <f:translate key="t3-ltsVersion" arguments="{s: ltsVersion}"/>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>       
+            </f:if>
+        </f:then>
+        <f:else>
+            <f:if condition="{installedVersion}<{ltsVersion}">
+                <div class="typo3-message message-notice">
+                    <f:translate key="t3-ltsVersion" arguments="{s: ltsVersion}"/>
+                </div>
+            </f:if>
+        </f:else>
+    </f:if>
+    
     <f:render partial="Common/Main" arguments="{overviewReport:overviewReport,sysDetail:sysDetail,targetSystemRequirement:targetSystemRequirement}"/>
     <div class="ext-report-wrapper">
 	    <h2><f:translate key="extensionlist"/></h2>

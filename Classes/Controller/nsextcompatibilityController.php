@@ -1,7 +1,6 @@
 <?php
 namespace NITSAN\NsExtCompatibility\Controller;
 
-
 /***************************************************************
  *  Copyright notice
  *
@@ -35,68 +34,113 @@ namespace NITSAN\NsExtCompatibility\Controller;
  */
 
 use NITSAN\NsExtCompatibility\Utility\Extension;
-use TYPO3\CMS\Extensionmanager\Utility\ListUtility;
 use TYPO3\CMS\Core\Utility\VersionNumberUtility;
-use \TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility as Localize;
+use TYPO3\CMS\Extensionmanager\Utility\ListUtility;
+use \TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Backend Controller
  */
 class nsextcompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 {
-
     /**
      * @var \TYPO3\CMS\Extensionmanager\Domain\Repository\ExtensionRepository
      * @inject
-    */
+     */
     protected $extensionRepository;
 
     /**
      * @var \TYPO3\CMS\Extensionmanager\Domain\Repository\RepositoryRepository
      * @inject
-    */
+     */
     protected $repositoryRepository;
 
     /**
      * @var NITSAN\NsExtCompatibility\Domain\Repository\NsExtCompatibilityRepository
      * @inject
-    */
+     */
     protected $NsExtCompatibilityRepository;
-
 
     /**
      * This method is used for fetch list of local extension
-    */
+     */
     public function listAction()
     {
+        $this->downloadBaseUri = 'https://get.typo3.org/';
+        $url = $this->downloadBaseUri . 'json';
+        $versionJson = GeneralUtility::getUrl($url);
+        $ltsVersion = json_decode($versionJson, true);
+        $this->view->assign('ltsVersion', $ltsVersion['latest_lts']);
+        $this->view->assign('installedVersion', TYPO3_version);
 
-        $sysDetail=$this->getSysDetail();
+        if (version_compare(TYPO3_branch, '7.2', '>')) {
+            /** @var \TYPO3\CMS\Extbase\Object\ObjectManager $objectManager */
+            $objectManager = GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
+            /** @var \TYPO3\CMS\Install\Service\CoreVersionService $coreVersionService */
+            $coreVersionService = $objectManager->get(\TYPO3\CMS\Install\Service\CoreVersionService::class);
+
+            // No updates for development versions
+            if (!$coreVersionService->isInstalledVersionAReleasedVersion()) {
+                $this->view->assign('versionType', 'isDevelopmentVersion');
+            }
+
+            // If fetching version matrix fails we can not do anything except print out the current version
+            try {
+                $coreVersionService->updateVersionMatrix();
+            } catch (Exception\RemoteFetchException $remoteFetchException) {
+            }
+
+            try {
+                $isUpdateAvailable = $coreVersionService->isYoungerPatchReleaseAvailable();
+                $isMaintainedVersion = $coreVersionService->isVersionActivelyMaintained();
+            } catch (Exception\CoreVersionServiceException $coreVersionServiceException) {
+            }
+
+            if (!$isUpdateAvailable && $isMaintainedVersion) {
+                // Everything is fine, working with the latest version
+                $this->view->assign('versionType', 'uptodate');
+            } elseif ($isUpdateAvailable) {
+                // There is an update available
+                $newVersion = $coreVersionService->getYoungestPatchRelease();
+                $this->view->assign('newVersion', $newVersion);
+                if ($coreVersionService->isUpdateSecurityRelevant()) {
+                    $this->view->assign('versionType', 'newVersionSecurityRelevant');
+                } else {
+                    $this->view->assign('versionType', 'newVersion');
+                }
+            } else {
+                // Version is not maintained
+                $this->view->assign('versionType', 'versionOutdated');
+            }
+        }
+
+        $sysDetail = $this->getSysDetail();
         //Get typo3 target version from argument and set new target version start
-        $arguments= $this->request->getArguments();
-        $targetVersion=$arguments['targetVersion'];
-        if(isset($targetVersion)){
-            $sysDetail['targetVersion']=$targetVersion;
+        $arguments = $this->request->getArguments();
+        $targetVersion = $arguments['targetVersion'];
+        if (isset($targetVersion)) {
+            $sysDetail['targetVersion'] = $targetVersion;
         }
         //Get typo3 target version from argument and set new target version end
-        $terRepo=$this->repositoryRepository->findOneTypo3OrgRepository();
+        $terRepo = $this->repositoryRepository->findOneTypo3OrgRepository();
         //Check last updated Date and give  show warning start
-         if($terRepo!=null){
-            $lastUpdatedTime=$terRepo->getLastUpdate();
-            $currentTime= strtotime('-30 days');
+        if ($terRepo != null) {
+            $lastUpdatedTime = $terRepo->getLastUpdate();
+            $currentTime = strtotime('-30 days');
             if (version_compare(TYPO3_branch, '6.2', '<')) {
-                if(date("Y-m-d",$currentTime)>$lastUpdatedTime->format('Y-m-d')){
+                if (date("Y-m-d", $currentTime) > $lastUpdatedTime->format('Y-m-d')) {
                     $TERUpdateMessage = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
-                    $this->translate('warning.TERUpdateText',array('date'=>$lastUpdatedTime->format('Y-m-d'))),
-                    $this->translate('warning.TERUpdateHeadline'), // the header is optional
-                    \TYPO3\CMS\Core\Messaging\FlashMessage::WARNING);
+                        $this->translate('warning.TERUpdateText', array('date' => $lastUpdatedTime->format('Y-m-d'))),
+                        $this->translate('warning.TERUpdateHeadline'), // the header is optional
+                        \TYPO3\CMS\Core\Messaging\FlashMessage::WARNING);
 
                     \TYPO3\CMS\Core\Messaging\FlashMessageQueue::addMessage($TERUpdateMessage);
                 }
 
-            }else{
-                if(date("Y-m-d",$currentTime)>$lastUpdatedTime->format('Y-m-d')){
-                     $this->addFlashMessage($this->translate('warning.TERUpdateText',array('date'=>$lastUpdatedTime->format('Y-m-d'))),$this->translate('warning.TERUpdateHeadline'), \TYPO3\CMS\Core\Messaging\AbstractMessage::WARNING);
+            } else {
+                if (date("Y-m-d", $currentTime) > $lastUpdatedTime->format('Y-m-d')) {
+                    $this->addFlashMessage($this->translate('warning.TERUpdateText', array('date' => $lastUpdatedTime->format('Y-m-d'))), $this->translate('warning.TERUpdateHeadline'), \TYPO3\CMS\Core\Messaging\AbstractMessage::WARNING);
                 }
             }
         }
@@ -104,126 +148,127 @@ class nsextcompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
 
         //Check typo3 target version from extension settings start
         if (version_compare(TYPO3_branch, '6.2', '<')) {
-            if($sysDetail['targetVersion']< $sysDetail['typo3version']){
+            if ($sysDetail['targetVersion'] < $sysDetail['typo3version']) {
                 $selectProperTargetVersionMessage = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
-                $this->translate('warning.selectProperTargetVersionText'),
-                $this->translate('warning.selectProperTargetVersionHeadline'), // the header is optional
-                \TYPO3\CMS\Core\Messaging\FlashMessage::WARNING);
+                    $this->translate('warning.selectProperTargetVersionText'),
+                    $this->translate('warning.selectProperTargetVersionHeadline'), // the header is optional
+                    \TYPO3\CMS\Core\Messaging\FlashMessage::WARNING);
 
                 \TYPO3\CMS\Core\Messaging\FlashMessageQueue::addMessage($selectProperTargetVersionMessage);
             }
-        }else{
-            if($sysDetail['targetVersion']< $sysDetail['typo3version']){
-                $this->addFlashMessage($this->translate('warning.selectProperTargetVersionText'),$this->translate('warning.selectProperTargetVersionHeadline'), \TYPO3\CMS\Core\Messaging\AbstractMessage::WARNING);
+        } else {
+            if ($sysDetail['targetVersion'] < $sysDetail['typo3version']) {
+                $this->addFlashMessage($this->translate('warning.selectProperTargetVersionText'), $this->translate('warning.selectProperTargetVersionHeadline'), \TYPO3\CMS\Core\Messaging\AbstractMessage::WARNING);
             }
         }
         //Check typo3 target version from extension settings end
-        $targetSystemRequirement=$this->getSysRequirementForTargetVersion($sysDetail['targetVersion']);
+        $targetSystemRequirement = $this->getSysRequirementForTargetVersion($sysDetail['targetVersion']);
 
         //call getAllExtensions() method for fetch extension list
-        $assignArray=$this->getAllExtensions($sysDetail['targetVersion']);
+        $assignArray = $this->getAllExtensions($sysDetail['targetVersion']);
 
-        $assignArray['sysDetail']=$sysDetail;
-        $assignArray['targetSystemRequirement']=$targetSystemRequirement;
+        $assignArray['sysDetail'] = $sysDetail;
+        $assignArray['targetSystemRequirement'] = $targetSystemRequirement;
         $this->view->assignMultiple($assignArray);
 
     }
 
     /*
-    * This method is used for fetch all version of passed extension
-    */
-    public function viewAllVersionAction(){
-        $arguments= $this->request->getArguments();
-        $extension=$arguments['extension'];
-        $nsTargetVersion=$arguments['targetVersion'];
-        $allVersions=$this->extensionRepository->findByExtensionKeyOrderedByVersion($extension);
-        $newNsVersion=0;
+     * This method is used for fetch all version of passed extension
+     */
+    public function viewAllVersionAction()
+    {
+        $arguments = $this->request->getArguments();
+        $extension = $arguments['extension'];
+        $nsTargetVersion = $arguments['targetVersion'];
+        $allVersions = $this->extensionRepository->findByExtensionKeyOrderedByVersion($extension);
+        $newNsVersion = 0;
         foreach ($allVersions as $extension) {
             foreach ($extension->getDependencies() as $dependency) {
                 if ($dependency->getIdentifier() === 'typo3') {
                     // Extract min TYPO3 CMS version (lowest)
-                    $minVersion= $dependency->getLowestVersion();
+                    $minVersion = $dependency->getLowestVersion();
                     // Extract max TYPO3 CMS version (higherst)
-                    $maxVersion=$dependency->getHighestVersion();
-                    if((($maxVersion>(int)$nsTargetVersion && $maxVersion<=(int)$nsTargetVersion+1)|| $minVersion>(int)$nsTargetVersion && $minVersion<=(int)$nsTargetVersion+1) && ($newNsVersion<$extension->getVersion())){
-                        $compatVersion=$extension;
+                    $maxVersion = $dependency->getHighestVersion();
+                    if ((($maxVersion > (int) $nsTargetVersion && $maxVersion <= (int) $nsTargetVersion + 1) || $minVersion > (int) $nsTargetVersion && $minVersion <= (int) $nsTargetVersion + 1) && ($newNsVersion < $extension->getVersion())) {
+                        $compatVersion = $extension;
                     }
                 }
             }
         }
-        if(empty($compatVersion)){
-            $compatVersion=$allVersions[0];
+        if (empty($compatVersion)) {
+            $compatVersion = $allVersions[0];
         }
-        $this->view->assign('compatVersion',$compatVersion);
-        $this->view->assign('allVersions',$allVersions);
+        $this->view->assign('compatVersion', $compatVersion);
+        $this->view->assign('allVersions', $allVersions);
     }
 
-     /**
+    /**
      * Shows all versions of a specific extension
      *
      * @param string $extensionKey
      * @return void
-    */
-    public function detailAction(){
-        $arguments= $this->request->getArguments();
-        $extKey=$arguments['extKey'];
-        $detailTargetVersion=$arguments['targetVersion'];
+     */
+    public function detailAction()
+    {
+        $arguments = $this->request->getArguments();
+        $extKey = $arguments['extKey'];
+        $detailTargetVersion = $arguments['targetVersion'];
         //Get extension list
         $myExtList = $this->objectManager->get(ListUtility::class);
         $allExtensions = $myExtList->getAvailableAndInstalledExtensionsWithAdditionalInformation();
         foreach ($allExtensions as $extensionKey => $nsExt) {
-            $newNsVersion=0;
+            $newNsVersion = 0;
             //Filter all local extension for whole TER data start
-            if (strtolower($nsExt['type']) == 'local' && $nsExt['key']==$extKey) {
+            if (strtolower($nsExt['type']) == 'local' && $nsExt['key'] == $extKey) {
                 $extArray = $this->extensionRepository->findByExtensionKeyOrderedByVersion($nsExt['key']);
                 //Fetch typo3 depency of extesion  start
-                if(count($extArray)!=0){
+                if (count($extArray) != 0) {
                     foreach ($extArray as $extension) {
                         foreach ($extension->getDependencies() as $dependency) {
                             if ($dependency->getIdentifier() === 'typo3') {
                                 // Extract min TYPO3 CMS version (lowest)
-                                $minVersion= $dependency->getLowestVersion();
+                                $minVersion = $dependency->getLowestVersion();
                                 // Extract max TYPO3 CMS version (higherst)
-                                $maxVersion=$dependency->getHighestVersion();
-                                if($minVersion<=7 &&  $maxVersion>=6){
-                                    $nsExt['compatible6']=1;
+                                $maxVersion = $dependency->getHighestVersion();
+                                if ($minVersion <= 7 && $maxVersion >= 6) {
+                                    $nsExt['compatible6'] = 1;
                                 }
-                                if($minVersion<=8 &&  $maxVersion>=7){
-                                    $nsExt['compatible7']=1;
+                                if ($minVersion <= 8 && $maxVersion >= 7) {
+                                    $nsExt['compatible7'] = 1;
                                 }
-                                if($minVersion<=9 &&  $maxVersion>=8){
-                                    $nsExt['compatible8']=1;
+                                if ($minVersion <= 9 && $maxVersion >= 8) {
+                                    $nsExt['compatible8'] = 1;
                                 }
-                                if($minVersion<=10 &&  $maxVersion>=9){
-                                    $nsExt['compatible9']=1;
+                                if ($minVersion <= 10 && $maxVersion >= 9) {
+                                    $nsExt['compatible9'] = 1;
                                 }
-                                if((($maxVersion>(int)$detailTargetVersion && $maxVersion<=(int)$detailTargetVersion+1)|| $minVersion>(int)$detailTargetVersion && $minVersion<=(int)$detailTargetVersion+1) && ($newNsVersion<$extension->getVersion())){
-                                    $newNsVersion=$extension->getVersion();
-                                    $nsExt['newVersion']=$newNsVersion;
+                                if ((($maxVersion > (int) $detailTargetVersion && $maxVersion <= (int) $detailTargetVersion + 1) || $minVersion > (int) $detailTargetVersion && $minVersion <= (int) $detailTargetVersion + 1) && ($newNsVersion < $extension->getVersion())) {
+                                    $newNsVersion = $extension->getVersion();
+                                    $nsExt['newVersion'] = $newNsVersion;
                                 }
                             }
                         }
                     }
-                }
-                else{
+                } else {
                     //Check dependancy for custom extension start
                     foreach ($nsExt['constraints']['depends'] as $type => $customDepency) {
-                        if($type=='typo3'){
-                             $version=explode('-',$customDepency);
-                            if(($version[0]<6 && $version[1]>=4) || ($version[0]<6 && $version[1]==0.0)){
-                                $nsExt['compatible4']=1;
+                        if ($type == 'typo3') {
+                            $version = explode('-', $customDepency);
+                            if (($version[0] < 6 && $version[1] >= 4) || ($version[0] < 6 && $version[1] == 0.0)) {
+                                $nsExt['compatible4'] = 1;
                             }
-                            if($version[0]<=7 && $version[1]>=6){
-                                $nsExt['compatible6']=1;
+                            if ($version[0] <= 7 && $version[1] >= 6) {
+                                $nsExt['compatible6'] = 1;
                             }
-                            if($version[0]<=8 && $version[1]>=7){
-                                $nsExt['compatible7']=1;
+                            if ($version[0] <= 8 && $version[1] >= 7) {
+                                $nsExt['compatible7'] = 1;
                             }
-                            if($version[0]<=9 && $version[1]>=8){
-                                $nsExt['compatible8']=1;
+                            if ($version[0] <= 9 && $version[1] >= 8) {
+                                $nsExt['compatible8'] = 1;
                             }
-                            if($version[0]<=10 && $version[1]>=9){
-                                $nsExt['compatible9']=1;
+                            if ($version[0] <= 10 && $version[1] >= 9) {
+                                $nsExt['compatible9'] = 1;
                             }
 
                         }
@@ -233,83 +278,81 @@ class nsextcompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
                 //Fetch typo3 depency of extesion  end
 
                 // Set overview Report start
-                if($extArray[0] && empty($nsExt['newVersion'])){
-                   $nsExt['newVersion']=$extArray[0]->getVersion();
+                if ($extArray[0] && empty($nsExt['newVersion'])) {
+                    $nsExt['newVersion'] = $extArray[0]->getVersion();
                 }
-                if($extArray[0]){
+                if ($extArray[0]) {
 
-                    $nsExt['newUplaodComment']=$extArray[0]->getUpdateComment();
-                    $nsExt['newLastDate']=$extArray[0]->getLastUpdated();
-                    $nsExt['newAlldownloadcounter']=$extArray[0]->getAlldownloadcounter();
+                    $nsExt['newUplaodComment'] = $extArray[0]->getUpdateComment();
+                    $nsExt['newLastDate'] = $extArray[0]->getLastUpdated();
+                    $nsExt['newAlldownloadcounter'] = $extArray[0]->getAlldownloadcounter();
                 }
 
                 //Count Total compatibility Start
-                    if($nsExt['compatible4']==1){
-                        $totalCompatible4++;
-                    }
-                    if($nsExt['compatible6']==1){
-                        $totalCompatible6++;
-                    }
-                    if($nsExt['compatible7']==1){
-                        $totalCompatible7++;
-                    }
-                    if($nsExt['compatible8']==1){
-                        $totalCompatible8++;
-                    }
-                    if($nsExt['compatible9']==1){
-                        $totalCompatible9++;
-                    }
-                    if($nsExt['installed']==1){
-                       $totalInstalled++;
-                    }else{
-                       $totalNonInstalled++;
-                    }
+                if ($nsExt['compatible4'] == 1) {
+                    $totalCompatible4++;
+                }
+                if ($nsExt['compatible6'] == 1) {
+                    $totalCompatible6++;
+                }
+                if ($nsExt['compatible7'] == 1) {
+                    $totalCompatible7++;
+                }
+                if ($nsExt['compatible8'] == 1) {
+                    $totalCompatible8++;
+                }
+                if ($nsExt['compatible9'] == 1) {
+                    $totalCompatible9++;
+                }
+                if ($nsExt['installed'] == 1) {
+                    $totalInstalled++;
+                } else {
+                    $totalNonInstalled++;
+                }
 
                 //Count Total compatibility End
 
-                $extension=$nsExt;
+                $extension = $nsExt;
             }
             //Filter all local extension for whole TER data end
 
         }
-        $sysDetail=$this->getSysDetail();
+        $sysDetail = $this->getSysDetail();
 
-        $sysDetail['targetVersion']=$detailTargetVersion;
-        $this->view->assign('sysDetail',$sysDetail);
-        $this->view->assign('extension',$extension);
+        $sysDetail['targetVersion'] = $detailTargetVersion;
+        $this->view->assign('sysDetail', $sysDetail);
+        $this->view->assign('extension', $extension);
     }
-
 
     /**
      * This extension is used for export extension report
-    */
+     */
     public function exportXlsAction()
     {
 
-        $arguments= $this->request->getArguments();
-        $targetVersion=$arguments['targetVersion'];
+        $arguments = $this->request->getArguments();
+        $targetVersion = $arguments['targetVersion'];
 
         //call getAllExtensions() method for fetch extension start
-        $assignArray=$this->getAllExtensions($targetVersion);
-        $extensionlist=$assignArray['extensionlist'];
-        $overviewReport=$assignArray['overviewReport'];
+        $assignArray = $this->getAllExtensions($targetVersion);
+        $extensionlist = $assignArray['extensionlist'];
+        $overviewReport = $assignArray['overviewReport'];
         //call getAllExtensions() method for fetch extension end
         //call getSysDetail() method for fetch basic information of system
-        $sysDetail=$this->getSysDetail();
-        if(isset($targetVersion)){
-            $sysDetail['targetVersion']=$targetVersion;
+        $sysDetail = $this->getSysDetail();
+        if (isset($targetVersion)) {
+            $sysDetail['targetVersion'] = $targetVersion;
         }
 
         //Get system requirement for targetversion Start
-        $targetSystemRequirement=$this->getSysRequirementForTargetVersion($sysDetail['targetVersion']);
+        $targetSystemRequirement = $this->getSysRequirementForTargetVersion($sysDetail['targetVersion']);
         //Get system requirement for targetversion End
-
 
         //All Styles Start
         $mainstyle = array(
             'font' => array(
                 'bold' => false,
-                'name'  => 'Verdana'
+                'name' => 'Verdana',
             ),
             'alignment' => array(
                 'horizontal' => \PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
@@ -317,22 +360,22 @@ class nsextcompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
             ),
         );
         $overviewReportStyle = array(
-            'font'  => array(
-                'bold'  => false,
+            'font' => array(
+                'bold' => false,
                 'color' => array('rgb' => 'b32200'),
-                'size'  => 14,
-                'name'  => 'Verdana'
+                'size' => 14,
+                'name' => 'Verdana',
             ),
             'fill' => array(
                 'type' => \PHPExcel_Style_Fill::FILL_SOLID,
-                'color' => array('rgb' => 'efefef')
+                'color' => array('rgb' => 'efefef'),
             ),
             'borders' => array(
                 'allborders' => array(
                     'style' => \PHPExcel_Style_Border::BORDER_THIN,
-                    'color' => array('rgb' => 'cbcbcb')
-                )
-            )
+                    'color' => array('rgb' => 'cbcbcb'),
+                ),
+            ),
         );
         $titleStyle = array(
             'alignment' => array(
@@ -340,27 +383,27 @@ class nsextcompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
             ),
         );
         $boldOnly = array(
-            'font'  => array(
-                'bold'  => false,
-                'size'  => 14,
-                'name'  => 'Verdana'
+            'font' => array(
+                'bold' => false,
+                'size' => 14,
+                'name' => 'Verdana',
             ),
         );
         $projectTitle = array(
-            'font'  => array(
-                'bold'  => true,
-                'size'  => 24
+            'font' => array(
+                'bold' => true,
+                'size' => 24,
             ),
             'fill' => array(
                 'type' => \PHPExcel_Style_Fill::FILL_SOLID,
-                'color' => array('rgb' => 'f49700')
+                'color' => array('rgb' => 'f49700'),
             ),
         );
         $sysTableStyle = array(
-            'font'  => array(
-                'bold'  => false,
-                'size'  => 10,
-                'name'  => 'Verdana'
+            'font' => array(
+                'bold' => false,
+                'size' => 10,
+                'name' => 'Verdana',
             ),
             'alignment' => array(
                 'horizontal' => \PHPExcel_Style_Alignment::HORIZONTAL_LEFT,
@@ -368,35 +411,35 @@ class nsextcompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
         );
 
         $extTableHeadingStype = array(
-            'font'  => array(
-                'bold'  => false,
+            'font' => array(
+                'bold' => false,
                 'color' => array('rgb' => 'b32200'),
-                'size'  => 12,
-                'name'  => 'Verdana'
+                'size' => 12,
+                'name' => 'Verdana',
             ),
             'fill' => array(
                 'type' => \PHPExcel_Style_Fill::FILL_SOLID,
-                'color' => array('rgb' => 'efefef')
+                'color' => array('rgb' => 'efefef'),
             ),
             'borders' => array(
                 'allborders' => array(
                     'style' => \PHPExcel_Style_Border::BORDER_THIN,
-                    'color' => array('rgb' => 'cbcbcb')
-                )
-            )
+                    'color' => array('rgb' => 'cbcbcb'),
+                ),
+            ),
         );
         $syleYes = array(
-            'font'  => array(
+            'font' => array(
                 'color' => array('rgb' => '3db900'),
             ),
         );
         $syleNo = array(
-            'font'  => array(
+            'font' => array(
                 'color' => array('rgb' => 'f14400'),
             ),
         );
         $syleBeta = array(
-            'font'  => array(
+            'font' => array(
                 'color' => array('rgb' => 'f4bd00'),
             ),
         );
@@ -405,17 +448,15 @@ class nsextcompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
 
         //Excel Basic Settings Start
         header("Content-Type: application/vnd.ms-excel");
-        header("Content-Disposition: attachment; filename=".$this->translate('sheet.filename',array('sitename'=>$filename)).".xlsx");
+        header("Content-Disposition: attachment; filename=" . $this->translate('sheet.filename', array('sitename' => $filename)) . ".xlsx");
         header("Pragma: no-cache");
         header("Expires: 0");
         $excel = $this->objectManager->get('PHPExcel');
 
-
         $excel->getProperties()->setCreator("ns_ext_compatibility")
-                 ->setLastModifiedBy("ns_ext_compatibility")
-                 ->setTitle($this->translate('sheet.filename',array('sitename'=>$filename)));
+            ->setLastModifiedBy("ns_ext_compatibility")
+            ->setTitle($this->translate('sheet.filename', array('sitename' => $filename)));
         $excel->setActiveSheetIndex(0);
-
 
         $excel->getDefaultStyle()->applyFromArray($mainstyle);
         //Excel Basic Settings End
@@ -429,18 +470,18 @@ class nsextcompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
 
         //Rows of system detail Start
         $sysRow = $excel->setActiveSheetIndex(0);
-        $sysRow->setCellValue("A2", $this->translate('typo3upgrade')."".$sysDetail['sitename']);
-        $sysRow->setCellValue("B4",$this->translate('langague'));
+        $sysRow->setCellValue("A2", $this->translate('typo3upgrade') . "" . $sysDetail['sitename']);
+        $sysRow->setCellValue("B4", $this->translate('langague'));
         $sysRow->setCellValue("C4", $sysDetail['totalLang']);
-        $sysRow->setCellValue("B5",$this->translate('phpVersion'));
+        $sysRow->setCellValue("B5", $this->translate('phpVersion'));
         $sysRow->setCellValue("C5", $sysDetail['phpversion']);
-        $sysRow->setCellValue("B6",$this->translate('currentTypo3Version'));
+        $sysRow->setCellValue("B6", $this->translate('currentTypo3Version'));
         $sysRow->setCellValue("C6", $sysDetail['typo3version']);
-        $sysRow->setCellValue("B7",$this->translate('targetTypo3Version'));
+        $sysRow->setCellValue("B7", $this->translate('targetTypo3Version'));
         $sysRow->setCellValue("C7", $sysDetail['targetVersion']);
         $sysRow->setCellValue("B8", $this->translate('totalPagesofSite'));
         $sysRow->setCellValue("C8", $sysDetail['totalPages']);
-        $sysRow->setCellValue("B9",$this->translate('numberOfDomain'));
+        $sysRow->setCellValue("B9", $this->translate('numberOfDomain'));
         $sysRow->setCellValue("C9", $sysDetail['totalDomain']);
 
         $excel->getActiveSheet()->getStyle('B4:C9')->applyFromArray($sysTableStyle);
@@ -468,116 +509,115 @@ class nsextcompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
         //Excel Extension Table heading style End
 
         //Excel Extension Table heading Start
-        $extTableHeader->setCellValue("A11",$this->translate('srNo'));
-        $extTableHeader->setCellValue("B11",$this->translate('title'));
-        $extTableHeader->setCellValue("C11",$this->translate('extkey'));
-        $extTableHeader->setCellValue("D11",$this->translate('action'));
-        $extTableHeader->setCellValue("E11",$this->translate('compatible6'));
-        $extTableHeader->setCellValue("F11",$this->translate('compatible7'));
-        $extTableHeader->setCellValue("G11",$this->translate('compatible8'));
-        $extTableHeader->setCellValue("H11",$this->translate('compatible9'));
-        $extTableHeader->setCellValue("I11",$this->translate('currentVersion'));
-        $extTableHeader->setCellValue("J11",$this->translate('newVersion'));
-        $extTableHeader->setCellValue("K11",$this->translate('state'));
-        $extTableHeader->setCellValue("L11",$this->translate('type'));
-        $extTableHeader->setCellValue("M11",$this->translate('notes'));
-
+        $extTableHeader->setCellValue("A11", $this->translate('srNo'));
+        $extTableHeader->setCellValue("B11", $this->translate('title'));
+        $extTableHeader->setCellValue("C11", $this->translate('extkey'));
+        $extTableHeader->setCellValue("D11", $this->translate('action'));
+        $extTableHeader->setCellValue("E11", $this->translate('compatible6'));
+        $extTableHeader->setCellValue("F11", $this->translate('compatible7'));
+        $extTableHeader->setCellValue("G11", $this->translate('compatible8'));
+        $extTableHeader->setCellValue("H11", $this->translate('compatible9'));
+        $extTableHeader->setCellValue("I11", $this->translate('currentVersion'));
+        $extTableHeader->setCellValue("J11", $this->translate('newVersion'));
+        $extTableHeader->setCellValue("K11", $this->translate('state'));
+        $extTableHeader->setCellValue("L11", $this->translate('type'));
+        $extTableHeader->setCellValue("M11", $this->translate('notes'));
 
         //Hide Compatibility columns start
-        if($sysDetail['typo3version']<7 && $sysDetail['targetVersion']>=6){
+        if ($sysDetail['typo3version'] < 7 && $sysDetail['targetVersion'] >= 6) {
             $excel->getActiveSheet()->getColumnDimension('E')->setVisible(true);
-        }else{
+        } else {
             $excel->getActiveSheet()->getColumnDimension('E')->setVisible(false);
         }
-        if($sysDetail['typo3version']<8 && $sysDetail['targetVersion']>=7){
+        if ($sysDetail['typo3version'] < 8 && $sysDetail['targetVersion'] >= 7) {
             $excel->getActiveSheet()->getColumnDimension('F')->setVisible(true);
-        }else{
+        } else {
             $excel->getActiveSheet()->getColumnDimension('F')->setVisible(false);
         }
-        if($sysDetail['typo3version']<9 && $sysDetail['targetVersion']>=8){
+        if ($sysDetail['typo3version'] < 9 && $sysDetail['targetVersion'] >= 8) {
             $excel->getActiveSheet()->getColumnDimension('G')->setVisible(true);
-        }else{
+        } else {
             $excel->getActiveSheet()->getColumnDimension('G')->setVisible(false);
         }
-        if($sysDetail['typo3version']<10 && $sysDetail['targetVersion']>=9){
+        if ($sysDetail['typo3version'] < 10 && $sysDetail['targetVersion'] >= 9) {
             $excel->getActiveSheet()->getColumnDimension('H')->setVisible(true);
-        }else{
+        } else {
             $excel->getActiveSheet()->getColumnDimension('H')->setVisible(false);
         }
         //Hide Compatibility columns end
 
         //Excel Extension Table heading end
 
-       //Add Data in Excel From array $extensionlist end
+        //Add Data in Excel From array $extensionlist end
 
-        $i=12;
-        $k=1;
-        foreach ($extensionlist as $key=> $extension) {
-            if($extension['key']!='ns_ext_compatibility'){
+        $i = 12;
+        $k = 1;
+        foreach ($extensionlist as $key => $extension) {
+            if ($extension['key'] != 'ns_ext_compatibility') {
                 $row = $excel->setActiveSheetIndex(0);
-                $row->setCellValue("A$i",$k);
-                $row->setCellValue("B$i",$extension['title']);
-                $row->setCellValue("C$i",$extension['key']);
-                 if($extension['installed']==1){
-                   $row->setCellValue("D$i",$this->translate('yes'));
-                   $excel->getActiveSheet()->getStyle("D$i")->applyFromArray($syleYes);
-                }else{
-                    $row->setCellValue("D$i",$this->translate('no'));
+                $row->setCellValue("A$i", $k);
+                $row->setCellValue("B$i", $extension['title']);
+                $row->setCellValue("C$i", $extension['key']);
+                if ($extension['installed'] == 1) {
+                    $row->setCellValue("D$i", $this->translate('yes'));
+                    $excel->getActiveSheet()->getStyle("D$i")->applyFromArray($syleYes);
+                } else {
+                    $row->setCellValue("D$i", $this->translate('no'));
                     $excel->getActiveSheet()->getStyle("D$i")->applyFromArray($syleNo);
                 }
-                if($extension['compatible6']==1){
-                    $row->setCellValue("E$i",$this->translate('yes'));
+                if ($extension['compatible6'] == 1) {
+                    $row->setCellValue("E$i", $this->translate('yes'));
                     $excel->getActiveSheet()->getStyle("E$i")->applyFromArray($syleYes);
-                }else{
-                    $row->setCellValue("E$i",$this->translate('no'));
+                } else {
+                    $row->setCellValue("E$i", $this->translate('no'));
                     $excel->getActiveSheet()->getStyle("E$i")->applyFromArray($syleNo);
                 }
-                if($extension['compatible7']==1){
-                    $row->setCellValue("F$i",$this->translate('yes'));
+                if ($extension['compatible7'] == 1) {
+                    $row->setCellValue("F$i", $this->translate('yes'));
                     $excel->getActiveSheet()->getStyle("F$i")->applyFromArray($syleYes);
-                }else{
-                    $row->setCellValue("F$i",$this->translate('no'));
+                } else {
+                    $row->setCellValue("F$i", $this->translate('no'));
                     $excel->getActiveSheet()->getStyle("F$i")->applyFromArray($syleNo);
                 }
-                if($extension['compatible8']==1){
-                    $row->setCellValue("G$i",$this->translate('yes'));
+                if ($extension['compatible8'] == 1) {
+                    $row->setCellValue("G$i", $this->translate('yes'));
                     $excel->getActiveSheet()->getStyle("G$i")->applyFromArray($syleYes);
-                }else{
-                    $row->setCellValue("G$i",$this->translate('no'));
+                } else {
+                    $row->setCellValue("G$i", $this->translate('no'));
                     $excel->getActiveSheet()->getStyle("G$i")->applyFromArray($syleNo);
                 }
-                if($extension['compatible9']==1){
-                    $row->setCellValue("H$i",$this->translate('yes'));
+                if ($extension['compatible9'] == 1) {
+                    $row->setCellValue("H$i", $this->translate('yes'));
                     $excel->getActiveSheet()->getStyle("H$i")->applyFromArray($syleYes);
-                }else{
-                    $row->setCellValue("H$i",$this->translate('no'));
+                } else {
+                    $row->setCellValue("H$i", $this->translate('no'));
                     $excel->getActiveSheet()->getStyle("H$i")->applyFromArray($syleNo);
                 }
 
-                $row->setCellValue("I$i",$extension['version']);
-                if($extension['newVersion']>$extension['version']){
-                     $row->setCellValue("J$i",$extension['newVersion']);
+                $row->setCellValue("I$i", $extension['version']);
+                if ($extension['newVersion'] > $extension['version']) {
+                    $row->setCellValue("J$i", $extension['newVersion']);
                     $excel->getActiveSheet()->getStyle("J$i")->applyFromArray($syleYes);
-                }else{
-                    if($extension['updateToVersion']!=null){
-                        $row->setCellValue("J$i",$extension['updateToVersion']->getVersion());
+                } else {
+                    if ($extension['updateToVersion'] != null) {
+                        $row->setCellValue("J$i", $extension['updateToVersion']->getVersion());
                         $excel->getActiveSheet()->getStyle("J$i")->applyFromArray($syleYes);
-                    }else{
-                        $row->setCellValue("J$i",$extension['version']);
+                    } else {
+                        $row->setCellValue("J$i", $extension['version']);
                     }
                 }
-                $row->setCellValue("K$i",$extension['state']);
-                if($extension['state']=='stable'){
+                $row->setCellValue("K$i", $extension['state']);
+                if ($extension['state'] == 'stable') {
                     $excel->getActiveSheet()->getStyle("K$i")->applyFromArray($syleYes);
-                }elseif ($extension['state']=='beta') {
+                } elseif ($extension['state'] == 'beta') {
                     $excel->getActiveSheet()->getStyle("K$i")->applyFromArray($syleBeta);
-                }elseif ($extension['state']=='alpha') {
+                } elseif ($extension['state'] == 'alpha') {
                     $excel->getActiveSheet()->getStyle("K$i")->applyFromArray($syleNo);
                 }
-                if($extension['terObject']!=null){
-                    $row->setCellValue("L$i",$this->translate('ter'));
-                }else{
-                   $row->setCellValue("L$i",$this->translate('custom'));
+                if ($extension['terObject'] != null) {
+                    $row->setCellValue("L$i", $this->translate('ter'));
+                } else {
+                    $row->setCellValue("L$i", $this->translate('custom'));
                 }
                 $k++;
                 $i++;
@@ -585,12 +625,12 @@ class nsextcompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
         }
         //Add Data in Excel From array $extensionlist end
         //Set OverviewReport Start
-        $row->setCellValue("A$i",$this->translate('overviewReport'));
-        $row->setCellValue("D$i",$overviewReport['totalInstalled']);
-        $row->setCellValue("E$i",$overviewReport['totalCompatible6']);
-        $row->setCellValue("F$i",$overviewReport['totalCompatible7']);
-        $row->setCellValue("G$i",$overviewReport['totalCompatible8']);
-        $row->setCellValue("H$i",$overviewReport['totalCompatible9']);
+        $row->setCellValue("A$i", $this->translate('overviewReport'));
+        $row->setCellValue("D$i", $overviewReport['totalInstalled']);
+        $row->setCellValue("E$i", $overviewReport['totalCompatible6']);
+        $row->setCellValue("F$i", $overviewReport['totalCompatible7']);
+        $row->setCellValue("G$i", $overviewReport['totalCompatible8']);
+        $row->setCellValue("H$i", $overviewReport['totalCompatible9']);
         $excel->getActiveSheet()->getRowDimension("$i")->setRowHeight(30);
         $excel->setActiveSheetIndex(0)->mergeCells("A$i:C$i");
 
@@ -600,27 +640,27 @@ class nsextcompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
 
         //Set OverviewReport End
 
-         //Set System Requirement Start
-        $j=$i+2;
-        $k=$i+3;
-        $l=$i+4;
+        //Set System Requirement Start
+        $j = $i + 2;
+        $k = $i + 3;
+        $l = $i + 4;
         $excel->setActiveSheetIndex(0)->mergeCells("B$j:D$j");
         $excel->getActiveSheet()->getStyle("B$j")->applyFromArray($boldOnly);
         $excel->getActiveSheet()->getStyle("B$k:D$k")->applyFromArray($extTableHeadingStype);
-        $row->setCellValue("B$j",$this->translate('targetSystemRequirement').''.$sysDetail['targetVersion']);
+        $row->setCellValue("B$j", $this->translate('targetSystemRequirement') . '' . $sysDetail['targetVersion']);
 
-        $row->setCellValue("B$k",$this->translate('targetSystemRequirement.module'));
-        $row->setCellValue("C$k",$this->translate('targetSystemRequirement.current'));
-        $row->setCellValue("D$k",$this->translate('targetSystemRequirement.required'));
+        $row->setCellValue("B$k", $this->translate('targetSystemRequirement.module'));
+        $row->setCellValue("C$k", $this->translate('targetSystemRequirement.current'));
+        $row->setCellValue("D$k", $this->translate('targetSystemRequirement.required'));
 
         foreach ($targetSystemRequirement as $key => $module) {
-            $row->setCellValue("B$l",$this->translate('targetSystemRequirement.'.$key));
-            $row->setCellValue("C$l",$module['current']);
-            $row->setCellValue("D$l",$module['required']);
+            $row->setCellValue("B$l", $this->translate('targetSystemRequirement.' . $key));
+            $row->setCellValue("C$l", $module['current']);
+            $row->setCellValue("D$l", $module['required']);
             $l++;
         }
         $excel->getActiveSheet()->getStyle("B$k:B$l")->applyFromArray($titleStyle);
-         //Set System Requirement End
+        //Set System Requirement End
 
         //Add Data in Excel From array $data End
         $excel->getActiveSheet()->setTitle($this->translate('sheet.title'));
@@ -636,77 +676,75 @@ class nsextcompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
 
     /**
      * This method is used for  get detail list of local extension
-    */
+     */
     public function getAllExtensions($myTargetVersion)
     {
-        $i=1;
-        $totalCompatible6=0;
-        $totalCompatible7=0;
-        $totalCompatible8=0;
-        $totalInstalled=0;
-        $totalNonInstalled=0;
+        $i = 1;
+        $totalCompatible6 = 0;
+        $totalCompatible7 = 0;
+        $totalCompatible8 = 0;
+        $totalInstalled = 0;
+        $totalNonInstalled = 0;
         $assignArray = array();
         $extensionlist = array();
         $overviewReport = array();
-
 
         //Get extension list
         $myExtList = $this->objectManager->get(ListUtility::class);
         $allExtensions = $myExtList->getAvailableAndInstalledExtensionsWithAdditionalInformation();
         foreach ($allExtensions as $extensionKey => $nsExt) {
             //Filter all local extension for whole TER data start
-            if (strtolower($nsExt['type']) == 'local' && $nsExt['key']!='ns_ext_compatibility') {
-                $newNsVersion=0;
+            if (strtolower($nsExt['type']) == 'local' && $nsExt['key'] != 'ns_ext_compatibility') {
+                $newNsVersion = 0;
                 $extArray = $this->extensionRepository->findByExtensionKeyOrderedByVersion($nsExt['key']);
                 //Fetch typo3 depency of extesion  start
-                if(count($extArray)!=0){
+                if (count($extArray) != 0) {
                     foreach ($extArray as $extension) {
                         foreach ($extension->getDependencies() as $dependency) {
                             if ($dependency->getIdentifier() === 'typo3') {
                                 // Extract min TYPO3 CMS version (lowest)
-                                $minVersion= $dependency->getLowestVersion();
+                                $minVersion = $dependency->getLowestVersion();
                                 // Extract max TYPO3 CMS version (higherst)
-                                $maxVersion=$dependency->getHighestVersion();
+                                $maxVersion = $dependency->getHighestVersion();
 
-                                if($minVersion<=7 &&  $maxVersion>=6){
-                                    $nsExt['compatible6']=1;
+                                if ($minVersion <= 7 && $maxVersion >= 6) {
+                                    $nsExt['compatible6'] = 1;
                                 }
-                                if($minVersion<=8 &&  $maxVersion>=7){
-                                    $nsExt['compatible7']=1;
+                                if ($minVersion <= 8 && $maxVersion >= 7) {
+                                    $nsExt['compatible7'] = 1;
                                 }
-                                if($minVersion<=9 &&  $maxVersion>=8){
-                                    $nsExt['compatible8']=1;
+                                if ($minVersion <= 9 && $maxVersion >= 8) {
+                                    $nsExt['compatible8'] = 1;
                                 }
-                                if($minVersion<=10 &&  $maxVersion>=9){
-                                    $nsExt['compatible9']=1;
+                                if ($minVersion <= 10 && $maxVersion >= 9) {
+                                    $nsExt['compatible9'] = 1;
                                 }
-                                if((($maxVersion>(int)$myTargetVersion && $maxVersion<=(int)$myTargetVersion+1)|| $minVersion>(int)$myTargetVersion && $minVersion<=(int)$myTargetVersion+1) && ($newNsVersion<$extension->getVersion())){
-                                    $newNsVersion=$extension->getVersion();
-                                    $nsExt['newVersion']=$newNsVersion;
+                                if ((($maxVersion > (int) $myTargetVersion && $maxVersion <= (int) $myTargetVersion + 1) || $minVersion > (int) $myTargetVersion && $minVersion <= (int) $myTargetVersion + 1) && ($newNsVersion < $extension->getVersion())) {
+                                    $newNsVersion = $extension->getVersion();
+                                    $nsExt['newVersion'] = $newNsVersion;
                                 }
                             }
                         }
                     }
-                }
-                else{
+                } else {
                     //Check dependancy for custom extension start
                     foreach ($nsExt['constraints']['depends'] as $type => $customDepency) {
-                        if($type=='typo3'){
-                             $version=explode('-',$customDepency);
-                            if(($version[0]<6 && $version[1]>=4) || ($version[0]<6 && $version[1]==0.0)){
-                                $nsExt['compatible4']=1;
+                        if ($type == 'typo3') {
+                            $version = explode('-', $customDepency);
+                            if (($version[0] < 6 && $version[1] >= 4) || ($version[0] < 6 && $version[1] == 0.0)) {
+                                $nsExt['compatible4'] = 1;
                             }
-                            if($version[0]<=7 && $version[1]>=6){
-                                $nsExt['compatible6']=1;
+                            if ($version[0] <= 7 && $version[1] >= 6) {
+                                $nsExt['compatible6'] = 1;
                             }
-                            if($version[0]<=8 && $version[1]>=7){
-                                $nsExt['compatible7']=1;
+                            if ($version[0] <= 8 && $version[1] >= 7) {
+                                $nsExt['compatible7'] = 1;
                             }
-                            if($version[0]<=9 && $version[1]>=8){
-                                $nsExt['compatible8']=1;
+                            if ($version[0] <= 9 && $version[1] >= 8) {
+                                $nsExt['compatible8'] = 1;
                             }
-                            if($version[0]<=10 && $version[1]>=9){
-                                $nsExt['compatible9']=1;
+                            if ($version[0] <= 10 && $version[1] >= 9) {
+                                $nsExt['compatible9'] = 1;
                             }
                         }
                     }
@@ -716,32 +754,31 @@ class nsextcompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
 
                 // Set overview Report start
 
-
-                if($extArray[0] && empty($nsExt['newVersion'])){
-                    $nsExt['newVersion']=$extArray[0]->getVersion();
+                if ($extArray[0] && empty($nsExt['newVersion'])) {
+                    $nsExt['newVersion'] = $extArray[0]->getVersion();
                 }
 
                 //Count Total compatibility Start
-                    if($nsExt['compatible4']==1){
-                        $totalCompatible4++;
-                    }
-                    if($nsExt['compatible6']==1){
-                        $totalCompatible6++;
-                    }
-                    if($nsExt['compatible7']==1){
-                        $totalCompatible7++;
-                    }
-                    if($nsExt['compatible8']==1){
-                        $totalCompatible8++;
-                    }
-                    if($nsExt['compatible9']==1){
-                        $totalCompatible9++;
-                    }
-                    if($nsExt['installed']==1){
-                       $totalInstalled++;
-                    }else{
-                       $totalNonInstalled++;
-                    }
+                if ($nsExt['compatible4'] == 1) {
+                    $totalCompatible4++;
+                }
+                if ($nsExt['compatible6'] == 1) {
+                    $totalCompatible6++;
+                }
+                if ($nsExt['compatible7'] == 1) {
+                    $totalCompatible7++;
+                }
+                if ($nsExt['compatible8'] == 1) {
+                    $totalCompatible8++;
+                }
+                if ($nsExt['compatible9'] == 1) {
+                    $totalCompatible9++;
+                }
+                if ($nsExt['installed'] == 1) {
+                    $totalInstalled++;
+                } else {
+                    $totalNonInstalled++;
+                }
                 //Count Total compatibility End
 
                 // Set overview Report end
@@ -752,239 +789,238 @@ class nsextcompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
 
         }
         //Set overview array start
-        $overviewReport['totalInstalled']=$totalInstalled;
-        $overviewReport['totalNonInstalled']=$totalNonInstalled;
-        $overviewReport['totalCompatible6']=$totalCompatible6;
-        $overviewReport['totalCompatible7']=$totalCompatible7;
-        $overviewReport['totalCompatible8']=$totalCompatible8;
-        $overviewReport['totalCompatible9']=$totalCompatible9;
+        $overviewReport['totalInstalled'] = $totalInstalled;
+        $overviewReport['totalNonInstalled'] = $totalNonInstalled;
+        $overviewReport['totalCompatible6'] = $totalCompatible6;
+        $overviewReport['totalCompatible7'] = $totalCompatible7;
+        $overviewReport['totalCompatible8'] = $totalCompatible8;
+        $overviewReport['totalCompatible9'] = $totalCompatible9;
         //Set overview array end
 
-        $assignArray['overviewReport']=$overviewReport;
-        $assignArray['extensionlist']=$extensionlist;
+        $assignArray['overviewReport'] = $overviewReport;
+        $assignArray['extensionlist'] = $extensionlist;
 
         return $assignArray;
     }
 
     /**
      * This method is used of get sysimformation
-    */
+     */
     public function getSysDetail()
     {
         $sysDetail = array();
-        $extConfig= unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['ns_ext_compatibility']);
-        $sysDetail['phpversion']=substr(phpversion(), 0, 6);;
-        $sysDetail['targetVersion']=$extConfig['typo3TargetVersion'];
-        $sysDetail['sitename']=$GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'];
-        $sysDetail['typo3version']=VersionNumberUtility::getNumericTypo3Version();
-        $sysDetail['totalPages']= $this->NsExtCompatibilityRepository->countPages();
-        $sysDetail['totalDomain']= $this->NsExtCompatibilityRepository->countDomain();
-        $sysDetail['totalLang']= $this->NsExtCompatibilityRepository->sysLang();
+        $extConfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['ns_ext_compatibility']);
+        $sysDetail['phpversion'] = substr(phpversion(), 0, 6);
+        $sysDetail['targetVersion'] = $extConfig['typo3TargetVersion'];
+        $sysDetail['sitename'] = $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'];
+        $sysDetail['typo3version'] = VersionNumberUtility::getNumericTypo3Version();
+        $sysDetail['totalPages'] = $this->NsExtCompatibilityRepository->countPages();
+        $sysDetail['totalDomain'] = $this->NsExtCompatibilityRepository->countDomain();
+        $sysDetail['totalLang'] = $this->NsExtCompatibilityRepository->sysLang();
 
         return $sysDetail;
     }
 
+    /**
+     * This method is used for get System requirement for target typo3 version
+     **/
+    public function getSysRequirementForTargetVersion($targetVersion)
+    {
+        exec('convert -version', $imgmagic);
+        preg_match('@[0-9]+\.[0-9]+\.[0-9]+@', shell_exec('mysql -V'), $mysqlVersion);
 
-   /**
-    * This method is used for get System requirement for target typo3 version
-    **/
-    public function getSysRequirementForTargetVersion ($targetVersion) {
-        exec('convert -version',$imgmagic);
-        preg_match('@[0-9]+\.[0-9]+\.[0-9]+@', shell_exec( 'mysql -V'), $mysqlVersion);
-
-        $typo3Config=array(
+        $typo3Config = array(
             '4.x' => array(
-                'php' =>array(
-                    'required'=>'5.2-5.5',
-                    'current'=>substr(phpversion(), 0, 6)
-                ) ,
+                'php' => array(
+                    'required' => '5.2-5.5',
+                    'current' => substr(phpversion(), 0, 6),
+                ),
                 'mysql' => array(
-                    'required'=>'5.0-5.5',
-                    'current'=>$mysqlVersion[0],
+                    'required' => '5.0-5.5',
+                    'current' => $mysqlVersion[0],
                 ),
                 'imageMagick' => array(
-                    'required'=>'-',
-                    'current'=>substr($imgmagic[0], 21, 5)
+                    'required' => '-',
+                    'current' => substr($imgmagic[0], 21, 5),
                 ),
                 'maxExecutionTime' => array(
-                    'required'=>'240',
-                    'current'=>ini_get('max_execution_time')
+                    'required' => '240',
+                    'current' => ini_get('max_execution_time'),
                 ),
 
                 'memoryLimit' => array(
-                    'required'=>'128M',
-                    'current'=>ini_get('memory_limit')
+                    'required' => '128M',
+                    'current' => ini_get('memory_limit'),
                 ),
                 'maxInputVars' => array(
-                    'required'=>'1500',
-                    'current'=>ini_get('max_input_vars')
+                    'required' => '1500',
+                    'current' => ini_get('max_input_vars'),
                 ),
                 'uploadMaxSize' => array(
-                    'required'=>'200M',
-                    'current'=>ini_get('upload_max_filesize')
+                    'required' => '200M',
+                    'current' => ini_get('upload_max_filesize'),
                 ),
-                'postMaxSize' =>array(
-                    'required'=>'800M',
-                    'current'=>ini_get('post_max_size')
-                )
+                'postMaxSize' => array(
+                    'required' => '800M',
+                    'current' => ini_get('post_max_size'),
+                ),
             ),
             '6.x' => array(
-                'php' =>array(
-                    'required'=>'5.3',
-                    'current'=>substr(phpversion(), 0, 6)
-                ) ,
+                'php' => array(
+                    'required' => '5.3',
+                    'current' => substr(phpversion(), 0, 6),
+                ),
                 'mysql' => array(
-                    'required'=>'5.1-5.6',
-                    'current'=>$mysqlVersion[0],
+                    'required' => '5.1-5.6',
+                    'current' => $mysqlVersion[0],
                 ),
                 'imageMagick' => array(
-                    'required'=>'-',
-                    'current'=>substr($imgmagic[0], 21, 5)
+                    'required' => '-',
+                    'current' => substr($imgmagic[0], 21, 5),
                 ),
                 'maxExecutionTime' => array(
-                    'required'=>'240',
-                    'current'=>ini_get('max_execution_time')
+                    'required' => '240',
+                    'current' => ini_get('max_execution_time'),
                 ),
 
                 'memoryLimit' => array(
-                    'required'=>'128M',
-                    'current'=>ini_get('memory_limit')
+                    'required' => '128M',
+                    'current' => ini_get('memory_limit'),
                 ),
                 'maxInputVars' => array(
-                    'required'=>'1500',
-                    'current'=>ini_get('max_input_vars')
+                    'required' => '1500',
+                    'current' => ini_get('max_input_vars'),
                 ),
                 'uploadMaxSize' => array(
-                    'required'=>'200M',
-                    'current'=>ini_get('upload_max_filesize')
+                    'required' => '200M',
+                    'current' => ini_get('upload_max_filesize'),
                 ),
-                'postMaxSize' =>array(
-                    'required'=>'800M',
-                    'current'=>ini_get('post_max_size')
-                )
+                'postMaxSize' => array(
+                    'required' => '800M',
+                    'current' => ini_get('post_max_size'),
+                ),
             ),
             '7.x' => array(
-                'php' =>array(
-                    'required'=>'5.5',
-                    'current'=>substr(phpversion(), 0, 6)
-                ) ,
+                'php' => array(
+                    'required' => '5.5',
+                    'current' => substr(phpversion(), 0, 6),
+                ),
                 'mysql' => array(
-                    'required'=>'5.5-5.7',
-                    'current'=>$mysqlVersion[0],
+                    'required' => '5.5-5.7',
+                    'current' => $mysqlVersion[0],
                 ),
                 'imageMagick' => array(
-                    'required'=>'6',
-                    'current'=>substr($imgmagic[0], 21, 5)
+                    'required' => '6',
+                    'current' => substr($imgmagic[0], 21, 5),
                 ),
                 'maxExecutionTime' => array(
-                    'required'=>'240',
-                    'current'=>ini_get('max_execution_time')
+                    'required' => '240',
+                    'current' => ini_get('max_execution_time'),
                 ),
 
                 'memoryLimit' => array(
-                    'required'=>'128M',
-                    'current'=>ini_get('memory_limit')
+                    'required' => '128M',
+                    'current' => ini_get('memory_limit'),
                 ),
                 'maxInputVars' => array(
-                    'required'=>'1500',
-                    'current'=>ini_get('max_input_vars')
+                    'required' => '1500',
+                    'current' => ini_get('max_input_vars'),
                 ),
                 'uploadMaxSize' => array(
-                    'required'=>'200M',
-                    'current'=>ini_get('upload_max_filesize')
+                    'required' => '200M',
+                    'current' => ini_get('upload_max_filesize'),
                 ),
-                'postMaxSize' =>array(
-                    'required'=>'800M',
-                    'current'=>ini_get('post_max_size')
-                )
+                'postMaxSize' => array(
+                    'required' => '800M',
+                    'current' => ini_get('post_max_size'),
+                ),
             ),
             '8.x' => array(
-                'php' =>array(
-                    'required'=>'7',
-                    'current'=>substr(phpversion(), 0, 6)
-                ) ,
+                'php' => array(
+                    'required' => '7',
+                    'current' => substr(phpversion(), 0, 6),
+                ),
                 'mysql' => array(
-                    'required'=>'5.0-5.7',
-                    'current'=>$mysqlVersion[0],
+                    'required' => '5.0-5.7',
+                    'current' => $mysqlVersion[0],
                 ),
                 'imageMagick' => array(
-                    'required'=>'6',
-                    'current'=>substr($imgmagic[0], 21, 5)
+                    'required' => '6',
+                    'current' => substr($imgmagic[0], 21, 5),
                 ),
                 'maxExecutionTime' => array(
-                    'required'=>'240',
-                    'current'=>ini_get('max_execution_time')
+                    'required' => '240',
+                    'current' => ini_get('max_execution_time'),
                 ),
 
                 'memoryLimit' => array(
-                    'required'=>'128M',
-                    'current'=>ini_get('memory_limit')
+                    'required' => '128M',
+                    'current' => ini_get('memory_limit'),
                 ),
                 'maxInputVars' => array(
-                    'required'=>'1500',
-                    'current'=>ini_get('max_input_vars')
+                    'required' => '1500',
+                    'current' => ini_get('max_input_vars'),
                 ),
                 'uploadMaxSize' => array(
-                    'required'=>'200M',
-                    'current'=>ini_get('upload_max_filesize')
+                    'required' => '200M',
+                    'current' => ini_get('upload_max_filesize'),
                 ),
-                'postMaxSize' =>array(
-                    'required'=>'800M',
-                    'current'=>ini_get('post_max_size')
-                )
+                'postMaxSize' => array(
+                    'required' => '800M',
+                    'current' => ini_get('post_max_size'),
+                ),
             ),
             '9.x' => array(
-                'php' =>array(
-                    'required'=>'7.2',
-                    'current'=>substr(phpversion(), 0, 6)
-                ) ,
+                'php' => array(
+                    'required' => '7.2',
+                    'current' => substr(phpversion(), 0, 6),
+                ),
                 'mysql' => array(
-                    'required'=>'5.0-5.7',
-                    'current'=>$mysqlVersion[0],
+                    'required' => '5.0-5.7',
+                    'current' => $mysqlVersion[0],
                 ),
                 'imageMagick' => array(
-                    'required'=>'6',
-                    'current'=>substr($imgmagic[0], 21, 5)
+                    'required' => '6',
+                    'current' => substr($imgmagic[0], 21, 5),
                 ),
                 'maxExecutionTime' => array(
-                    'required'=>'240',
-                    'current'=>ini_get('max_execution_time')
+                    'required' => '240',
+                    'current' => ini_get('max_execution_time'),
                 ),
 
                 'memoryLimit' => array(
-                    'required'=>'128M',
-                    'current'=>ini_get('memory_limit')
+                    'required' => '128M',
+                    'current' => ini_get('memory_limit'),
                 ),
                 'maxInputVars' => array(
-                    'required'=>'1500',
-                    'current'=>ini_get('max_input_vars')
+                    'required' => '1500',
+                    'current' => ini_get('max_input_vars'),
                 ),
                 'uploadMaxSize' => array(
-                    'required'=>'200M',
-                    'current'=>ini_get('upload_max_filesize')
+                    'required' => '200M',
+                    'current' => ini_get('upload_max_filesize'),
                 ),
-                'postMaxSize' =>array(
-                    'required'=>'800M',
-                    'current'=>ini_get('post_max_size')
-                )
+                'postMaxSize' => array(
+                    'required' => '800M',
+                    'current' => ini_get('post_max_size'),
+                ),
             ),
         );
-       return $typo3Config[$targetVersion];
+        return $typo3Config[$targetVersion];
     }
-
 
     /**
      * @param string $key
      * @return null|string
      */
-    protected function translate($key,$arguments=''){
-        if($arguments!=''){
-            return Localize::translate($key, 'ns_ext_compatibility',$arguments);
-        }else{
+    protected function translate($key, $arguments = '')
+    {
+        if ($arguments != '') {
+            return Localize::translate($key, 'ns_ext_compatibility', $arguments);
+        } else {
             return Localize::translate($key, 'ns_ext_compatibility');
         }
 
     }
-
 
 }
