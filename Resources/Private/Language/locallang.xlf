@@ -135,6 +135,9 @@
 			<trans-unit id="newVersion">
 				<source>Latest Version</source>
 			</trans-unit>
+			<trans-unit id="newVersionComment">
+				<source>Latest Version Comment</source>
+			</trans-unit>
 			<trans-unit id="state">
 				<source>State</source>
 			</trans-unit>
