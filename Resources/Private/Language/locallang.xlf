@@ -115,28 +115,25 @@
 				<source>TYPO3 9.x</source>
 			</trans-unit>
 			<trans-unit id="compatible6">
-				<source>Compatible 6.x</source>
+				<source>Comp. 6.x</source>
 			</trans-unit>
 			<trans-unit id="compatible7">
-				<source>Compatible 7.x</source>
+				<source>Comp. 7.x</source>
 			</trans-unit>
 			<trans-unit id="compatible8">
-				<source>Compatible 8.x</source>
+				<source>Comp. 8.x</source>
 			</trans-unit>
 			<trans-unit id="compatible9">
-				<source>Compatible 9.x</source>
+				<source>Comp. 9.x</source>
 			</trans-unit>
 			<trans-unit id="action">
 				<source>Installed</source>
 			</trans-unit>
 			<trans-unit id="currentVersion">
-				<source>Current Version</source>
+				<source>Current Ver.</source>
 			</trans-unit>
 			<trans-unit id="newVersion">
-				<source>Latest Version</source>
-			</trans-unit>
-			<trans-unit id="newVersionComment">
-				<source>Latest Version Comment</source>
+				<source>Latest Ver.</source>
 			</trans-unit>
 			<trans-unit id="state">
 				<source>State</source>
@@ -218,6 +215,9 @@
 			</trans-unit>
 			<trans-unit id="typo3upgrade">
 				<source>TYPO3 Extensions Compatibility Report </source>
+			</trans-unit>
+			<trans-unit id="typo3upgrad1">
+				<source>TYPO3 Extensions Compatibility Report %s</source>
 			</trans-unit>
 			<trans-unit id="sheet.filename">
 				<source>TYPO3-Extensions-Compatibility-Report-%s</source>

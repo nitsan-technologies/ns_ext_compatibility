@@ -52,7 +52,6 @@
 			<label index="action">Installed</label>
 			<label index="currentVersion">Current version</label>
 			<label index="newVersion">Latest Version</label>
-			<label index="newVersionComment">Latest Version Comment</label>
 			<label index="state">State</label>
 			<label index="type">Type</label>
 			<label index="viewDetailTooltip">View Extension Detail of %s</label>
@@ -137,12 +136,6 @@
 			<label index="task.mail.moreInfo2">  module, Thank you!</label>
 			<label index="task.mail.newstate">New State</label>
 			<label index="task.mail.noUpdate">No update available!</label>
-			<label index="t3-newVersionSecurityRelevant">There is a new version of TYPO3 available, updating is security relevant. Please update to version</label>
-			<label index="t3-newVersion">There is a new version of TYPO3 available. You can update to version</label>
-			<label index="t3-uptodate">Your TYPO3 version is up-to-date.</label>
-			<label index="t3-versionOutdated">The TYPO3 version you're using is not supported anymore. You should update to a supported version.</label>
-			<label index="t3-isDevelopmentVersion">This version of TYPO3 seems to be a development version. Thus no update information exists.</label>
-			<label index="t3-ltsVersion">New TYPO3 version %s is available.</label>
 		</languageKey>
 	</data>
 </T3locallang>

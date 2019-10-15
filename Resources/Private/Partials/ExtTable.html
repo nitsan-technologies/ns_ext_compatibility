@@ -24,12 +24,8 @@
                     <th  class="text-center"><f:translate key="compatible9"/></th>
                 </f:if>
             </f:if>
-            <th  class="text-center"><f:translate key="action"/></th>
             <th class="text-center"><f:translate key="currentVersion"/></th>
-            <th class="text-center"><f:translate key="newVersion"/></th>
             <th class="text-center"><f:translate key="state"/></th>
-            <th class="text-center"><f:translate key="type"/></th>
-            <th><f:translate key="detailAction"/></th>
         </tr>
     </thead>
     <tbody>
@@ -115,60 +111,10 @@
 		                    </f:if>
 		                </f:if>
 		            </f:if>
-		            <td class="text-center">
-		            <f:if condition="{extension.installed}">
-		                <f:then>
-		                    <span class="hide-label"><f:translate key="yes"/></span>
-		                    <img src="../typo3conf/ext/ns_ext_compatibility/Resources/Public/Backend/Icons/righ-icon.png" width="12" height="12" />
-		                </f:then>
-		                <f:else>
-		                    <span class="hide-label"><f:translate key="no"/></span>
-		                    <img src="../typo3conf/ext/ns_ext_compatibility/Resources/Public/Backend/Icons/crose-icon.png" width="12" height="12" />
-		                </f:else>
-		            </f:if>
-		            </td>
 		            <td class="text-center" data-toggle="modal" data-target="#extModel-{iter.cycle}">{extension.version}</td>
-		            <td class="text-center">
-			            <f:if condition="{extension.newVersion}>={extension.version}">
-			                <f:then>
-			                	<span class="ext-status-stable">{extension.newVersion}</span>
-			                </f:then>
-			                <f:else>
-			                    {extension.version}
-			                </f:else>
-			            </f:if>
-		            </td>
 		            <td class="text-center">
 			           <span class="ext-status-{extension.state}">{extension.state}</span>
 		            </td>
-		            <td class="text-center">
-			           	<f:if condition="{extension.terObject}">
-	                    	<f:then>
-	                    		<f:translate key="ter"/>
-	                    	</f:then>
-	                    	<f:else>
-	                    		<f:translate key="custom"/>
-	                    	</f:else>
-	                    </f:if>
-		            </td>
-		             <td>
-	             		<a href="javascript:;" class="ext-overview" data-toggle="modal" data-target="#nsModel" title="{f:translate(key: 'viewDetailTooltip',arguments: {extension: extension.key})}" data-uri="{f:uri.action(action: 'detail', arguments: {extKey: extension.key,targetVersion:sysDetail.targetVersion}, controller: 'nsextcompatibility')}">
-		                    <img  src="../typo3conf/ext/ns_ext_compatibility/Resources/Public/Backend/Icons/view.png"/>
-		                </a>
-	                    <f:if condition="{extension.terObject}">
-	                    	<f:then>
-			                    <a class="terLink viewAllVersionLink"   data-toggle="modal" data-target="#nsModel" data-uri="{f:uri.action(action: 'viewAllVersion', arguments: {extension: extension.key,targetVersion:sysDetail.targetVersion}, controller: 'nsextcompatibility')}" href="#" title="{f:translate(key: 'viewAllVersionTooTip',arguments: {extension: extension.key})}" >
-			                        <img src="../typo3conf/ext/ns_ext_compatibility/Resources/Public/Backend/Icons/version.svg" width="25" height="25" />
-			                    </a>
-	                    		<f:link.external class="terLink" uri="https://docs.typo3.org/typo3cms/extensions/{extension.key}" title="{f:translate(key: 'viewManualTooltip',arguments: {extension: extension.key})}" target="_blank">
-		                            <img src="../typo3conf/ext/ns_ext_compatibility/Resources/Public/Backend/Icons/documentation.svg" width="25" height="25" />
-		                        </f:link.external>
-		                        <f:link.external class="terLink" uri="https://typo3.org/extensions/repository/view/{extension.key}" title="{f:translate(key: 'viewTERTooltip',arguments: {extension: extension.key})}" target="_blank">
-		                            <img src="../typo3conf/ext/ns_ext_compatibility/Resources/Public/Backend/Icons/typo.svg"/>
-		                        </f:link.external>
-	                    	</f:then>
-	                    </f:if>
-	                </td>
 	            </tr>
 	        </f:if>
 	    </f:for>

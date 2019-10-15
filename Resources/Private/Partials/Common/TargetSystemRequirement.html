@@ -10,7 +10,7 @@
 			<td><strong><f:translate key="targetSystemRequirement.current"/></strong></th>
 			<td><strong><f:translate key="targetSystemRequirement.required"/></strong></th>
 		</tr>
-		<f:for each="{targetSystemRequirement}" key='name' as="module">
+		<f:for each="{targetSystemRequirement}" key='name' as="module" iteration="iter">
 			<tr {f:if(condition:iter.isOdd, then: 'class="bgColor6"', else:'class="bgColor4"' )}>
 				<td><f:translate key="targetSystemRequirement.{name}"/></td>
 				<td  width="30%"><strong>{module.current}</strong></td>

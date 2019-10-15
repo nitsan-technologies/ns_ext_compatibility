@@ -17,12 +17,8 @@
                 <f:if condition="{sysDetail.targetVersion}>=9">
                     <th  class="text-center"><f:translate key="compatible9"/></th>
                 </f:if>
-                <th  class="text-center"><f:translate key="action"/></th>
                 <th><f:translate key="currentVersion"/></th>
-                <th><f:translate key="newVersion"/></th>
                 <th><f:translate key="state"/></th>
-                <th><f:translate key="type"/></th>
-                <th><f:translate key="detailAction"/></th>
             </tr>
         </thead>
         <tbody>
@@ -63,7 +59,7 @@
 	                        </f:else>
 	                    </f:if>
 	                </f:if>
-                     <f:if condition="{sysDetail.targetVersion}>=7">
+                    <f:if condition="{sysDetail.targetVersion}>=7">
 	                    <f:if condition="{extension.compatible7}==1">
 	                        <f:then>
 	                            <td class="compatible text-center">
@@ -79,7 +75,7 @@
 	                        </f:else>
 	                    </f:if>
 	                </f:if>
-                      <f:if condition="{sysDetail.targetVersion}>=8">
+                    <f:if condition="{sysDetail.targetVersion}>=8">
 	                    <f:if condition="{extension.compatible8}==1">
 	                        <f:then>
 	                            <td class="compatible text-center">
@@ -95,7 +91,7 @@
 	                        </f:else>
 	                    </f:if>
 	                </f:if>
-                      <f:if condition="{sysDetail.targetVersion}>=9">
+                    <f:if condition="{sysDetail.targetVersion}>=9">
 	                    <f:if condition="{extension.compatible9}==1">
 	                        <f:then>
 	                            <td class="compatible text-center">
@@ -111,54 +107,8 @@
 	                        </f:else>
 	                    </f:if>
 	                </f:if>
-                     <td class="text-center">
-                    <f:if condition="{extension.installed}">
-                        <f:then>
-                            <span class="hide-label"><f:translate key="yes"/></span>
-                            <img src="../typo3conf/ext/ns_ext_compatibility/Resources/Public/Backend/Icons/righ-icon.png" width="12" height="12" />
-                        </f:then>
-                        <f:else>
-                            <span class="hide-label"><f:translate key="no"/></span>
-                            <img src="../typo3conf/ext/ns_ext_compatibility/Resources/Public/Backend/Icons/crose-icon.png" width="12" height="12" />
-                        </f:else>
-                    </f:if>
-                    </td>
     				<td>{extension.version}</td>
-                    <td>
-                    	<f:if condition="{extension.newVersion}>{extension.version}">
-                    		<f:then><span class="ext-status-Stable">{extension.newVersion}</span></f:then>
-                    		<f:else>
-                                <f:if condition="{extension.updateToVersion.version}>{extension.version}">
-                                    <f:then>
-                                        <span class="ext-status-Stable">{extension.updateToVersion.version}</span>
-                                    </f:then>
-                                    <f:else>{extension.version}</f:else>
-                                </f:if>
-                            </f:else>
-                    	</f:if>
-                    </td>
     				<td><span class="ext-status-{extension.state}">{extension.state}</span></td>
-                    <td>
-                       {extension.type}
-                    </td>
-    				 <td>
-                        <a href="javascript:;" data-toggle="modal" data-target="#nsModel" title="{f:translate(key: 'viewDetailTooltip',arguments: {extension: extension.extkey})}" class="ext-overview" data-uri="{f:uri.action(action: 'detail', arguments:{extKey: extension.extkey,targetVersion:sysDetail.targetVersion}, controller: 'nsextcompatibility')}">
-                            <img src="../typo3conf/ext/ns_ext_compatibility/Resources/Public/Backend/Icons/view.png"/>
-                        </a>
-                        <f:if condition="{extension.updateToVersion}">
-                        	<f:then>
-    		                    <a class="terLink viewAllVersionLink"   data-toggle="modal" data-target="#nsModel" data-uri="{f:uri.action(action: 'viewAllVersion', arguments: {extension: extension.extkey,targetVersion:sysDetail.targetVersion}, controller: 'nsextcompatibility')}" href="#" title="{f:translate(key: 'viewAllVersionTooTip',arguments: {extension: extension.extkey})}" >
-    		                        <img src="../typo3conf/ext/ns_ext_compatibility/Resources/Public/Backend/Icons/version.svg" width="25" height="25" />
-    		                    </a>
-                        		<f:link.external class="terLink" uri="https://docs.typo3.org/typo3cms/extensions/{extension.extkey}" title="{f:translate(key: 'viewManualTooltip',arguments: {extension: extension.extkey})}" target="_blank">
-    	                            <img src="../typo3conf/ext/ns_ext_compatibility/Resources/Public/Backend/Icons/documentation.svg" width="25" height="25" />
-    	                        </f:link.external>
-    	                        <f:link.external class="terLink" uri="https://typo3.org/extensions/repository/view/{extension.extkey}" title="{f:translate(key: 'viewTERTooltip',arguments: {extension: extension.extkey})}" target="_blank">
-    	                            <img src="../typo3conf/ext/ns_ext_compatibility/Resources/Public/Backend/Icons/typo.svg"/>
-    	                        </f:link.external>
-                        	</f:then>
-                        </f:if>
-                    </td>
     			</tr>
     		</f:for>
         </tbody>

@@ -3,3 +3,9 @@
 
 # cat=basic/11;type=options[4.x,6.x,7.x,8.x,9.x]; label=Typo3 Target Version
 typo3TargetVersion=9.x
+
+# cat=basic/12;type=string; label=Export PDF Logo
+pdflogo=http://www.itug.in/fileadmin/images/itug/NITSAN_TYPO3_Agency.png
+
+# cat=basic/13;type=string; label=Export PDF Footer Copyright
+pdfcopyright=NITSAN TECHNOLOGIES PVT. LTD.

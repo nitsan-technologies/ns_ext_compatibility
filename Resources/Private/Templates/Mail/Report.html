@@ -151,7 +151,7 @@
     <xml>
         <o:OfficeDocumentSettings>
             <o:AllowPNG/>
-            <o:PixelsPerInch>96</o:PixelsPerInch>
+            <o:PixelsPerInch></o:PixelsPerInch>
         </o:OfficeDocumentSettings>
     </xml>
     <![endif]-->
@@ -175,24 +175,6 @@
                     <td bgcolor="#ffffff" style="padding: 15px 30px 0; text-align: left;" class="heading headernext">
                         <p style="margin: 15px 0 20px; font-family: sans-serif; font-size: 15px; line-height: 20px; color: #5c5c5b; font-weight: normal;"><f:translate key="task.mail.hithere"/></p>
                         <p style="margin: 15px 0 10px; font-family: sans-serif; font-size: 15px; line-height: 20px; color: #5c5c5b; font-weight: normal;"><f:translate key="task.mail.description1"/> <b>{projectName}</b>, <f:translate key="task.mail.description2"/></p>
-                        <f:if condition="{versionType}=='newVersionSecurityRelevant'">
-                            <p style="margin: 15px 0 20px; font-family: sans-serif; font-size: 15px; line-height: 20px; color: #5c5c5b; font-weight: normal;"><i><f:translate key="t3-{versionType}"/> <strong>{newVersion}</strong>.</i></p>
-                        </f:if>
-                        <f:if condition="{versionType}=='newVersion'">
-                            <p style="margin: 15px 0 20px; font-family: sans-serif; font-size: 15px; line-height: 20px; color: #5c5c5b; font-weight: normal;"><i><f:translate key="t3-{versionType}"/> <strong>{newVersion}</strong>.</i></p>
-                        </f:if>
-                        <f:if condition="{versionType}=='uptodate'">
-                            <p style="margin: 15px 0 20px; font-family: sans-serif; font-size: 15px; line-height: 20px; color: #5c5c5b; font-weight: normal;"><i><f:translate key="t3-{versionType}"/></i></p>
-                        </f:if>
-                        <f:if condition="{versionType}=='versionOutdated'">
-                            <p style="margin: 15px 0 20px; font-family: sans-serif; font-size: 15px; line-height: 20px; color: #5c5c5b; font-weight: normal;"><i><f:translate key="t3-{versionType}"/></i></p>
-                        </f:if>
-                        <f:if condition="{versionType}=='isDevelopmentVersion'">
-                            <p style="margin: 15px 0 20px; font-family: sans-serif; font-size: 15px; line-height: 20px; color: #5c5c5b; font-weight: normal;"><i><f:translate key="t3-{versionType}"/></i></p>
-                        </f:if>
-                        <f:if condition="{installedVersion}<{ltsVersion}">
-                            <p style="margin: 15px 0 20px; font-family: sans-serif; font-size: 15px; line-height: 20px; color: #5c5c5b; font-weight: normal;"><i><f:translate key="t3-ltsVersion" arguments="{s: ltsVersion}"/></i></p>
-                        </f:if>
                     </td>
                 </tr>
                 <!-- 1 Column Text : END -->
@@ -224,9 +206,6 @@
                                             <th width="15%" valign="middle" style="text-align: left; padding: 10px; border: 1px solid #cccccc;">
                                                 <p style="margin: 0; font-family: sans-serif; font-size: 13px; line-height: 18px; color: #424242; font-weight: normal;"><b><f:translate key="newVersion"/></b></p>
                                             </th>
-                                            <th width="15%" valign="middle" style="text-align: left; padding: 10px; border: 1px solid #cccccc;">
-                                                <p style="margin: 0; font-family: sans-serif; font-size: 13px; line-height: 18px; color: #424242; font-weight: normal;"><b><f:translate key="newVersionComment"/></b></p>
-                                            </th>
                                             <th width="10%" valign="middle" style="text-align: left; padding: 10px; border: 1px solid #cccccc;">
                                                 <p style="margin: 0; font-family: sans-serif; font-size: 13px; line-height: 18px; color: #424242; font-weight: normal; text-transform: capitalize;"><b><f:translate key="task.mail.newstate"/></b></p>
                                             </th>
@@ -250,9 +229,6 @@
                                                 </td>
                                                 <td width="15%" valign="middle" style="text-align: left; padding: 10px; border: 1px solid #cccccc;">
                                                     <p style="margin: 0; font-family: sans-serif; font-size: 13px; line-height: 18px; color: #424242; font-weight: normal;">{extReport.newVersion}</p>
-                                                </td>
-                                                <td width="15%" valign="middle" style="text-align: left; padding: 10px; border: 1px solid #cccccc;">
-                                                    <p style="margin: 0; font-family: sans-serif; font-size: 13px; line-height: 18px; color: #424242; font-weight: normal;">{extReport.updateComment}</p>
                                                 </td>
                                                 <td width="10%" valign="middle" style="text-align: left; padding: 10px; border: 1px solid #cccccc;">
                                                     <p style="margin: 0; font-family: sans-serif; font-size: 13px; line-height: 18px; color: #424242; font-weight: normal;  text-transform: capitalize;">{f:translate(key: 'state.{extReport.newState}')}</p>

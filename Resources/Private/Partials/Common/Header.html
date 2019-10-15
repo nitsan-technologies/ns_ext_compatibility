@@ -1,5 +1,4 @@
 <h1><f:translate key="typo3upgrade"/></h1>
- <f:link.action action="exportXls"  class="btn-export" arguments="{targetVersion:sysDetail.targetVersion}" ><f:translate key="btn.export"/></f:link.action>
 <f:form id="changeTargtVersion" action="list" class="form-inline">
     <select class="form-control" id="targetVersion" onchange="this.form.submit()" name="tx_nsextcompatibility_tools_nsextcompatibilitynsextcompatibility[targetVersion]">
         <option value="{sysDetail.targetVersion}"><f:translate key="option.label"/> {sysDetail.targetVersion}</option>

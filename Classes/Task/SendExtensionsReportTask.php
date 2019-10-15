@@ -51,7 +51,6 @@ class SendExtensionsReportTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask
 	 * Checks, if there are updates available fo rinstalled extensions
 	 */
 	protected function getExtReoport(){
-
 		$extReports=array();
 		$i=1;
 		// Create objects
@@ -65,10 +64,10 @@ class SendExtensionsReportTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask
 		foreach ($allExtensions as $extensionKey => $nsExt) {
             if(strtolower($nsExt['type']) == 'local' && $nsExt['key']!='ns_ext_compatibility' && !in_array($extensionKey, $excludeExtensions) && $nsExt['updateAvailable']==TRUE && $nsExt['installed']==TRUE) {
             	$extArray = $extensionRepository->findByExtensionKeyOrderedByVersion($nsExt['key']); 
+            	
             	if($extArray[0]){
                     $nsExt['newVersion']=$extArray[0]->getVersion();
                     $nsExt['newState']=$extArray[0]->getState();
-                    $nsExt['updateComment']=$extArray[0]->getUpdateComment();
                 }
         		$extReports[$i]=$nsExt;
 				$i++;
@@ -91,56 +90,6 @@ class SendExtensionsReportTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask
 	*/
 	protected function renderMailContent($extReports) {
 		$view = GeneralUtility::makeInstance(StandaloneView::class);
-
-		$this->downloadBaseUri = 'https://get.typo3.org/';
-        $url = $this->downloadBaseUri . 'json';
-		$versionJson = GeneralUtility::getUrl($url);
-		$ltsVersion = json_decode($versionJson, true);
-        $view->assign('ltsVersion', $ltsVersion['latest_lts']);
-        $view->assign('installedVersion', TYPO3_version);
-
-		// Latest TYPO3 version Check Start
-		if (version_compare(TYPO3_branch, '7.2', '>')) {
-            /** @var \TYPO3\CMS\Extbase\Object\ObjectManager $objectManager */
-            $objectManager = GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
-            /** @var \TYPO3\CMS\Install\Service\CoreVersionService $coreVersionService */
-            $coreVersionService = $objectManager->get(\TYPO3\CMS\Install\Service\CoreVersionService::class);
-
-            // No updates for development versions
-            if (!$coreVersionService->isInstalledVersionAReleasedVersion()) {
-                $view->assign('versionType', 'isDevelopmentVersion');
-            }
-
-            // If fetching version matrix fails we can not do anything except print out the current version
-            try {
-                $coreVersionService->updateVersionMatrix();
-            } catch (Exception\RemoteFetchException $remoteFetchException) {
-            }
-
-            try {
-                $isUpdateAvailable = $coreVersionService->isYoungerPatchReleaseAvailable();
-                $isMaintainedVersion = $coreVersionService->isVersionActivelyMaintained();
-            } catch (Exception\CoreVersionServiceException $coreVersionServiceException) {
-            }
-
-            if (!$isUpdateAvailable && $isMaintainedVersion) {
-                // Everything is fine, working with the latest version
-                $view->assign('versionType', 'uptodate');
-            } elseif ($isUpdateAvailable) {
-                // There is an update available
-                $newVersion = $coreVersionService->getYoungestPatchRelease();
-                $view->assign('newVersion', $newVersion);
-                if ($coreVersionService->isUpdateSecurityRelevant()) {
-                    $view->assign('versionType', 'newVersionSecurityRelevant');
-                } else {
-                    $view->assign('versionType', 'newVersion');
-                }
-            } else {
-                // Version is not maintained
-                $view->assign('versionType', 'versionOutdated');
-            }
-        }
-		// Latest TYPO3 version Check End
 
 		$domain= explode('/typo3/',$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']);
 		

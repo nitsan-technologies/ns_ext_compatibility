@@ -13,7 +13,7 @@ if (version_compare(TYPO3_branch, '6.0', '<')) {
 			'nsextcompatibility',	// Submodule key
 			'',						// Position
 			array(
-				'nsextcompatibility4' => 'list, viewAllVersion,exportXls,detail',
+				'nsextcompatibility4' => 'list, viewAllVersion,detail',
 				
 			),
 			array(
@@ -45,7 +45,7 @@ if (version_compare(TYPO3_branch, '6.0', '<')) {
 			'nsextcompatibility',	// Submodule key
 			'',						// Position
 			array(
-				'nsextcompatibility' => 'list,viewAllVersion,exportXls,detail'
+				'nsextcompatibility' => 'list,viewAllVersion,detail'
 			),
 			array(
 				'access' => 'user,group',
