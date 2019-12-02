@@ -23,9 +23,11 @@ cache:
 before_script:
   #- composer require typo3/minimal ${TYPO3_VERSON} --update-with-dependencies
   #- composer require nimut/testing-framework
-  - composer require squizlabs/php_codesniffer
+  - composer require friendsofphp/php-cs-fixer
   - composer require --dev helmich/typo3-typoscript-lint
+  - pip install yamllint==1.10.0
 
 script:
-  - .Build/bin/phpcs --standard=PSR2 --warning-severity=0 --extensions=php *
+  - .Build/bin/php-cs-fixer fix --dry-run --config=.php_cs --diff
   - .Build/bin/typoscript-lint -c tslint.yaml
+  - yamllint -c .yamllint .
