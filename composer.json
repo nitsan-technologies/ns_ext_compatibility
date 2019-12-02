@@ -11,7 +11,8 @@
     "upgrade",
     "report",
     "backend",
-    "version"
+    "version",
+    "check"
   ],
   "authors": [
     {
