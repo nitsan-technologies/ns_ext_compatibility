@@ -39,6 +39,7 @@ use TYPO3\CMS\Extbase\Utility\LocalizationUtility as Localize;
 use TYPO3\CMS\Extensionmanager\Utility\ListUtility;
 use \TYPO3\CMS\Core\Utility\GeneralUtility;
 use NITSAN\NsExtCompatibility\Controller\PDF;
+use TYPO3\CMS\Extbase\Annotation\Inject as inject;
 
 /**
  * Backend Controller
@@ -58,7 +59,7 @@ class nsextcompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
     protected $repositoryRepository;
 
     /**
-     * @var NITSAN\NsExtCompatibility\Domain\Repository\NsExtCompatibilityRepository
+     * @var \NITSAN\NsExtCompatibility\Domain\Repository\NsExtCompatibilityRepository
      * @inject
      */
     protected $NsExtCompatibilityRepository;
@@ -164,6 +165,14 @@ class nsextcompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
      */
     public function detailAction()
     {
+        $totalCompatible4 = 0;
+        $totalCompatible6 = 0;
+        $totalCompatible7 = 0;
+        $totalCompatible8 = 0;
+        $totalCompatible9 = 0;
+        $totalCompatible10 = 0;
+        $totalInstalled = 0;
+        $totalNonInstalled = 0;
         $arguments = $this->request->getArguments();
         $extKey = $arguments['extKey'];
         $detailTargetVersion = $arguments['targetVersion'];
@@ -196,6 +205,9 @@ class nsextcompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
                                 if ($minVersion <= 10 && $maxVersion >= 9) {
                                     $nsExt['compatible9'] = 1;
                                 }
+                                if ($minVersion <= 11 && $maxVersion >= 10) {
+                                    $nsExt['compatible10'] = 1;
+                                }
                                 if ((($maxVersion > (int) $detailTargetVersion && $maxVersion <= (int) $detailTargetVersion + 1) || $minVersion > (int) $detailTargetVersion && $minVersion <= (int) $detailTargetVersion + 1) && ($newNsVersion < $extension->getVersion())) {
                                     $newNsVersion = $extension->getVersion();
                                     $nsExt['newVersion'] = $newNsVersion;
@@ -222,6 +234,9 @@ class nsextcompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
                             }
                             if ($version[0] <= 10 && $version[1] >= 9) {
                                 $nsExt['compatible9'] = 1;
+                            }
+                            if ($version[0] <= 11 && $version[1] >= 10) {
+                                $nsExt['compatible10'] = 1;
                             }
 
                         }
@@ -257,6 +272,9 @@ class nsextcompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
                 if ($nsExt['compatible9'] == 1) {
                     $totalCompatible9++;
                 }
+                if ($nsExt['compatible10'] == 1) {
+                    $totalCompatible10++;
+                }
                 if ($nsExt['installed'] == 1) {
                     $totalInstalled++;
                 } else {
@@ -283,9 +301,12 @@ class nsextcompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
     public function getAllExtensions($myTargetVersion)
     {
         $i = 1;
+        $totalCompatible4 = 0;
         $totalCompatible6 = 0;
         $totalCompatible7 = 0;
         $totalCompatible8 = 0;
+        $totalCompatible9 = 0;
+        $totalCompatible10 = 0;
         $totalInstalled = 0;
         $totalNonInstalled = 0;
         $assignArray = array();
@@ -322,6 +343,9 @@ class nsextcompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
                                 if ($minVersion <= 10 && $maxVersion >= 9) {
                                     $nsExt['compatible9'] = 1;
                                 }
+                                if ($minVersion <= 11 && $maxVersion >= 10) {
+                                    $nsExt['compatible10'] = 1;
+                                }
                                 if ((($maxVersion > (int) $myTargetVersion && $maxVersion <= (int) $myTargetVersion + 1) || $minVersion > (int) $myTargetVersion && $minVersion <= (int) $myTargetVersion + 1) && ($newNsVersion < $extension->getVersion())) {
                                     $newNsVersion = $extension->getVersion();
                                     $nsExt['newVersion'] = $newNsVersion;
@@ -349,6 +373,9 @@ class nsextcompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
                                 }
                                 if ($version[0] <= 10 && $version[1] >= 9) {
                                     $nsExt['compatible9'] = 1;
+                                }
+                                if ($version[0] <= 11 && $version[1] >= 10) {
+                                    $nsExt['compatible10'] = 1;
                                 }
                             }
                         }
@@ -379,6 +406,9 @@ class nsextcompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
                 if ($nsExt['compatible9'] == 1) {
                     $totalCompatible9++;
                 }
+                if ($nsExt['compatible10'] == 1) {
+                    $totalCompatible10++;
+                }
                 if ($nsExt['installed'] == 1) {
                     $totalInstalled++;
                 } else {
@@ -400,6 +430,7 @@ class nsextcompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
         $overviewReport['totalCompatible7'] = $totalCompatible7;
         $overviewReport['totalCompatible8'] = $totalCompatible8;
         $overviewReport['totalCompatible9'] = $totalCompatible9;
+        $overviewReport['totalCompatible10'] = $totalCompatible10;
         //Set overview array end
 
         $assignArray['overviewReport'] = $overviewReport;
@@ -414,13 +445,19 @@ class nsextcompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
     public function getSysDetail()
     {
         $sysDetail = array();
-        $extConfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['ns_ext_compatibility']);
+        if (version_compare(TYPO3_branch, '10.0', '>=')) {
+            $extConfig = $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['ns_ext_compatibility'];
+        } else {
+            $extConfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['ns_ext_compatibility']);
+        }
         $sysDetail['phpversion'] = substr(phpversion(), 0, 6);
         $sysDetail['targetVersion'] = $extConfig['typo3TargetVersion'];
         $sysDetail['sitename'] = $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'];
         $sysDetail['typo3version'] = VersionNumberUtility::getNumericTypo3Version();
         $sysDetail['totalPages'] = $this->NsExtCompatibilityRepository->countPages();
-        $sysDetail['totalDomain'] = $this->NsExtCompatibilityRepository->countDomain();
+        if (version_compare(TYPO3_branch, '10', '<')) {
+            $sysDetail['totalDomain'] = $this->NsExtCompatibilityRepository->countDomain();
+        }
         $sysDetail['totalLang'] = $this->NsExtCompatibilityRepository->sysLang();
 
         return $sysDetail;
@@ -476,6 +513,16 @@ class nsextcompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
                 ),
             ),
             '9.x' => array(
+                'php' => array(
+                    'required' => '7.2',
+                    'current' => substr(phpversion(), 0, 6),
+                ),
+                'mysql' => array(
+                    'required' => '5.0-5.7',
+                    'current' => $mysqlVersion[0],
+                ),
+            ),
+            '10.x' => array(
                 'php' => array(
                     'required' => '7.2',
                     'current' => substr(phpversion(), 0, 6),

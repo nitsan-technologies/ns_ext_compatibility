@@ -2,6 +2,7 @@
 if (!defined('TYPO3_MODE')) {
 	die ('Access denied.');
 }
+$_EXTKEY = 'ns_ext_compatibility';
 if (version_compare(TYPO3_branch, '6.0', '<')) {
 	if (TYPO3_MODE === 'BE') {
 		/**
@@ -14,7 +15,7 @@ if (version_compare(TYPO3_branch, '6.0', '<')) {
 			'',						// Position
 			array(
 				'nsextcompatibility4' => 'list, viewAllVersion,detail',
-				
+
 			),
 			array(
 				'access' => 'user,group',
@@ -24,12 +25,12 @@ if (version_compare(TYPO3_branch, '6.0', '<')) {
 		);
 	}
 	t3lib_extMgm::addStaticFile($_EXTKEY, 'Configuration/TypoScript/nsextcompatibility4', 'ns_ext_compatibility');
-	
+
 	require_once(
 	    t3lib_extMgm::extPath($_EXTKEY) . 'Classes/PHPExcel-1.8/PHPExcel.php'
 	);
-	
-	
+
+
 }else{
 	if (TYPO3_MODE === 'BE') {
 		require_once(
@@ -49,11 +50,11 @@ if (version_compare(TYPO3_branch, '6.0', '<')) {
 			),
 			array(
 				'access' => 'user,group',
-				'icon'   => 'EXT:' . $_EXTKEY . '/ext_icon.gif',
+                'icon'   => 'EXT:' . $_EXTKEY . '/Resources/Public/Icons/Extension.svg',
 				'labels' => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/locallang.xlf:module.title',
 			)
 		);
-		
+
 		$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks']['NITSAN\\NsExtCompatibility\\Task\\SendExtensionsReportTask'] =array(
 		'extension' => $_EXTKEY,
 		'title' => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/locallang.xlf:task.sendExtensionsReportTask.title',
@@ -69,10 +70,10 @@ if (version_compare(TYPO3_branch, '6.0', '<')) {
 	if (version_compare(TYPO3_branch, '6.2', '<')) {
 		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addStaticFile($_EXTKEY, 'Configuration/TypoScript/nsextcompatibility6/6.1', 'ns_ext_compatibility');
 	}elseif(version_compare(TYPO3_branch, '7.0', '<')){
-		
+
 	    \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addStaticFile($_EXTKEY, 'Configuration/TypoScript/nsextcompatibility6/6.2', 'ns_ext_compatibility');
 	}else{
-		
+
 		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addStaticFile($_EXTKEY, 'Configuration/TypoScript', 'ns_ext_compatibility');
 	}
 }

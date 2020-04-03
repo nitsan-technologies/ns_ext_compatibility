@@ -2,7 +2,7 @@
 <xliff version="1.0">
 	<file source-language="en" datatype="plaintext" original="messages" date="2018-02-10T16:41:47Z" product-name="ns_ext_compatibility">
 		<header/>
-		<body>			
+		<body>
 			<trans-unit id="module.title">
 				<source>Extension Report</source>
 			</trans-unit>
@@ -26,6 +26,9 @@
 			</trans-unit>
 			<trans-unit id="typo3Upgrade9">
 				<source>TYPO3 v9.x</source>
+			</trans-unit>
+			<trans-unit id="typo3Upgrade10">
+				<source>TYPO3 v10.x</source>
 			</trans-unit>
 			<trans-unit id="typo3UpgradeOptLabel">
 				<source>Choose target TYPO3 version to check compatibility : </source>
@@ -87,6 +90,9 @@
 			<trans-unit id="totalCompatible9">
 				<source>Total Compatible of TYPO3 9.x</source>
 			</trans-unit>
+			<trans-unit id="totalCompatible10">
+				<source>Total Compatible of TYPO3 10.x</source>
+			</trans-unit>
 			<trans-unit id="extensionlist">
 				<source>TYPO3 Extensions Report</source>
 			</trans-unit>
@@ -114,6 +120,9 @@
 			<trans-unit id="option.label9">
 				<source>TYPO3 9.x</source>
 			</trans-unit>
+			<trans-unit id="option.label10">
+				<source>TYPO3 10.x</source>
+			</trans-unit>
 			<trans-unit id="compatible6">
 				<source>Comp. 6.x</source>
 			</trans-unit>
@@ -125,6 +134,9 @@
 			</trans-unit>
 			<trans-unit id="compatible9">
 				<source>Comp. 9.x</source>
+			</trans-unit>
+			<trans-unit id="compatible10">
+				<source>Comp. 10.x</source>
 			</trans-unit>
 			<trans-unit id="action">
 				<source>Installed</source>
