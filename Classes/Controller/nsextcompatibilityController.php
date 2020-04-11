@@ -165,6 +165,7 @@ class nsextcompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
      */
     public function detailAction()
     {
+
         $totalCompatible4 = 0;
         $totalCompatible6 = 0;
         $totalCompatible7 = 0;
@@ -216,32 +217,7 @@ class nsextcompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
                         }
                     }
                 } else {
-                    //Check dependancy for custom extension start
-                    foreach ($nsExt['constraints']['depends'] as $type => $customDepency) {
-                        if ($type == 'typo3') {
-                            $version = explode('-', $customDepency);
-                            if (($version[0] < 6 && $version[1] >= 4) || ($version[0] < 6 && $version[1] == 0.0)) {
-                                $nsExt['compatible4'] = 1;
-                            }
-                            if ($version[0] <= 7 && $version[1] >= 6) {
-                                $nsExt['compatible6'] = 1;
-                            }
-                            if ($version[0] <= 8 && $version[1] >= 7) {
-                                $nsExt['compatible7'] = 1;
-                            }
-                            if ($version[0] <= 9 && $version[1] >= 8) {
-                                $nsExt['compatible8'] = 1;
-                            }
-                            if ($version[0] <= 10 && $version[1] >= 9) {
-                                $nsExt['compatible9'] = 1;
-                            }
-                            if ($version[0] <= 11 && $version[1] >= 10) {
-                                $nsExt['compatible10'] = 1;
-                            }
-
-                        }
-                    }
-                    //Check dependancy for custom extension end
+                    $nsExt['customExt'] = true;
                 }
                 //Fetch typo3 depency of extesion  end
 
@@ -316,6 +292,7 @@ class nsextcompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
         //Get extension list
         $myExtList = $this->objectManager->get(ListUtility::class);
         $allExtensions = $myExtList->getAvailableAndInstalledExtensionsWithAdditionalInformation();
+
         foreach ($allExtensions as $extensionKey => $nsExt) {
             //Filter all local extension for whole TER data start
             if (strtolower($nsExt['type']) == 'local' && $nsExt['key'] != 'ns_ext_compatibility') {
@@ -354,33 +331,7 @@ class nsextcompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
                         }
                     }
                 } else {
-                    //Check dependancy for custom extension start
-                    if (is_array($nsExt['constraints']['depends']) || is_object($nsExt['constraints']['depends'])) {
-                        foreach ($nsExt['constraints']['depends'] as $type => $customDepency) {
-                            if ($type == 'typo3') {
-                                $version = explode('-', $customDepency);
-                                if (($version[0] < 6 && $version[1] >= 4) || ($version[0] < 6 && $version[1] == 0.0)) {
-                                    $nsExt['compatible4'] = 1;
-                                }
-                                if ($version[0] <= 7 && $version[1] >= 6) {
-                                    $nsExt['compatible6'] = 1;
-                                }
-                                if ($version[0] <= 8 && $version[1] >= 7) {
-                                    $nsExt['compatible7'] = 1;
-                                }
-                                if ($version[0] <= 9 && $version[1] >= 8) {
-                                    $nsExt['compatible8'] = 1;
-                                }
-                                if ($version[0] <= 10 && $version[1] >= 9) {
-                                    $nsExt['compatible9'] = 1;
-                                }
-                                if ($version[0] <= 11 && $version[1] >= 10) {
-                                    $nsExt['compatible10'] = 1;
-                                }
-                            }
-                        }
-                    }
-                    //Check dependancy for custom extension end
+                    $nsExt['customExt'] = true;
                 }
                 //Fetch typo3 depency of extesion  end
 

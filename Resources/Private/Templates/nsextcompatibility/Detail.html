@@ -88,16 +88,23 @@
                 <f:if condition="{sysDetail.targetVersion}>=6">
                     <tr>
                         <td width="30%"><strong><f:translate key="compatible6"/></strong></td>
-                        <f:if condition="{extension.compatible6}">
+                        <f:if condition="{extension.customExt} != 'true'">
                             <f:then>
-                                <td class="compatible">
-                                    <img src="../typo3conf/ext/ns_ext_compatibility/Resources/Public/Backend/Icons/righ-icon.png" width="12" height="12" />
-                                </td>
+                                <f:if condition="{extension.compatible6}">
+                                    <f:then>
+                                        <td class="compatible">
+                                            <img src="../typo3conf/ext/ns_ext_compatibility/Resources/Public/Backend/Icons/righ-icon.png" width="12" height="12" />
+                                        </td>
+                                    </f:then>
+                                    <f:else>
+                                        <td class="incompatible">
+                                            <img src="../typo3conf/ext/ns_ext_compatibility/Resources/Public/Backend/Icons/crose-icon.png" width="12" height="12" />
+                                        </td>
+                                    </f:else>
+                                </f:if>
                             </f:then>
                             <f:else>
-                                <td class="incompatible">
-                                    <img src="../typo3conf/ext/ns_ext_compatibility/Resources/Public/Backend/Icons/crose-icon.png" width="12" height="12" />
-                                </td>
+                                <td class="incompatible"><f:translate key="unknown" />
                             </f:else>
                         </f:if>
                     </tr>
@@ -107,16 +114,23 @@
                 <f:if condition="{sysDetail.targetVersion}>=7">
                     <tr>
                         <td width="30%"><strong><f:translate key="compatible7"/></strong></td>
-                        <f:if condition="{extension.compatible7}">
+                        <f:if condition="{extension.customExt} != 'true'">
                             <f:then>
-                                <td class="compatible">
-                                    <img src="../typo3conf/ext/ns_ext_compatibility/Resources/Public/Backend/Icons/righ-icon.png" width="12" height="12" />
-                                </td>
+                                <f:if condition="{extension.compatible7}">
+                                    <f:then>
+                                        <td class="compatible">
+                                            <img src="../typo3conf/ext/ns_ext_compatibility/Resources/Public/Backend/Icons/righ-icon.png" width="12" height="12" />
+                                        </td>
+                                    </f:then>
+                                    <f:else>
+                                        <td class="incompatible">
+                                            <img src="../typo3conf/ext/ns_ext_compatibility/Resources/Public/Backend/Icons/crose-icon.png" width="12" height="12" />
+                                        </td>
+                                    </f:else>
+                                </f:if>
                             </f:then>
                             <f:else>
-                                <td class="incompatible">
-                                    <img src="../typo3conf/ext/ns_ext_compatibility/Resources/Public/Backend/Icons/crose-icon.png" width="12" height="12" />
-                                </td>
+                                <td class="incompatible"><f:translate key="unknown" />
                             </f:else>
                         </f:if>
                     </tr>
@@ -126,16 +140,23 @@
                 <f:if condition="{sysDetail.targetVersion}>=8">
                     <tr>
                         <td width="30%"><strong><f:translate key="compatible8"/></strong></td>
-                        <f:if condition="{extension.compatible8}">
+                        <f:if condition="{extension.customExt} != 'true'">
                             <f:then>
-                                <td class="compatible">
-                                    <img src="../typo3conf/ext/ns_ext_compatibility/Resources/Public/Backend/Icons/righ-icon.png" width="12" height="12" />
-                                </td>
+                                <f:if condition="{extension.compatible8}">
+                                    <f:then>
+                                        <td class="compatible">
+                                            <img src="../typo3conf/ext/ns_ext_compatibility/Resources/Public/Backend/Icons/righ-icon.png" width="12" height="12" />
+                                        </td>
+                                    </f:then>
+                                    <f:else>
+                                        <td class="incompatible">
+                                            <img src="../typo3conf/ext/ns_ext_compatibility/Resources/Public/Backend/Icons/crose-icon.png" width="12" height="12" />
+                                        </td>
+                                    </f:else>
+                                </f:if>
                             </f:then>
                             <f:else>
-                                <td class="incompatible">
-                                    <img src="../typo3conf/ext/ns_ext_compatibility/Resources/Public/Backend/Icons/crose-icon.png" width="12" height="12" />
-                                </td>
+                                <td class="incompatible"><f:translate key="unknown" />
                             </f:else>
                         </f:if>
                     </tr>
@@ -145,16 +166,23 @@
                 <f:if condition="{sysDetail.targetVersion}>=9">
                     <tr>
                         <td width="30%"><strong><f:translate key="compatible9"/></strong></td>
-                        <f:if condition="{extension.compatible9}">
+                        <f:if condition="{extension.customExt} != 'true'">
                             <f:then>
-                                <td class="compatible">
-                                    <img src="../typo3conf/ext/ns_ext_compatibility/Resources/Public/Backend/Icons/righ-icon.png" width="12" height="12" />
-                                </td>
+                                <f:if condition="{extension.compatible9}">
+                                    <f:then>
+                                        <td class="compatible">
+                                            <img src="../typo3conf/ext/ns_ext_compatibility/Resources/Public/Backend/Icons/righ-icon.png" width="12" height="12" />
+                                        </td>
+                                    </f:then>
+                                    <f:else>
+                                        <td class="incompatible">
+                                            <img src="../typo3conf/ext/ns_ext_compatibility/Resources/Public/Backend/Icons/crose-icon.png" width="12" height="12" />
+                                        </td>
+                                    </f:else>
+                                </f:if>
                             </f:then>
                             <f:else>
-                                <td class="incompatible">
-                                    <img src="../typo3conf/ext/ns_ext_compatibility/Resources/Public/Backend/Icons/crose-icon.png" width="12" height="12" />
-                                </td>
+                                <td class="incompatible"><f:translate key="unknown" />
                             </f:else>
                         </f:if>
                     </tr>
@@ -164,16 +192,23 @@
                 <f:if condition="{sysDetail.targetVersion}>=10">
                     <tr>
                         <td width="30%"><strong><f:translate key="compatible10"/></strong></td>
-                        <f:if condition="{extension.compatible9}">
+                        <f:if condition="{extension.customExt} != 'true'">
                             <f:then>
-                                <td class="compatible">
-                                    <img src="../typo3conf/ext/ns_ext_compatibility/Resources/Public/Backend/Icons/righ-icon.png" width="12" height="12" />
-                                </td>
+                                <f:if condition="{extension.compatible9}">
+                                    <f:then>
+                                        <td class="compatible">
+                                            <img src="../typo3conf/ext/ns_ext_compatibility/Resources/Public/Backend/Icons/righ-icon.png" width="12" height="12" />
+                                        </td>
+                                    </f:then>
+                                    <f:else>
+                                        <td class="incompatible">
+                                            <img src="../typo3conf/ext/ns_ext_compatibility/Resources/Public/Backend/Icons/crose-icon.png" width="12" height="12" />
+                                        </td>
+                                    </f:else>
+                                </f:if>
                             </f:then>
                             <f:else>
-                                <td class="incompatible">
-                                    <img src="../typo3conf/ext/ns_ext_compatibility/Resources/Public/Backend/Icons/crose-icon.png" width="12" height="12" />
-                                </td>
+                                <td class="incompatible"><f:translate key="unknown" />
                             </f:else>
                         </f:if>
                     </tr>
@@ -191,7 +226,6 @@
                                 <f:else>
                                     {name} =>'&nbsp;'<br/>
                                 </f:else>
-
                             </f:if>
                         </f:for>
                     </td>

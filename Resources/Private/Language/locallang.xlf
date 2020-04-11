@@ -417,6 +417,9 @@
 			<trans-unit id="t3-ltsVersion">
 				<source>New TYPO3 version %s is available.</source>
 			</trans-unit>
+			<trans-unit id="unknown">
+				<source>Unknown</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>
