@@ -17,6 +17,9 @@
                 <f:if condition="{sysDetail.targetVersion}>=9">
                     <th  class="text-center"><f:translate key="compatible9"/></th>
                 </f:if>
+                <f:if condition="{sysDetail.targetVersion}>=10">
+                    <th  class="text-center"><f:translate key="compatible10"/></th>
+                </f:if>
                 <th><f:translate key="currentVersion"/></th>
                 <th><f:translate key="state"/></th>
             </tr>
@@ -107,6 +110,22 @@
 	                        </f:else>
 	                    </f:if>
 	                </f:if>
+                    <f:if condition="{sysDetail.targetVersion}>=10">
+                        <f:if condition="{extension.compatible10}==1">
+                            <f:then>
+                                <td class="compatible text-center">
+                                    <span class="hide-label"><f:translate key="yes"/></span>
+                                    <img src="../typo3conf/ext/ns_ext_compatibility/Resources/Public/Backend/Icons/righ-icon.png" width="12" height="12" />
+                                </td>
+                            </f:then>
+                            <f:else>
+                                <td class="incompatible text-center">
+                                    <span class="hide-label"><f:translate key="no"/></span>
+                                    <img src="../typo3conf/ext/ns_ext_compatibility/Resources/Public/Backend/Icons/crose-icon.png" width="12" height="12" />
+                                </td>
+                            </f:else>
+                        </f:if>
+                    </f:if>
     				<td>{extension.version}</td>
     				<td><span class="ext-status-{extension.state}">{extension.state}</span></td>
     			</tr>

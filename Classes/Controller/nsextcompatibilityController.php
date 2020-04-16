@@ -298,6 +298,7 @@ class nsextcompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
             if (strtolower($nsExt['type']) == 'local' && $nsExt['key'] != 'ns_ext_compatibility') {
                 $newNsVersion = 0;
                 $extArray = $this->extensionRepository->findByExtensionKeyOrderedByVersion($nsExt['key']);
+
                 //Fetch typo3 depency of extesion  start
                 if (count($extArray) != 0) {
                     foreach ($extArray as $extension) {

@@ -168,6 +168,9 @@ class TxNsextcompatibilityControllerNsextcompatibility4controller extends Tx_Ext
                                     if ($version[0] <= 10 && $version[1] >= 9) {
                                         $extension['compatible9'] = 1;
                                     }
+                                    if ($version[0] <= 11 && $version[1] >= 10) {
+                                        $extension['compatible10'] = 1;
+                                    }
                                     if ($minVersion > $version[0]) {
                                         $minVersion = $version[0];
                                     }
@@ -212,7 +215,7 @@ class TxNsextcompatibilityControllerNsextcompatibility4controller extends Tx_Ext
     public function getAllExtensions($myTargetVersion)
     {
         $i = 1;
-        $totalCompatible4 = $totalCompatible6 = $totalCompatible7 = $totalCompatible8 = $totalCompatible9 = $totalInstalled = $totalNonInstalled = 0;
+        $totalCompatible4 = $totalCompatible6 = $totalCompatible7 = $totalCompatible8 = $totalCompatible9 = $totalCompatible10 = $totalInstalled = $totalNonInstalled = 0;
         $assignArray = $extensionlist = $overviewReport = array();
 
         $extensionlists = $this->extRepo->getExtensionDetails();
@@ -243,6 +246,9 @@ class TxNsextcompatibilityControllerNsextcompatibility4controller extends Tx_Ext
                                     }
                                     if ($version[0] <= 10 && $version[1] >= 9) {
                                         $extension['compatible9'] = 1;
+                                    }
+                                    if ($version[0] <= 11 && $version[1] >= 10) {
+                                        $extension['compatible10'] = 1;
                                     }
 
                                     if ((($version[1] > (int) $myTargetVersion && $version[1] <= (int) $myTargetVersion + 1) || $version[0] > (int) $myTargetVersion && $version[0] <= (int) $myTargetVersion + 1) && ($newNsVersion < $extension['version'])) {
@@ -285,6 +291,9 @@ class TxNsextcompatibilityControllerNsextcompatibility4controller extends Tx_Ext
                 if ($extension['compatible9'] == 1) {
                     $totalCompatible9++;
                 }
+                if ($extension['compatible10'] == 1) {
+                    $totalCompatible10++;
+                }
                 if ($extension['installed'] == 1) {
                     $totalInstalled++;
                 } else {
@@ -303,6 +312,7 @@ class TxNsextcompatibilityControllerNsextcompatibility4controller extends Tx_Ext
         $overviewReport['totalCompatible7'] = $totalCompatible7;
         $overviewReport['totalCompatible8'] = $totalCompatible8;
         $overviewReport['totalCompatible9'] = $totalCompatible9;
+        $overviewReport['totalCompatible10'] = $totalCompatible10;
         //Set overview array end
 
         $assignArray['overviewReport'] = $overviewReport;
@@ -381,6 +391,16 @@ class TxNsextcompatibilityControllerNsextcompatibility4controller extends Tx_Ext
                 ),
             ),
             '9.x' => array(
+                'php' => array(
+                    'required' => '7.2',
+                    'current' => substr(phpversion(), 0, 6),
+                ),
+                'mysql' => array(
+                    'required' => '5.0-5.7',
+                    'current' => $mysqlVersion[0],
+                ),
+            ),
+            '10.x' => array(
                 'php' => array(
                     'required' => '7.2',
                     'current' => substr(phpversion(), 0, 6),

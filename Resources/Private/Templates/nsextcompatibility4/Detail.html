@@ -179,6 +179,25 @@
                     </tr>
                 </f:if>
             </f:if>
+            <f:if condition="{sysDetail.typo3version}<11">
+                <f:if condition="{sysDetail.targetVersion}>=10">
+                    <tr>
+                        <td width="30%"><strong><f:translate key="compatible10"/></strong></td>
+                        <f:if condition="{extension.compatible10}==1">
+                            <f:then>
+                                <td class="compatible">
+                                    <img src="../typo3conf/ext/ns_ext_compatibility/Resources/Public/Backend/Icons/righ-icon.png" width="12" height="12" />
+                                </td>
+                            </f:then>
+                            <f:else>
+                                <td class="incompatible">
+                                    <img src="../typo3conf/ext/ns_ext_compatibility/Resources/Public/Backend/Icons/crose-icon.png" width="12" height="12" />
+                                </td>
+                            </f:else>
+                        </f:if>
+                    </tr>
+                </f:if>
+            </f:if>
             <f:if condition="{extension.constraints.depends}">
                 <tr>
                     <td width="30%"><strong><f:translate key="currentVersionDepend"/></strong></td>
@@ -191,7 +210,7 @@
                                 <f:else>
                                     {name} =>'&nbsp;'<br/>
                                 </f:else>
-                                
+
                             </f:if>
                         </f:for>
                     </td>
@@ -209,7 +228,7 @@
                                 <f:else>
                                     {name} =>'&nbsp;'<br/>
                                 </f:else>
-                                
+
                             </f:if>
                         </f:for>
                     </td>
@@ -227,7 +246,7 @@
                                 <f:else>
                                     {name} =>'&nbsp;'<br/>
                                 </f:else>
-                                
+
                             </f:if>
                         </f:for>
                     </td>
