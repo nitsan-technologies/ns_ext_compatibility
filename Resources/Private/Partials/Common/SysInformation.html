@@ -21,10 +21,12 @@
 			<td><f:translate key="totalPagesofSite"/></td>
 			<td><strong>{sysDetail.totalPages}</strong></td>
 		</tr>
-		<tr class="bgColor6">
-			<td><f:translate key="numberOfDomain"/></td>
-			<td><strong>{sysDetail.totalDomain}</strong></td>
-		</tr>
+        <f:if condition="{sysDetail.totalDomain}">
+            <tr class="bgColor6">
+                <td><f:translate key="numberOfDomain"/></td>
+                <td><strong>{sysDetail.totalDomain}</strong></td>
+            </tr>
+        </f:if>
 		<tr class="bgColor4">
 			<td><f:translate key="phpVersion"/></td>
 			<td><strong>{sysDetail.phpversion}</strong></td>

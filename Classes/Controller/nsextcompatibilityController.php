@@ -111,7 +111,7 @@ class nsextcompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
                 \TYPO3\CMS\Core\Messaging\FlashMessageQueue::addMessage($selectProperTargetVersionMessage);
             }
         } else {
-            if ($sysDetail['targetVersion'] < $sysDetail['typo3version']) {
+            if ((int)$sysDetail['targetVersion'] < $sysDetail['typo3version']) {
                 $this->addFlashMessage($this->translate('warning.selectProperTargetVersionText'), $this->translate('warning.selectProperTargetVersionHeadline'), \TYPO3\CMS\Core\Messaging\AbstractMessage::WARNING);
             }
         }
