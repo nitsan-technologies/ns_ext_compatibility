@@ -2,11 +2,12 @@
 namespace  NITSAN\NsExtCompatibility\Domain\Repository;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /***************************************************************
  *  Copyright notice
  *
  *  (c) 2018 Sanjay Chauhan <sanjay@nitsan.in>, NITSAN Technologies
- *  
+ *
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -29,39 +30,40 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  *
  *
- * @package ns_ext_compatibility
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
+class NsExtCompatibilityRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
+{
 
-class NsExtCompatibilityRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
-    
     /*
-	 * This method is used for get all pages of site
-	*/
-	public function countPages(){
-		if (version_compare(TYPO3_branch, '9.0', '<')) {
-			$totolPages= $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('*','pages','deleted=0');
-		} else {
-			$queryBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Database\ConnectionPool::class)
+     * This method is used for get all pages of site
+    */
+    public function countPages()
+    {
+        if (version_compare(TYPO3_branch, '9.0', '<')) {
+            $totolPages= $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('*', 'pages', 'deleted=0');
+        } else {
+            $queryBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Database\ConnectionPool::class)
             ->getQueryBuilderForTable('pages');
-			$totolPages = $queryBuilder
+            $totolPages = $queryBuilder
                        ->count('uid')
                        ->from('pages')
                        ->execute()
                        ->fetchColumn(0);
-		}
-	    return $totolPages;
-	}
+        }
+        return $totolPages;
+    }
 
-	/*
-	 * This method is used for get all domains of site
-	*/
-	public function countDomain(){
-		if (version_compare(TYPO3_branch, '9.0', '<')) {
-			$totalDomain = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('DISTINCT pid','sys_domain','hidden=0');
-		} else {
-			$queryBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Database\ConnectionPool::class)
+    /*
+     * This method is used for get all domains of site
+    */
+    public function countDomain()
+    {
+        if (version_compare(TYPO3_branch, '9.0', '<')) {
+            $totalDomain = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('DISTINCT pid', 'sys_domain', 'hidden=0');
+        } else {
+            $queryBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Database\ConnectionPool::class)
             ->getQueryBuilderForTable('sys_domain');
             $totalDomain = $queryBuilder
                         ->count('pid')
@@ -69,29 +71,30 @@ class NsExtCompatibilityRepository extends \TYPO3\CMS\Extbase\Persistence\Reposi
                         ->groupBy('pid')
                         ->execute()
                         ->fetchColumn(0);
-		}
-		if($totalDomain>0){
-        	return $totalDomain;
-		}else{
-			return 1;
-		}
-	}
-
-	/*
-	 * This method is used for get all system language of site
-	*/
-	public function sysLang(){
-		if (version_compare(TYPO3_branch, '9.0', '<')) {
-			$totalLang = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('*','sys_language','hidden=0');
+        }
+        if ($totalDomain>0) {
+            return $totalDomain;
         } else {
-        	$queryBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Database\ConnectionPool::class)
+            return 1;
+        }
+    }
+
+    /*
+     * This method is used for get all system language of site
+    */
+    public function sysLang()
+    {
+        if (version_compare(TYPO3_branch, '9.0', '<')) {
+            $totalLang = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('*', 'sys_language', 'hidden=0');
+        } else {
+            $queryBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Database\ConnectionPool::class)
             ->getQueryBuilderForTable('sys_language');
-			$totalLang = $queryBuilder
+            $totalLang = $queryBuilder
                        ->count('uid')
                        ->from('sys_language')
                        ->execute()
                        ->fetchColumn(0);
         }
         return $totalLang+1;
-	}
+    }
 }

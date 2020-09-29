@@ -27,7 +27,6 @@
 /**
  *
  *
- * @package ns_ext_compatibility
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
@@ -72,10 +71,10 @@ class TxNsextcompatibilityControllerNsextcompatibility4controller extends Tx_Ext
             $date = str_replace('/', '-', $terRepo['data']['0']['updated']);
             $date1 = date('Y-m-d', strtotime($date));
             $date1 = date_create($date1);
-            $currentDate = date_create(date("Y-m-d", strtotime('-30 days')));
+            $currentDate = date_create(date('Y-m-d', strtotime('-30 days')));
             $diff = date_diff($date1, $currentDate);
-            if ($diff->format("%R%a") > '+1') {
-                $this->flashMessageContainer->add($this->translate('warning.TERUpdateText', array('date' => $date)), $this->translate('warning.TERUpdateHeadline'), t3lib_FlashMessage::WARNING);
+            if ($diff->format('%R%a') > '+1') {
+                $this->flashMessageContainer->add($this->translate('warning.TERUpdateText', ['date' => $date]), $this->translate('warning.TERUpdateHeadline'), t3lib_FlashMessage::WARNING);
             }
         }
 
@@ -191,12 +190,12 @@ class TxNsextcompatibilityControllerNsextcompatibility4controller extends Tx_Ext
                         }
                         $extension['updateToVersion'] = $updateToVersion[0];
                     }
-                    $extension['type'] = "TER";
+                    $extension['type'] = 'TER';
                 } else {
                     if (TYPO3_branch < 6) {
                         $extension['compatible4'] = 1;
                     }
-                    $extension['type'] = "Custom";
+                    $extension['type'] = 'Custom';
                 }
                 $extDetail = $extension;
             }
@@ -216,10 +215,10 @@ class TxNsextcompatibilityControllerNsextcompatibility4controller extends Tx_Ext
     {
         $i = 1;
         $totalCompatible4 = $totalCompatible6 = $totalCompatible7 = $totalCompatible8 = $totalCompatible9 = $totalCompatible10 = $totalInstalled = $totalNonInstalled = 0;
-        $assignArray = $extensionlist = $overviewReport = array();
+        $assignArray = $extensionlist = $overviewReport = [];
 
         $extensionlists = $this->extRepo->getExtensionDetails();
-        $localExtList = array();
+        $localExtList = [];
         foreach ($extensionlists['data'] as $key => $extension) {
             if ($extension['doubleInstall'] == 'Local' && $extension['extkey'] != 'ns_ext_compatibility') {
                 $updateToVersion = $this->nsExtRepo->getLatestVersionsofExtension($extension['extkey']);
@@ -268,12 +267,12 @@ class TxNsextcompatibilityControllerNsextcompatibility4controller extends Tx_Ext
                         }
                         $extension['updateToVersion'] = $updateToVersion[0];
                     }
-                    $extension['type'] = "TER";
+                    $extension['type'] = 'TER';
                 } else {
                     if (TYPO3_branch < 6) {
                         $extension['compatible4'] = 1;
                     }
-                    $extension['type'] = "Custom";
+                    $extension['type'] = 'Custom';
                 }
                 //Count Total compatibility Start
                 if ($extension['compatible4'] == 1) {
@@ -326,8 +325,7 @@ class TxNsextcompatibilityControllerNsextcompatibility4controller extends Tx_Ext
      */
     public function getSysDetail()
     {
-
-        $sysDetail = array();
+        $sysDetail = [];
         $extConfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['ns_ext_compatibility']);
         $sysDetail['phpversion'] = substr(phpversion(), 0, 6);
         $sysDetail['targetVersion'] = $extConfig['typo3TargetVersion'];
@@ -345,72 +343,71 @@ class TxNsextcompatibilityControllerNsextcompatibility4controller extends Tx_Ext
      **/
     public function getSysRequirementForTargetVersion($targetVersion)
     {
-
         exec('convert -version', $imgmagic);
         preg_match('@[0-9]+\.[0-9]+\.[0-9]+@', shell_exec('mysql -V'), $mysqlVersion);
 
-        $typo3Config = array(
-            '4.x' => array(
-                'php' => array(
+        $typo3Config = [
+            '4.x' => [
+                'php' => [
                     'required' => '5.2-5.5',
                     'current' => substr(phpversion(), 0, 6),
-                ),
-                'mysql' => array(
+                ],
+                'mysql' => [
                     'required' => '5.0-5.5',
                     'current' => $mysqlVersion[0],
-                ),
-            ),
-            '6.x' => array(
-                'php' => array(
+                ],
+            ],
+            '6.x' => [
+                'php' => [
                     'required' => '5.3',
                     'current' => substr(phpversion(), 0, 6),
-                ),
-                'mysql' => array(
+                ],
+                'mysql' => [
                     'required' => '5.1-5.6',
                     'current' => $mysqlVersion[0],
-                ),
-            ),
-            '7.x' => array(
-                'php' => array(
+                ],
+            ],
+            '7.x' => [
+                'php' => [
                     'required' => '5.5',
                     'current' => substr(phpversion(), 0, 6),
-                ),
-                'mysql' => array(
+                ],
+                'mysql' => [
                     'required' => '5.5-5.7',
                     'current' => $mysqlVersion[0],
-                ),
-            ),
-            '8.x' => array(
-                'php' => array(
+                ],
+            ],
+            '8.x' => [
+                'php' => [
                     'required' => '7',
                     'current' => substr(phpversion(), 0, 6),
-                ),
-                'mysql' => array(
+                ],
+                'mysql' => [
                     'required' => '5.0-5.7',
                     'current' => $mysqlVersion[0],
-                ),
-            ),
-            '9.x' => array(
-                'php' => array(
+                ],
+            ],
+            '9.x' => [
+                'php' => [
                     'required' => '7.2',
                     'current' => substr(phpversion(), 0, 6),
-                ),
-                'mysql' => array(
+                ],
+                'mysql' => [
                     'required' => '5.0-5.7',
                     'current' => $mysqlVersion[0],
-                ),
-            ),
-            '10.x' => array(
-                'php' => array(
+                ],
+            ],
+            '10.x' => [
+                'php' => [
                     'required' => '7.2',
                     'current' => substr(phpversion(), 0, 6),
-                ),
-                'mysql' => array(
+                ],
+                'mysql' => [
                     'required' => '5.0-5.7',
                     'current' => $mysqlVersion[0],
-                ),
-            ),
-        );
+                ],
+            ],
+        ];
         return $typo3Config[$targetVersion];
     }
 
@@ -425,6 +422,5 @@ class TxNsextcompatibilityControllerNsextcompatibility4controller extends Tx_Ext
         } else {
             return Tx_Extbase_Utility_Localization::translate($key, 'ns_ext_compatibility');
         }
-
     }
 }

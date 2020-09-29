@@ -1,12 +1,11 @@
 <?php
 namespace NITSAN\NsExtCompatibility\Domain\Model;
 
-
 /***************************************************************
  *  Copyright notice
  *
  *  (c) 2018 Sanjay Chauhan <sanjay@nitsan.in>, NITSAN Technologies
- *  
+ *
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -29,11 +28,9 @@ namespace NITSAN\NsExtCompatibility\Domain\Model;
 /**
  *
  *
- * @package ns_ext_compatibility
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
 class NsExtCompatibility extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 {
-   
 }

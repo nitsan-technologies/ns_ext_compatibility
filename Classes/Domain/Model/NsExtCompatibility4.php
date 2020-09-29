@@ -4,7 +4,7 @@
  *  Copyright notice
  *
  *  (c) 2018 Sanjay Chauhan <sanjay@nitsan.in>, NITSAN Technologies
- *  
+ *
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -27,10 +27,9 @@
 /**
  *
  *
- * @package ns_ext_compatibility
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-class Tx_NsExtCompatibility_Domain_Model_NsExtCompatibility4 extends Tx_Extbase_DomainObject_AbstractEntity {
+class Tx_NsExtCompatibility_Domain_Model_NsExtCompatibility4 extends Tx_Extbase_DomainObject_AbstractEntity
+{
 }
-?>
