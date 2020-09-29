@@ -415,8 +415,23 @@ class nsextcompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
      **/
     public function getSysRequirementForTargetVersion($targetVersion)
     {
-        exec('convert -version', $imgmagic);
-        preg_match('@[0-9]+\.[0-9]+\.[0-9]+@', shell_exec('mysql -V'), $mysqlVersion);
+        try {
+            exec('convert -version', $imgmagic);
+            preg_match('@[0-9]+\.[0-9]+\.[0-9]+@', shell_exec('mysql -V'), $mysqlVersion);
+        } catch (\Exception $e) {
+            if (version_compare(TYPO3_branch, '6.2', '<')) {
+                $erorrMessage = GeneralUtility::makeInstance(
+                    'TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
+                    $e->getMessage(),
+                    'Exception: ' . $e->getCode(),  // the header is optional
+                    \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR
+                );
+
+                \TYPO3\CMS\Core\Messaging\FlashMessageQueue::addMessage($erorrMessage);
+            } else {
+                $this->addFlashMessage($e->getMessage(), 'Exception: ' . $e->getCode(), \TYPO3\CMS\Core\Messaging\AbstractMessage::ERROR);
+            }
+        }
 
         $typo3Config = [
             '4.x' => [
