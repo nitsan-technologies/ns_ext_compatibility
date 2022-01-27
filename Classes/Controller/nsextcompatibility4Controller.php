@@ -170,6 +170,9 @@ class TxNsextcompatibilityControllerNsextcompatibility4controller extends Tx_Ext
                                     if ($version[0] <= 11 && $version[1] >= 10) {
                                         $extension['compatible10'] = 1;
                                     }
+                                    if ($version[0] <= 12 && $version[1] >= 11) {
+                                        $extension['compatible11'] = 1;
+                                    }
                                     if ($minVersion > $version[0]) {
                                         $minVersion = $version[0];
                                     }
@@ -249,6 +252,9 @@ class TxNsextcompatibilityControllerNsextcompatibility4controller extends Tx_Ext
                                     if ($version[0] <= 11 && $version[1] >= 10) {
                                         $extension['compatible10'] = 1;
                                     }
+                                    if ($version[0] <= 12 && $version[1] >= 11) {
+                                        $extension['compatible11'] = 1;
+                                    }
 
                                     if ((($version[1] > (int) $myTargetVersion && $version[1] <= (int) $myTargetVersion + 1) || $version[0] > (int) $myTargetVersion && $version[0] <= (int) $myTargetVersion + 1) && ($newNsVersion < $extension['version'])) {
                                         $newNsVersion = $updExt['version'];
@@ -293,6 +299,9 @@ class TxNsextcompatibilityControllerNsextcompatibility4controller extends Tx_Ext
                 if ($extension['compatible10'] == 1) {
                     $totalCompatible10++;
                 }
+                if ($extension['compatible11'] == 1) {
+                    $totalCompatible11++;
+                }
                 if ($extension['installed'] == 1) {
                     $totalInstalled++;
                 } else {
@@ -312,6 +321,7 @@ class TxNsextcompatibilityControllerNsextcompatibility4controller extends Tx_Ext
         $overviewReport['totalCompatible8'] = $totalCompatible8;
         $overviewReport['totalCompatible9'] = $totalCompatible9;
         $overviewReport['totalCompatible10'] = $totalCompatible10;
+        $overviewReport['totalCompatible11'] = $totalCompatible11;
         //Set overview array end
 
         $assignArray['overviewReport'] = $overviewReport;
@@ -404,6 +414,16 @@ class TxNsextcompatibilityControllerNsextcompatibility4controller extends Tx_Ext
                 ],
                 'mysql' => [
                     'required' => '5.0-5.7',
+                    'current' => $mysqlVersion[0],
+                ],
+            ],
+            '11.x' => [
+                'php' => [
+                    'required' => '7.4',
+                    'current' => substr(phpversion(), 0, 6),
+                ],
+                'mysql' => [
+                    'required' => '5.7',
                     'current' => $mysqlVersion[0],
                 ],
             ],

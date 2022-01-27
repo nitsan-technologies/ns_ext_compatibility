@@ -19,7 +19,7 @@ if (version_compare(TYPO3_branch, '6.0', '<')) {
             ],
             [
                 'access' => 'user,group',
-                'icon'   => 'EXT:' . $_EXTKEY . '/ext_icon.gif',
+                'icon'   => 'EXT:' . $_EXTKEY . '/Resources/Public/Icons/ns_ext_compatibility.svg',
                 'labels' => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/locallang.xml:module.title',
             ]
         );
@@ -40,7 +40,7 @@ if (version_compare(TYPO3_branch, '6.0', '<')) {
             ],
             [
                 'access' => 'user,group',
-                'icon'   => 'EXT:' . $_EXTKEY . '/Resources/Public/Icons/Extension.svg',
+                'icon'   => 'EXT:' . $_EXTKEY . '/Resources/Public/Icons/ns_ext_compatibility.svg',
                 'labels' => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/locallang.xlf:module.title',
             ]
         );

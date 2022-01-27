@@ -93,6 +93,9 @@
 			<trans-unit id="totalCompatible10">
 				<source>Total Compatible of TYPO3 10.x</source>
 			</trans-unit>
+			<trans-unit id="totalCompatible11">
+				<source>Total Compatible of TYPO3 11.x</source>
+			</trans-unit>
 			<trans-unit id="extensionlist">
 				<source>TYPO3 Extensions Report</source>
 			</trans-unit>
@@ -123,6 +126,9 @@
 			<trans-unit id="option.label10">
 				<source>TYPO3 10.x</source>
 			</trans-unit>
+			<trans-unit id="option.label11">
+				<source>TYPO3 11.x</source>
+			</trans-unit>
 			<trans-unit id="compatible6">
 				<source>Comp. 6.x</source>
 			</trans-unit>
@@ -138,6 +144,9 @@
 			<trans-unit id="compatible10">
 				<source>Comp. 10.x</source>
 			</trans-unit>
+            <trans-unit id="compatible11">
+                <source>Comp. 11.x</source>
+            </trans-unit>
 			<trans-unit id="action">
 				<source>Installed</source>
 			</trans-unit>

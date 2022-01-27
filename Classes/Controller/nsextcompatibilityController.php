@@ -170,6 +170,7 @@ class nsextcompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
         $totalCompatible8 = 0;
         $totalCompatible9 = 0;
         $totalCompatible10 = 0;
+        $totalCompatible11 = 0;
         $totalInstalled = 0;
         $totalNonInstalled = 0;
         $arguments = $this->request->getArguments();
@@ -206,6 +207,9 @@ class nsextcompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
                                 }
                                 if ($minVersion <= 11 && $maxVersion >= 10) {
                                     $nsExt['compatible10'] = 1;
+                                }
+                                if ($minVersion <= 12 && $maxVersion >= 11) {
+                                    $nsExt['compatible11'] = 1;
                                 }
                                 if ((($maxVersion > (int) $detailTargetVersion && $maxVersion <= (int) $detailTargetVersion + 1) || $minVersion > (int) $detailTargetVersion && $minVersion <= (int) $detailTargetVersion + 1) && ($newNsVersion < $extension->getVersion())) {
                                     $newNsVersion = $extension->getVersion();
@@ -248,6 +252,9 @@ class nsextcompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
                 if ($nsExt['compatible10'] == 1) {
                     $totalCompatible10++;
                 }
+                if ($nsExt['compatible11'] == 1) {
+                    $totalCompatible11++;
+                }
                 if ($nsExt['installed'] == 1) {
                     $totalInstalled++;
                 } else {
@@ -279,6 +286,7 @@ class nsextcompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
         $totalCompatible8 = 0;
         $totalCompatible9 = 0;
         $totalCompatible10 = 0;
+        $totalCompatible11 = 0;
         $totalInstalled = 0;
         $totalNonInstalled = 0;
         $assignArray = [];
@@ -320,6 +328,9 @@ class nsextcompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
                                 if ($minVersion <= 11 && $maxVersion >= 10) {
                                     $nsExt['compatible10'] = 1;
                                 }
+                                if ($minVersion <= 12 && $maxVersion >= 11) {
+                                    $nsExt['compatible11'] = 1;
+                                }
                                 if ((($maxVersion > (int) $myTargetVersion && $maxVersion <= (int) $myTargetVersion + 1) || $minVersion > (int) $myTargetVersion && $minVersion <= (int) $myTargetVersion + 1) && ($newNsVersion < $extension->getVersion())) {
                                     $newNsVersion = $extension->getVersion();
                                     $nsExt['newVersion'] = $newNsVersion;
@@ -357,6 +368,9 @@ class nsextcompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
                 if ($nsExt['compatible10'] == 1) {
                     $totalCompatible10++;
                 }
+                if ($nsExt['compatible11'] == 1) {
+                    $totalCompatible11++;
+                }
                 if ($nsExt['installed'] == 1) {
                     $totalInstalled++;
                 } else {
@@ -378,6 +392,7 @@ class nsextcompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
         $overviewReport['totalCompatible8'] = $totalCompatible8;
         $overviewReport['totalCompatible9'] = $totalCompatible9;
         $overviewReport['totalCompatible10'] = $totalCompatible10;
+        $overviewReport['totalCompatible11'] = $totalCompatible11;
         //Set overview array end
 
         $assignArray['overviewReport'] = $overviewReport;
@@ -491,6 +506,16 @@ class nsextcompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
                 ],
                 'mysql' => [
                     'required' => '5.0-5.7',
+                    'current' => $mysqlVersion[0],
+                ],
+            ],
+            '11.x' => [
+                'php' => [
+                    'required' => '7.4',
+                    'current' => substr(phpversion(), 0, 6),
+                ],
+                'mysql' => [
+                    'required' => '5.7',
                     'current' => $mysqlVersion[0],
                 ],
             ],
