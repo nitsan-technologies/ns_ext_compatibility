@@ -9,6 +9,9 @@
 			<trans-unit id="warning.TERUpdateText">
 				<source>Please kindly update your extension table from Extensions Module > Get Extensions, Because your last updated date is %s</source>
 			</trans-unit>
+			<trans-unit id="warning.TERUpdateTextComposer">
+				<source>Please kindly update your extension table using Composer, Because your last updated date is %s</source>
+			</trans-unit>
 			<trans-unit id="warning.TERUpdateHeadline">
 				<source>Update your extensions list with live TER (TYO3 Extensions Repository)</source>
 			</trans-unit>
