@@ -1,8 +1,8 @@
 {
   "name": "nitsan/ns_ext_compatibility",
   "type": "typo3-cms-extension",
-  "description": "One of the only TYPO3 extension which provides all the features like TYPO3 Extensions Compatibility Report, Notification of new update via Email, System overview report, Compatible with all major version of TYPO3 from 4.x to 9.x. This extension will help you to check TYPO3 upgrade technical feasibility & complexity. Demo: https://demo.t3terminal.com/t3t-extensions/extension-compatibility/ You can download PRO version for more-features & free-support at https://t3terminal.com/typo3-extensions-compatibility-report-pro/",
-  "homepage": "https://t3terminal.com/typo3-extensions-compatibility-report-free/",
+  "description": "One of the only TYPO3 extension which provides all the features like TYPO3 Extensions Compatibility Report, Notification of new update via Email, System overview report, Compatible with all major version of TYPO3 from 4.x to 9.x. This extension will help you to check TYPO3 upgrade technical feasibility & complexity. Demo: https://demo.t3planet.com/t3t-extensions/extension-compatibility/ You can download PRO version for more-features & free-support at https://t3planet.com/typo3-upgrade-extension-compatibility",
+  "homepage": "https://t3planet.com/typo3-upgrade-extension-compatibility",
   "license": "GPL-2.0+",
   "keywords": [
     "TYPO3",
