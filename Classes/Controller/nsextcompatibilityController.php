@@ -37,6 +37,7 @@ use TYPO3\CMS\Core\Utility\VersionNumberUtility;
 use TYPO3\CMS\Extbase\Annotation\Inject as inject;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility as Localize;
 use TYPO3\CMS\Extensionmanager\Utility\ListUtility;
+use TYPO3\CMS\Core\Core\Environment;
 
 /**
  * Backend Controller
@@ -75,6 +76,15 @@ class nsextcompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
         }
         //Get typo3 target version from argument and set new target version end
         $terRepo = $this->repositoryRepository->findOneTypo3OrgRepository();
+
+        //Waning Message as per typo3 installation mode
+        $environment = GeneralUtility::makeInstance(Environment::class);
+        if ($environment->isComposerMode()) {
+            $asPerMode = 'warning.TERUpdateTextComposer';
+        } else {
+            $asPerMode = 'warning.TERUpdateText';
+        }
+
         //Check last updated Date and give  show warning start
         if ($terRepo != null) {
             $lastUpdatedTime = $terRepo->getLastUpdate();
@@ -83,7 +93,7 @@ class nsextcompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
                 if (date('Y-m-d', $currentTime) > $lastUpdatedTime->format('Y-m-d')) {
                     $TERUpdateMessage = GeneralUtility::makeInstance(
                         'TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
-                        $this->translate('warning.TERUpdateText', ['date' => $lastUpdatedTime->format('Y-m-d')]),
+                        $this->translate($asPerMode, ['date' => $lastUpdatedTime->format('Y-m-d')]),
                         $this->translate('warning.TERUpdateHeadline'), // the header is optional
                         \TYPO3\CMS\Core\Messaging\FlashMessage::WARNING
                     );
@@ -92,7 +102,7 @@ class nsextcompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
                 }
             } else {
                 if (date('Y-m-d', $currentTime) > $lastUpdatedTime->format('Y-m-d')) {
-                    $this->addFlashMessage($this->translate('warning.TERUpdateText', ['date' => $lastUpdatedTime->format('Y-m-d')]), $this->translate('warning.TERUpdateHeadline'), \TYPO3\CMS\Core\Messaging\AbstractMessage::WARNING);
+                    $this->addFlashMessage($this->translate($asPerMode, ['date' => $lastUpdatedTime->format('Y-m-d')]), $this->translate('warning.TERUpdateHeadline'), \TYPO3\CMS\Core\Messaging\AbstractMessage::WARNING);
                 }
             }
         }
