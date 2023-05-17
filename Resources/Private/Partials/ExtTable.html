@@ -48,20 +48,20 @@
 	        <f:if condition="{extension.key} != 'ns_ext_compatibility'">
 	            <tr>
                     <td>{iter.cycle}</td>
-                    <f:if condition="{sysDetail.typo3version}<12">
+                    <f:if condition="{sysDetail.typo3version}<11">
                         <f:then>
-                            <td class="ext-overview" data-bs-toggle="modal" data-bs-target="#nsModel" title="{f:translate(key: 'viewDetailTooltip',arguments: {extension: extension.key})}" data-uri="{f:uri.action(action: 'detail', arguments: {extKey: extension.key,targetVersion:sysDetail.targetVersion}, controller: 'nsextcompatibility')}">
+                            <td class="ext-overview" data-toggle="modal" data-target="#nsModel" title="{f:translate(key: 'viewDetailTooltip',arguments: {extension: extension.key})}" data-uri="{f:uri.action(action: 'detail', arguments: {extKey: extension.key,targetVersion:sysDetail.targetVersion}, controller: 'nsextcompatibility')}">
                                 <f:format.crop maxCharacters="25" append="...">{extension.title}</f:format.crop>
                             </td>
-                            <td class="ext-overview" data-bs-toggle="modal" data-bs-target="#nsModel" title="{f:translate(key: 'viewDetailTooltip',arguments: {extension: extension.key})}" data-uri="{f:uri.action(action: 'detail', arguments: {extKey: extension.key,targetVersion:sysDetail.targetVersion}, controller: 'nsextcompatibility')}">
+                            <td class="ext-overview" data-toggle="modal" data-target="#nsModel" title="{f:translate(key: 'viewDetailTooltip',arguments: {extension: extension.key})}" data-uri="{f:uri.action(action: 'detail', arguments: {extKey: extension.key,targetVersion:sysDetail.targetVersion}, controller: 'nsextcompatibility')}">
                                 {extension.key}
                             </td>
                         </f:then>
                         <f:else>
-                            <td class="ext-overview" data-toggle="modal" data-target="#nsModel" title="{f:translate(key: 'viewDetailTooltip',arguments: {extension: extension.key})}" data-uri="{f:uri.action(action: 'detail', arguments: {extKey: extension.key,targetVersion:sysDetail.targetVersion}, controller: 'nsextcompatibility')}">
+                            <td class="ext-overview" data-bs-toggle="modal" data-bs-target="#nsModel" title="{f:translate(key: 'viewDetailTooltip',arguments: {extension: extension.key})}" data-uri="{f:uri.action(action: 'detail', arguments: {extKey: extension.key,targetVersion:sysDetail.targetVersion}, controller: 'nsextcompatibility')}">
                                 <f:format.crop maxCharacters="25" append="...">{extension.title}</f:format.crop>
                             </td>
-                            <td class="ext-overview" data-toggle="modal" data-target="#nsModel" title="{f:translate(key: 'viewDetailTooltip',arguments: {extension: extension.key})}" data-uri="{f:uri.action(action: 'detail', arguments: {extKey: extension.key,targetVersion:sysDetail.targetVersion}, controller: 'nsextcompatibility')}">
+                            <td class="ext-overview" data-bs-toggle="modal" data-bs-target="#nsModel" title="{f:translate(key: 'viewDetailTooltip',arguments: {extension: extension.key})}" data-uri="{f:uri.action(action: 'detail', arguments: {extKey: extension.key,targetVersion:sysDetail.targetVersion}, controller: 'nsextcompatibility')}">
                                 {extension.key}
                             </td>
                         </f:else>
@@ -199,7 +199,7 @@
                                         <f:then>
                                             <td class="compatible text-center">
                                                 <span class="hide-label"><f:translate key="yes"/></span>
-                                                <f:if condition="{sysDetail.typo3version}<12">
+                                                <f:if condition="{sysDetail.typo3version} > 11">
                                                     <f:then>
                                                         <img src="/typo3conf/ext/ns_ext_compatibility/Resources/Public/Backend/Icons/righ-icon.png" width="12" height="12" />
                                                     </f:then>
@@ -212,12 +212,12 @@
                                         <f:else>
                                             <td class="incompatible text-center">
                                                 <span class="hide-label"><f:translate key="no"/></span>
-                                                <f:if condition="{sysDetail.typo3version}<12">
+                                                <f:if condition="{sysDetail.typo3version}<11">
                                                     <f:then>
-                                                        <img src="/typo3conf/ext/ns_ext_compatibility/Resources/Public/Backend/Icons/crose-icon.png" width="12" height="12" />
+                                                        <img src="../typo3conf/ext/ns_ext_compatibility/Resources/Public/Backend/Icons/crose-icon.png" width="12" height="12" />
                                                     </f:then>
                                                     <f:else>
-                                                        <img src="../typo3conf/ext/ns_ext_compatibility/Resources/Public/Backend/Icons/crose-icon.png" width="12" height="12" />
+                                                        <img src="/typo3conf/ext/ns_ext_compatibility/Resources/Public/Backend/Icons/crose-icon.png" width="12" height="12" />
                                                     </f:else>
                                                 </f:if>
                                             </td>
@@ -238,12 +238,12 @@
                                         <f:then>
                                             <td class="compatible text-center">
                                                 <span class="hide-label"><f:translate key="yes"/></span>
-                                                <f:if condition="{sysDetail.typo3version}<12">
+                                                <f:if condition="{sysDetail.typo3version}<11">
                                                     <f:then>
-                                                        <img src="/typo3conf/ext/ns_ext_compatibility/Resources/Public/Backend/Icons/righ-icon.png" width="12" height="12" />
+                                                        <img src="../typo3conf/ext/ns_ext_compatibility/Resources/Public/Backend/Icons/righ-icon.png" width="12" height="12" />
                                                     </f:then>
                                                     <f:else>
-                                                        <img src="../typo3conf/ext/ns_ext_compatibility/Resources/Public/Backend/Icons/righ-icon.png" width="12" height="12" />
+                                                        <img src="/typo3conf/ext/ns_ext_compatibility/Resources/Public/Backend/Icons/righ-icon.png" width="12" height="12" />
                                                     </f:else>
                                                 </f:if>
                                             </td>
@@ -251,12 +251,12 @@
                                         <f:else>
                                             <td class="incompatible text-center">
                                                 <span class="hide-label"><f:translate key="no"/></span>
-                                                <f:if condition="{sysDetail.typo3version}<12">
+                                                <f:if condition="{sysDetail.typo3version}<11">
                                                     <f:then>
-                                                        <img src="/typo3conf/ext/ns_ext_compatibility/Resources/Public/Backend/Icons/crose-icon.png" width="12" height="12" />
+                                                        <img src="../typo3conf/ext/ns_ext_compatibility/Resources/Public/Backend/Icons/crose-icon.png" width="12" height="12" />
                                                     </f:then>
                                                     <f:else>
-                                                        <img src="../typo3conf/ext/ns_ext_compatibility/Resources/Public/Backend/Icons/crose-icon.png" width="12" height="12" />
+                                                        <img src="/typo3conf/ext/ns_ext_compatibility/Resources/Public/Backend/Icons/crose-icon.png" width="12" height="12" />
                                                     </f:else>
                                                 </f:if>
                                             </td>

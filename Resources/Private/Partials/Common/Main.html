@@ -1,5 +1,12 @@
 <div class="ext-wrapper">
-    <img src="../typo3conf/ext/ns_ext_compatibility/Resources/Public/Icons/loader.svg" alt="Loading...">
+    <f:if condition="{sysDetail.typo3version}>11">
+        <f:then>
+            <img src="/typo3conf/ext/ns_ext_compatibility/Resources/Public/Icons/loader.svg" alt="Loading...">
+        </f:then>
+        <f:else>
+            <img src="../typo3conf/ext/ns_ext_compatibility/Resources/Public/Icons/loader.svg" alt="Loading...">
+        </f:else>
+    </f:if>
 </div>
 <div class="ext-title">
      <f:render partial="Common/Header" arguments="{sysDetail:sysDetail}"/>

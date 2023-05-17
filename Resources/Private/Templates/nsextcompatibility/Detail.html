@@ -1,8 +1,14 @@
-
 <div class="modal-header">
-    
-    <button type="button" class="close" {f:if(condition: '{sysDetail.typo3version} < 12', then: 'data-bs-dismiss', else: 'data-dismiss')}="modal">&times;</button>
-    <h4 class="modal-title">{extension.title}</h4>
+    <f:if condition="{sysDetail.typo3version}<11">
+        <f:then>
+            <h4 class="modal-title">{extension.title}</h4>
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </f:then>
+        <f:else>
+            <button type="button" class="close" data-bs-dismiss="modal">&times;</button>
+            <h4 class="modal-title">{extension.title}</h4>
+        </f:else>
+    </f:if>
 </div>
 <div class="modal-body">
     <table class="typo3-extension-list t3-table table table-striped table-hover">
@@ -78,7 +84,7 @@
                 <td>
                     <f:if condition="{extension.installed}==1">
                         <f:then>
-                            <f:if condition="{sysDetail.typo3version}<12">
+                            <f:if condition="{sysDetail.typo3version} > 11">
                                 <f:then>
                                     <img src="/typo3conf/ext/ns_ext_compatibility/Resources/Public/Backend/Icons/righ-icon.png" width="12" height="12" />
                                 </f:then>
@@ -88,7 +94,7 @@
                             </f:if>
                         </f:then>
                         <f:else>
-                            <f:if condition="{sysDetail.typo3version}<12">
+                            <f:if condition="{sysDetail.typo3version} > 11">
                                 <f:then>
                                     <img src="/typo3conf/ext/ns_ext_compatibility/Resources/Public/Backend/Icons/crose-icon.png" width="12" height="12" />
                                 </f:then>
