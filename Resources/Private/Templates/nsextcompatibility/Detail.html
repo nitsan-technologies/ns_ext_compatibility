@@ -1,5 +1,7 @@
+
 <div class="modal-header">
-    <button type="button" class="close" data-dismiss="modal">&times;</button>
+    
+    <button type="button" class="close" {f:if(condition: '{sysDetail.typo3version} < 12', then: 'data-bs-dismiss', else: 'data-dismiss')}="modal">&times;</button>
     <h4 class="modal-title">{extension.title}</h4>
 </div>
 <div class="modal-body">
@@ -76,10 +78,24 @@
                 <td>
                     <f:if condition="{extension.installed}==1">
                         <f:then>
-                            <img src="../typo3conf/ext/ns_ext_compatibility/Resources/Public/Backend/Icons/righ-icon.png" width="12" height="12" />
+                            <f:if condition="{sysDetail.typo3version}<12">
+                                <f:then>
+                                    <img src="/typo3conf/ext/ns_ext_compatibility/Resources/Public/Backend/Icons/righ-icon.png" width="12" height="12" />
+                                </f:then>
+                                <f:else>
+                                    <img src="../typo3conf/ext/ns_ext_compatibility/Resources/Public/Backend/Icons/righ-icon.png" width="12" height="12" />
+                                </f:else>
+                            </f:if>
                         </f:then>
                         <f:else>
-                            <img src="../typo3conf/ext/ns_ext_compatibility/Resources/Public/Backend/Icons/crose-icon.png" width="12" height="12" />
+                            <f:if condition="{sysDetail.typo3version}<12">
+                                <f:then>
+                                    <img src="/typo3conf/ext/ns_ext_compatibility/Resources/Public/Backend/Icons/crose-icon.png" width="12" height="12" />
+                                </f:then>
+                                <f:else>
+                                    <img src="../typo3conf/ext/ns_ext_compatibility/Resources/Public/Backend/Icons/crose-icon.png" width="12" height="12" />
+                                </f:else>
+                            </f:if>
                         </f:else>
                     </f:if>
                 </td>

@@ -429,6 +429,12 @@
 			<trans-unit id="unknown">
 				<source>Unknown</source>
 			</trans-unit>
+			<trans-unit id="option.label12">
+				<source>TYPO3 12.x</source>
+			</trans-unit>
+			<trans-unit id="compatible12">
+                <source>Comp. 12.x</source>
+            </trans-unit>
 		</body>
 	</file>
 </xliff>

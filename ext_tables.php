@@ -3,6 +3,9 @@ if (!defined('TYPO3_MODE')) {
     die('Access denied.');
 }
 $_EXTKEY = 'ns_ext_compatibility';
+
+use NITSAN\NsExtCompatibility\Controller\nsextcompatibilityController;
+
 if (version_compare(TYPO3_branch, '6.0', '<')) {
     if (TYPO3_MODE === 'BE') {
         /**
@@ -27,6 +30,13 @@ if (version_compare(TYPO3_branch, '6.0', '<')) {
     t3lib_extMgm::addStaticFile($_EXTKEY, 'Configuration/TypoScript/nsextcompatibility4', 'ns_ext_compatibility');
 } else {
     if (TYPO3_MODE === 'BE') {
+
+        if (version_compare(TYPO3_branch, '11.0', '>=')) {
+            $moduleClass = nsextcompatibilityController::class;
+        } else {
+            $moduleClass = 'nsextcompatibility';
+        }
+        
         /**
          * Registers a Backend Module
          */
@@ -36,7 +46,7 @@ if (version_compare(TYPO3_branch, '6.0', '<')) {
             'nsextcompatibility',	// Submodule key
             '',						// Position
             [
-                'nsextcompatibility' => 'list,viewAllVersion,detail'
+                $moduleClass => 'list,viewAllVersion,detail'
             ],
             [
                 'access' => 'user,group',

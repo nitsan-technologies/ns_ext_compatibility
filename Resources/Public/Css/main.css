@@ -342,3 +342,7 @@ select.form-control:not([size]):not(.form-select-no-siblings), select.form-contr
 a:hover,a:focus{
     text-decoration: none!important;
 }
+
+.modal-backdrop{
+    z-index: 1040;
+}

@@ -37,6 +37,9 @@ use TYPO3\CMS\Core\Utility\VersionNumberUtility;
 use TYPO3\CMS\Extbase\Annotation\Inject as inject;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility as Localize;
 use TYPO3\CMS\Extensionmanager\Utility\ListUtility;
+use NITSAN\NsExtCompatibility\Domain\Repository\NsExtCompatibilityRepository;
+use TYPO3\CMS\Extensionmanager\Domain\Repository\ExtensionRepository;
+
 
 /**
  * Backend Controller
@@ -45,21 +48,48 @@ class nsextcompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
 {
     /**
      * @var \TYPO3\CMS\Extensionmanager\Domain\Repository\ExtensionRepository
-     * @inject
      */
     protected $extensionRepository;
 
+     /**
+     * Inject extensionRepository object
+     *
+     * @param ExtensionRepository $extensionRepository object
+     */
+    public function injectRepositoryRepository(ExtensionRepository $extensionRepository)
+    {
+        $this->extensionRepository = $extensionRepository;
+    }
+
     /**
      * @var \TYPO3\CMS\Extensionmanager\Domain\Repository\RepositoryRepository
-     * @inject
      */
     protected $repositoryRepository;
 
     /**
+     * Inject repositoryRepository object
+     *
+     * @param RepositoryRepository $repositoryRepository object
+     */
+    // public function injectRepositoryRepository(RepositoryRepository $repositoryRepository)
+    // {
+    //     $this->repositoryRepository = $repositoryRepository;
+    // }
+
+    /**
      * @var \NITSAN\NsExtCompatibility\Domain\Repository\NsExtCompatibilityRepository
-     * @inject
      */
     protected $NsExtCompatibilityRepository;
+
+    /**
+     * Inject NsExtCompatibilityRepository object
+     *
+     * @param NsExtCompatibilityRepository $NsExtCompatibilityRepository object
+     */
+    public function injectResourceFactory(NsExtCompatibilityRepository $NsExtCompatibilityRepository)
+    {
+        $this->NsExtCompatibilityRepository = $NsExtCompatibilityRepository;
+    }
 
     /**
      * This method is used for fetch list of local extension
@@ -74,7 +104,9 @@ class nsextcompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
             $sysDetail['targetVersion'] = $targetVersion;
         }
         //Get typo3 target version from argument and set new target version end
-        $terRepo = $this->repositoryRepository->findOneTypo3OrgRepository();
+        $terRepo = null;
+        // $terRepo = $this->repositoryRepository->findOneTypo3OrgRepository();
+
         //Check last updated Date and give  show warning start
         if ($terRepo != null) {
             $lastUpdatedTime = $terRepo->getLastUpdate();
@@ -120,10 +152,10 @@ class nsextcompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
 
         //call getAllExtensions() method for fetch extension list
         $assignArray = $this->getAllExtensions($sysDetail['targetVersion']);
-
         $assignArray['sysDetail'] = $sysDetail;
         $assignArray['targetSystemRequirement'] = $targetSystemRequirement;
         $this->view->assignMultiple($assignArray);
+
     }
 
     /*
@@ -171,6 +203,7 @@ class nsextcompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
         $totalCompatible9 = 0;
         $totalCompatible10 = 0;
         $totalCompatible11 = 0;
+        $totalCompatible12 = 0;
         $totalInstalled = 0;
         $totalNonInstalled = 0;
         $arguments = $this->request->getArguments();
@@ -210,6 +243,9 @@ class nsextcompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
                                 }
                                 if ($minVersion <= 12 && $maxVersion >= 11) {
                                     $nsExt['compatible11'] = 1;
+                                }
+                                if ($minVersion <= 13 && $maxVersion >= 12) {
+                                    $nsExt['compatible12'] = 1;
                                 }
                                 if ((($maxVersion > (int) $detailTargetVersion && $maxVersion <= (int) $detailTargetVersion + 1) || $minVersion > (int) $detailTargetVersion && $minVersion <= (int) $detailTargetVersion + 1) && ($newNsVersion < $extension->getVersion())) {
                                     $newNsVersion = $extension->getVersion();
@@ -255,6 +291,9 @@ class nsextcompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
                 if ($nsExt['compatible11'] == 1) {
                     $totalCompatible11++;
                 }
+                if ($nsExt['compatible12'] == 1) {
+                    $totalCompatible12++;
+                }
                 if ($nsExt['installed'] == 1) {
                     $totalInstalled++;
                 } else {
@@ -287,6 +326,7 @@ class nsextcompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
         $totalCompatible9 = 0;
         $totalCompatible10 = 0;
         $totalCompatible11 = 0;
+        $totalCompatible12 = 0;
         $totalInstalled = 0;
         $totalNonInstalled = 0;
         $assignArray = [];
@@ -331,6 +371,9 @@ class nsextcompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
                                 if ($minVersion <= 12 && $maxVersion >= 11) {
                                     $nsExt['compatible11'] = 1;
                                 }
+                                if ($minVersion <= 13 && $maxVersion >= 12) {
+                                    $nsExt['compatible12'] = 1;
+                                }
                                 if ((($maxVersion > (int) $myTargetVersion && $maxVersion <= (int) $myTargetVersion + 1) || $minVersion > (int) $myTargetVersion && $minVersion <= (int) $myTargetVersion + 1) && ($newNsVersion < $extension->getVersion())) {
                                     $newNsVersion = $extension->getVersion();
                                     $nsExt['newVersion'] = $newNsVersion;
@@ -371,6 +414,9 @@ class nsextcompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
                 if ($nsExt['compatible11'] == 1) {
                     $totalCompatible11++;
                 }
+                if ($nsExt['compatible12'] == 1) {
+                    $totalCompatible12++;
+                }
                 if ($nsExt['installed'] == 1) {
                     $totalInstalled++;
                 } else {
@@ -393,6 +439,8 @@ class nsextcompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
         $overviewReport['totalCompatible9'] = $totalCompatible9;
         $overviewReport['totalCompatible10'] = $totalCompatible10;
         $overviewReport['totalCompatible11'] = $totalCompatible11;
+        $overviewReport['totalCompatible12'] = $totalCompatible12;
+
         //Set overview array end
 
         $assignArray['overviewReport'] = $overviewReport;
@@ -409,6 +457,7 @@ class nsextcompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
         $sysDetail = [];
         if (version_compare(TYPO3_branch, '10.0', '>=')) {
             $extConfig = $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['ns_ext_compatibility'];
+
         } else {
             $extConfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['ns_ext_compatibility']);
         }
@@ -447,7 +496,6 @@ class nsextcompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
                 $this->addFlashMessage($e->getMessage(), 'Exception: ' . $e->getCode(), \TYPO3\CMS\Core\Messaging\AbstractMessage::ERROR);
             }
         }
-
         $typo3Config = [
             '4.x' => [
                 'php' => [
@@ -516,6 +564,16 @@ class nsextcompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
                 ],
                 'mysql' => [
                     'required' => '5.7',
+                    'current' => $mysqlVersion[0],
+                ],
+            ],
+            '12.x' => [
+                'php' => [
+                    'required' => '8.1',
+                    'current' => substr(phpversion(), 0, 6),
+                ],
+                'mysql' => [
+                    'required' => '8.0',
                     'current' => $mysqlVersion[0],
                 ],
             ],
