@@ -39,7 +39,8 @@ use TYPO3\CMS\Extbase\Utility\LocalizationUtility as Localize;
 use TYPO3\CMS\Extensionmanager\Utility\ListUtility;
 use NITSAN\NsExtCompatibility\Domain\Repository\NsExtCompatibilityRepository;
 use TYPO3\CMS\Extensionmanager\Domain\Repository\ExtensionRepository;
-
+use TYPO3\CMS\Extensionmanager\Domain\Repository\RepositoryRepository;
+use TYPO3\CMS\Extensionmanager\Remote\RemoteRegistry;
 
 /**
  * Backend Controller
@@ -48,6 +49,7 @@ class nsextcompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
 {
     /**
      * @var \TYPO3\CMS\Extensionmanager\Domain\Repository\ExtensionRepository
+     * @TYPO3\CMS\Extbase\Annotation\Inject
      */
     protected $extensionRepository;
 
@@ -56,26 +58,22 @@ class nsextcompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
      *
      * @param ExtensionRepository $extensionRepository object
      */
-    public function injectRepositoryRepository(ExtensionRepository $extensionRepository)
+    public function injectExtensionRepository(ExtensionRepository $extensionRepository)
     {
         $this->extensionRepository = $extensionRepository;
     }
 
     /**
      * @var \TYPO3\CMS\Extensionmanager\Domain\Repository\RepositoryRepository
+     * @TYPO3\CMS\Extbase\Annotation\Inject
      */
     protected $repositoryRepository;
 
     /**
-     * Inject repositoryRepository object
-     *
-     * @param RepositoryRepository $repositoryRepository object
+     * @var \TYPO3\CMS\Extensionmanager\Remote\RemoteRegistry
      */
-    // public function injectRepositoryRepository(RepositoryRepository $repositoryRepository)
-    // {
-    //     $this->repositoryRepository = $repositoryRepository;
-    // }
-
+    protected $remoteRegistry;
+    
     /**
      * @var \NITSAN\NsExtCompatibility\Domain\Repository\NsExtCompatibilityRepository
      */
@@ -105,30 +103,46 @@ class nsextcompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
         }
         //Get typo3 target version from argument and set new target version end
         $terRepo = null;
-        // $terRepo = $this->repositoryRepository->findOneTypo3OrgRepository();
-
-        //Check last updated Date and give  show warning start
-        if ($terRepo != null) {
-            $lastUpdatedTime = $terRepo->getLastUpdate();
-            $currentTime = strtotime('-30 days');
-            if (version_compare(TYPO3_branch, '6.2', '<')) {
-                if (date('Y-m-d', $currentTime) > $lastUpdatedTime->format('Y-m-d')) {
-                    $TERUpdateMessage = GeneralUtility::makeInstance(
-                        'TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
-                        $this->translate('warning.TERUpdateText', ['date' => $lastUpdatedTime->format('Y-m-d')]),
-                        $this->translate('warning.TERUpdateHeadline'), // the header is optional
-                        \TYPO3\CMS\Core\Messaging\FlashMessage::WARNING
-                    );
-
-                    \TYPO3\CMS\Core\Messaging\FlashMessageQueue::addMessage($TERUpdateMessage);
+        $currentTime = strtotime('-30 days');
+        if (version_compare(TYPO3_branch, '11', '<')) {
+            $terRepo = $this->repositoryRepository->findOneTypo3OrgRepository();
+            if ($terRepo != null) {
+                $lastUpdatedTime = $terRepo->getLastUpdate();
+                if (version_compare(TYPO3_branch, '6.2', '<')) {
+                    if (date('Y-m-d', $currentTime) > $lastUpdatedTime->format('Y-m-d')) {
+                        $TERUpdateMessage = GeneralUtility::makeInstance(
+                            'TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
+                            $this->translate('warning.TERUpdateText', ['date' => $lastUpdatedTime->format('Y-m-d')]),
+                            $this->translate('warning.TERUpdateHeadline'), // the header is optional
+                            \TYPO3\CMS\Core\Messaging\FlashMessage::WARNING
+                        );
+    
+                        \TYPO3\CMS\Core\Messaging\FlashMessageQueue::addMessage($TERUpdateMessage);
+                    }
+                } else {
+                    if (date('Y-m-d', $currentTime) > $lastUpdatedTime->format('Y-m-d')) {
+                        $this->addFlashMessage($this->translate('warning.TERUpdateText', ['date' => $lastUpdatedTime->format('Y-m-d')]), $this->translate('warning.TERUpdateHeadline'), \TYPO3\CMS\Core\Messaging\AbstractMessage::WARNING);
+                    }
                 }
-            } else {
-                if (date('Y-m-d', $currentTime) > $lastUpdatedTime->format('Y-m-d')) {
-                    $this->addFlashMessage($this->translate('warning.TERUpdateText', ['date' => $lastUpdatedTime->format('Y-m-d')]), $this->translate('warning.TERUpdateHeadline'), \TYPO3\CMS\Core\Messaging\AbstractMessage::WARNING);
+            }
+        }else{
+            $this->remoteRegistry = GeneralUtility::makeInstance(RemoteRegistry::class);
+            if($this->remoteRegistry){
+                foreach ($this->remoteRegistry->getListableRemotes() as $remote) {
+                    if ((!$updated && $emptyExtensionList) || $forceUpdateCheck) {
+                        $remote->getAvailablePackages($forceUpdateCheck);
+                        $updated = $forceUpdateCheck;
+                    }
+                    if ($lastUpdate === null || $lastUpdate < $remote->getLastUpdate()) {
+                        $lastUpdate = $remote->getLastUpdate();
+                    }
+                }
+                $lastUpdateTime = $lastUpdate->format('Y-m-d');
+                if (date('Y-m-d', $currentTime) > $lastUpdateTime) {
+                    $this->addFlashMessage($this->translate('warning.TERUpdateText', ['date' => $lastUpdateTime]), $this->translate('warning.TERUpdateHeadline'), \TYPO3\CMS\Core\Messaging\AbstractMessage::WARNING);
                 }
             }
         }
-        //Check last updated Date and give  show warning end
 
         //Check typo3 target version from extension settings start
         if (version_compare(TYPO3_branch, '6.2', '<')) {

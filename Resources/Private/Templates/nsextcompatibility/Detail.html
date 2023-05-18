@@ -1,12 +1,12 @@
 <div class="modal-header">
     <f:if condition="{sysDetail.typo3version}<11">
         <f:then>
-            <h4 class="modal-title">{extension.title}</h4>
             <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">{extension.title}</h4>
         </f:then>
         <f:else>
-            <button type="button" class="close" data-bs-dismiss="modal">&times;</button>
             <h4 class="modal-title">{extension.title}</h4>
+            <button type="button" class="close" data-bs-dismiss="modal">&times;</button>
         </f:else>
     </f:if>
 </div>
