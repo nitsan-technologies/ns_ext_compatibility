@@ -125,11 +125,17 @@ class SendExtensionsReportTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask
     {
         $mail = GeneralUtility::makeInstance(MailMessage::class);
         if (!empty($receiver) && !empty($sender)) {
-            return $mail->setFrom($sender)
-                            ->setTo($receiver)
-                            ->setSubject($subject)
-                            ->setBody($body, $bodyType)
-                            ->send();
+
+            $mail->setFrom($sender);
+            $mail->setTo($receiver);
+            $mail->setSubject($subject);
+            if (version_compare(TYPO3_branch, '11', '<')) {
+                $mail->setBody($body, $bodyType);
+            }else{
+                $mail->html($body, $bodyType);
+            }
+            return $mail->send();
+           
         } else {
             return false;
         }
