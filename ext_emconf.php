@@ -1,12 +1,14 @@
 <?php
 
 $EM_CONF[$_EXTKEY] = [
-    'title' => '[NITSAN] TYPO3 Extensions Compatibility Report',
-    'description' => 'One of the only TYPO3 extension which provides all the features like TYPO3 Extensions Compatibility Report, Notification of new update via Email, System overview report, Compatible with all major version of TYPO3 from 4.x to 9.x. This extension will help you to check TYPO3 upgrade technical feasibility & complexity. Demo: https://demo.t3terminal.com/t3t-extensions/extension-compatibility/ You can download PRO version for more-features & free-support at https://t3planet.com/typo3-upgrade-extension-compatibility',
+    'title' => 'Upgrade Extensions Compatibility',
+    'description' => 'Are you in need of a TYPO3 Extension that offers features such as system information reporting, statistical analysis of TYPO3 extensions, downloadable compatibility options, and more? TYPO3 Extensions Compatibility Report, tailored to meet your specific requirements! Compatible with all major versions of TYPO3 from 4.x to 12.x, it assists you in assessing the feasibility and complexity of TYPO3 upgrades. 
+    
+    ***  Live-Demo: https://demo.t3planet.com/t3-extensions/ext-compatibility *** Premium Version, Documentation & Free Support: https://t3planet.com/typo3-upgrade-extension-compatibility/',
     'category' => 'module',
-    'author' => 'NITSAN Technologies Pvt Ltd',
+    'author' => 'T3Planet // NITSAN',
     'author_email' => 'sanjay@nitsan.in',
-    'author_company' => 'NITSAN Technologies Pvt Ltd',
+    'author_company' => 'T3Planet // NITSAN',
     'shy' => '',
     'priority' => '',
     'module' => '',
