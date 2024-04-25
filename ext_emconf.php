@@ -6,7 +6,7 @@ $EM_CONF[$_EXTKEY] = [
     
     ***  Live-Demo: https://demo.t3planet.com/t3-extensions/ext-compatibility *** Premium Version, Documentation & Free Support: https://t3planet.com/typo3-upgrade-extension-compatibility/',
     'category' => 'module',
-    'author' => 'T3Planet // NITSAN',
+    'author' => 'T3: Himanshu Ramavat, T3: Divya Goklani, T3: Nilesh Malankiya, QA: Krishna Dhapa',
     'author_email' => 'sanjay@nitsan.in',
     'author_company' => 'T3Planet // NITSAN',
     'shy' => '',
@@ -19,10 +19,10 @@ $EM_CONF[$_EXTKEY] = [
     'modify_tables' => '',
     'clearCacheOnLoad' => 0,
     'lockType' => '',
-    'version' => '5.1.2',
+    'version' => '6.0.0',
     'constraints' => [
         'depends' => [
-            'typo3' => '4.5.0-10.9.99',
+            'typo3' => '4.5.0-11.9.99',
         ],
         'conflicts' => [
         ],

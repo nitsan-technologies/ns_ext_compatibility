@@ -1,8 +1,8 @@
 {
   "name": "nitsan/ns_ext_compatibility",
   "type": "typo3-cms-extension",
-  "description": "Are you in need of a TYPO3 Extension that offers features such as system information reporting, statistical analysis of TYPO3 extensions, downloadable compatibility options, and more? TYPO3 Extensions Compatibility Report, tailored to meet your specific requirements! Compatible with all major versions of TYPO3, it assists you in assessing the feasibility and complexity of TYPO3 upgrades.",
-  "homepage": "https://demo.t3planet.com/t3-extensions/ext-compatibility",
+  "description": "Are you in need of a TYPO3 Extension that offers features such as system information reporting, statistical analysis of TYPO3 extensions, downloadable compatibility options, and more? TYPO3 Extensions Compatibility Report, tailored to meet your specific requirements!",
+  "homepage": "https://t3planet.com/typo3-upgrade-extension-compatibility",
   "license": "GPL-2.0+",
   "keywords": [
     "TYPO3",
@@ -22,7 +22,7 @@
     }
   ],
   "require": {
-    "typo3/cms-core": "^4.0 || ^5.0 || ^6.0 || ^7.0 || ^8.0  || ^9.0 || ^10.0 "
+    "typo3/cms-core": "^4.0 || ^5.0 || ^6.0 || ^7.0 || ^8.0  || ^9.0 || ^10.0 || ^11.0"
   },
   "autoload": {
     "psr-4": {

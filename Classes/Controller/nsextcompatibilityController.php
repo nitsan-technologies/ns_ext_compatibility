@@ -31,12 +31,19 @@ namespace NITSAN\NsExtCompatibility\Controller;
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
+
+use Doctrine\DBAL\Exception;
 use NITSAN\NsExtCompatibility\Utility\Extension;
+use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\VersionNumberUtility;
-use TYPO3\CMS\Extbase\Annotation\Inject as inject;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility as Localize;
 use TYPO3\CMS\Extensionmanager\Utility\ListUtility;
+use NITSAN\NsExtCompatibility\Domain\Repository\NsExtCompatibilityRepository;
+use TYPO3\CMS\Extensionmanager\Domain\Repository\ExtensionRepository;
+use TYPO3\CMS\Extensionmanager\Domain\Repository\RepositoryRepository;
+use TYPO3\CMS\Extensionmanager\Remote\RemoteRegistry;
 
 /**
  * Backend Controller
@@ -45,21 +52,45 @@ class nsextcompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
 {
     /**
      * @var \TYPO3\CMS\Extensionmanager\Domain\Repository\ExtensionRepository
-     * @inject
+     * @TYPO3\CMS\Extbase\Annotation\Inject
      */
     protected $extensionRepository;
 
+     /**
+     * Inject extensionRepository object
+     *
+     * @param ExtensionRepository $extensionRepository object
+     */
+    public function injectExtensionRepository(ExtensionRepository $extensionRepository)
+    {
+        $this->extensionRepository = $extensionRepository;
+    }
+
     /**
      * @var \TYPO3\CMS\Extensionmanager\Domain\Repository\RepositoryRepository
-     * @inject
+     * @TYPO3\CMS\Extbase\Annotation\Inject
      */
     protected $repositoryRepository;
 
     /**
+     * @var \TYPO3\CMS\Extensionmanager\Remote\RemoteRegistry
+     */
+    protected $remoteRegistry;
+
+    /**
      * @var \NITSAN\NsExtCompatibility\Domain\Repository\NsExtCompatibilityRepository
-     * @inject
      */
     protected $NsExtCompatibilityRepository;
+
+    /**
+     * Inject NsExtCompatibilityRepository object
+     *
+     * @param NsExtCompatibilityRepository $NsExtCompatibilityRepository object
+     */
+    public function injectResourceFactory(NsExtCompatibilityRepository $NsExtCompatibilityRepository)
+    {
+        $this->NsExtCompatibilityRepository = $NsExtCompatibilityRepository;
+    }
 
     /**
      * This method is used for fetch list of local extension
@@ -74,29 +105,56 @@ class nsextcompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
             $sysDetail['targetVersion'] = $targetVersion;
         }
         //Get typo3 target version from argument and set new target version end
-        $terRepo = $this->repositoryRepository->findOneTypo3OrgRepository();
-        //Check last updated Date and give  show warning start
-        if ($terRepo != null) {
-            $lastUpdatedTime = $terRepo->getLastUpdate();
-            $currentTime = strtotime('-30 days');
-            if (version_compare(TYPO3_branch, '6.2', '<')) {
-                if (date('Y-m-d', $currentTime) > $lastUpdatedTime->format('Y-m-d')) {
-                    $TERUpdateMessage = GeneralUtility::makeInstance(
-                        'TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
-                        $this->translate('warning.TERUpdateText', ['date' => $lastUpdatedTime->format('Y-m-d')]),
-                        $this->translate('warning.TERUpdateHeadline'), // the header is optional
-                        \TYPO3\CMS\Core\Messaging\FlashMessage::WARNING
-                    );
+        $terRepo = null;
 
-                    \TYPO3\CMS\Core\Messaging\FlashMessageQueue::addMessage($TERUpdateMessage);
+        //Waning Message as per typo3 installation mode
+        $environment = GeneralUtility::makeInstance(Environment::class);
+        if ($environment->isComposerMode()) {
+            $asPerMode = 'warning.TERUpdateTextComposer';
+        } else {
+            $asPerMode = 'warning.TERUpdateText';
+        }
+
+        $currentTime = strtotime('-30 days');
+        if (version_compare(TYPO3_branch, '11', '<')) {
+            $terRepo = $this->repositoryRepository->findOneTypo3OrgRepository();
+            if ($terRepo != null) {
+                $lastUpdatedTime = $terRepo->getLastUpdate();
+                if (version_compare(TYPO3_branch, '6.2', '<')) {
+                    if (date('Y-m-d', $currentTime) > $lastUpdatedTime->format('Y-m-d')) {
+                        $TERUpdateMessage = GeneralUtility::makeInstance(
+                            'TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
+                            $this->translate( $asPerMode , ['date' => $lastUpdatedTime->format('Y-m-d')]),
+                            $this->translate('warning.TERUpdateHeadline'), // the header is optional
+                            \TYPO3\CMS\Core\Messaging\FlashMessage::WARNING
+                        );
+
+                        \TYPO3\CMS\Core\Messaging\FlashMessageQueue::addMessage($TERUpdateMessage);
+                    }
+                } else {
+                    if (date('Y-m-d', $currentTime) > $lastUpdatedTime->format('Y-m-d')) {
+                        $this->addFlashMessage($this->translate($asPerMode, ['date' => $lastUpdatedTime->format('Y-m-d')]), $this->translate('warning.TERUpdateHeadline'), \TYPO3\CMS\Core\Messaging\AbstractMessage::WARNING);
+                    }
                 }
-            } else {
-                if (date('Y-m-d', $currentTime) > $lastUpdatedTime->format('Y-m-d')) {
-                    $this->addFlashMessage($this->translate('warning.TERUpdateText', ['date' => $lastUpdatedTime->format('Y-m-d')]), $this->translate('warning.TERUpdateHeadline'), \TYPO3\CMS\Core\Messaging\AbstractMessage::WARNING);
+            }
+        }else{
+            $this->remoteRegistry = GeneralUtility::makeInstance(RemoteRegistry::class);
+            if($this->remoteRegistry){
+                foreach ($this->remoteRegistry->getListableRemotes() as $remote) {
+                    if ((!$updated && $emptyExtensionList) || $forceUpdateCheck) {
+                        $remote->getAvailablePackages($forceUpdateCheck);
+                        $updated = $forceUpdateCheck;
+                    }
+                    if ($lastUpdate === null || $lastUpdate < $remote->getLastUpdate()) {
+                        $lastUpdate = $remote->getLastUpdate();
+                    }
+                }
+                $lastUpdateTime = $lastUpdate->format('Y-m-d');
+                if (date('Y-m-d', $currentTime) > $lastUpdateTime) {
+                    $this->addFlashMessage($this->translate('warning.TERUpdateText', ['date' => $lastUpdateTime]), $this->translate('warning.TERUpdateHeadline'), \TYPO3\CMS\Core\Messaging\AbstractMessage::WARNING);
                 }
             }
         }
-        //Check last updated Date and give  show warning end
 
         //Check typo3 target version from extension settings start
         if (version_compare(TYPO3_branch, '6.2', '<')) {
@@ -120,10 +178,10 @@ class nsextcompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
 
         //call getAllExtensions() method for fetch extension list
         $assignArray = $this->getAllExtensions($sysDetail['targetVersion']);
-
         $assignArray['sysDetail'] = $sysDetail;
         $assignArray['targetSystemRequirement'] = $targetSystemRequirement;
         $this->view->assignMultiple($assignArray);
+
     }
 
     /*
@@ -171,6 +229,7 @@ class nsextcompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
         $totalCompatible9 = 0;
         $totalCompatible10 = 0;
         $totalCompatible11 = 0;
+        $totalCompatible12 = 0;
         $totalInstalled = 0;
         $totalNonInstalled = 0;
         $arguments = $this->request->getArguments();
@@ -210,6 +269,9 @@ class nsextcompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
                                 }
                                 if ($minVersion <= 12 && $maxVersion >= 11) {
                                     $nsExt['compatible11'] = 1;
+                                }
+                                if ($minVersion <= 13 && $maxVersion >= 12) {
+                                    $nsExt['compatible12'] = 1;
                                 }
                                 if ((($maxVersion > (int) $detailTargetVersion && $maxVersion <= (int) $detailTargetVersion + 1) || $minVersion > (int) $detailTargetVersion && $minVersion <= (int) $detailTargetVersion + 1) && ($newNsVersion < $extension->getVersion())) {
                                     $newNsVersion = $extension->getVersion();
@@ -255,6 +317,9 @@ class nsextcompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
                 if ($nsExt['compatible11'] == 1) {
                     $totalCompatible11++;
                 }
+                if ($nsExt['compatible12'] == 1) {
+                    $totalCompatible12++;
+                }
                 if ($nsExt['installed'] == 1) {
                     $totalInstalled++;
                 } else {
@@ -287,6 +352,7 @@ class nsextcompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
         $totalCompatible9 = 0;
         $totalCompatible10 = 0;
         $totalCompatible11 = 0;
+        $totalCompatible12 = 0;
         $totalInstalled = 0;
         $totalNonInstalled = 0;
         $assignArray = [];
@@ -309,9 +375,9 @@ class nsextcompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
                         foreach ($extension->getDependencies() as $dependency) {
                             if ($dependency->getIdentifier() === 'typo3') {
                                 // Extract min TYPO3 CMS version (lowest)
-                                $minVersion = $dependency->getLowestVersion();
+                                $minVersion = (int) $dependency->getLowestVersion();
                                 // Extract max TYPO3 CMS version (higherst)
-                                $maxVersion = $dependency->getHighestVersion();
+                                $maxVersion = (int) $dependency->getHighestVersion();
 
                                 if ($minVersion <= 7 && $maxVersion >= 6) {
                                     $nsExt['compatible6'] = 1;
@@ -330,6 +396,9 @@ class nsextcompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
                                 }
                                 if ($minVersion <= 12 && $maxVersion >= 11) {
                                     $nsExt['compatible11'] = 1;
+                                }
+                                if ($minVersion <= 13 && $maxVersion >= 12) {
+                                    $nsExt['compatible12'] = 1;
                                 }
                                 if ((($maxVersion > (int) $myTargetVersion && $maxVersion <= (int) $myTargetVersion + 1) || $minVersion > (int) $myTargetVersion && $minVersion <= (int) $myTargetVersion + 1) && ($newNsVersion < $extension->getVersion())) {
                                     $newNsVersion = $extension->getVersion();
@@ -371,6 +440,9 @@ class nsextcompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
                 if ($nsExt['compatible11'] == 1) {
                     $totalCompatible11++;
                 }
+                if ($nsExt['compatible12'] == 1) {
+                    $totalCompatible12++;
+                }
                 if ($nsExt['installed'] == 1) {
                     $totalInstalled++;
                 } else {
@@ -393,6 +465,8 @@ class nsextcompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
         $overviewReport['totalCompatible9'] = $totalCompatible9;
         $overviewReport['totalCompatible10'] = $totalCompatible10;
         $overviewReport['totalCompatible11'] = $totalCompatible11;
+        $overviewReport['totalCompatible12'] = $totalCompatible12;
+
         //Set overview array end
 
         $assignArray['overviewReport'] = $overviewReport;
@@ -409,6 +483,7 @@ class nsextcompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
         $sysDetail = [];
         if (version_compare(TYPO3_branch, '10.0', '>=')) {
             $extConfig = $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['ns_ext_compatibility'];
+
         } else {
             $extConfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['ns_ext_compatibility']);
         }
@@ -427,12 +502,18 @@ class nsextcompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
 
     /**
      * This method is used for get System requirement for target typo3 version
-     **/
+     *
+     * @throws Exception
+     */
     public function getSysRequirementForTargetVersion($targetVersion)
     {
         try {
-            exec('convert -version', $imgmagic);
-            preg_match('@[0-9]+\.[0-9]+\.[0-9]+@', shell_exec('mysql -V'), $mysqlVersion);
+            if ((int)VersionNumberUtility::getNumericTypo3Version() > 7) {
+                list($mysqlVersion) = $this->getMysqlVersion();
+            } else {
+                exec('convert -version', $imgmagic);
+                preg_match('@[0-9]+\.[0-9]+\.[0-9]+@', shell_exec('mysql -V'), $mysqlVersion);
+            }
         } catch (\Exception $e) {
             if (version_compare(TYPO3_branch, '6.2', '<')) {
                 $erorrMessage = GeneralUtility::makeInstance(
@@ -447,7 +528,6 @@ class nsextcompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
                 $this->addFlashMessage($e->getMessage(), 'Exception: ' . $e->getCode(), \TYPO3\CMS\Core\Messaging\AbstractMessage::ERROR);
             }
         }
-
         $typo3Config = [
             '4.x' => [
                 'php' => [
@@ -486,7 +566,7 @@ class nsextcompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
                 ],
                 'mysql' => [
                     'required' => '5.0-5.7',
-                    'current' => $mysqlVersion[0],
+                    'current' => $mysqlVersion,
                 ],
             ],
             '9.x' => [
@@ -496,7 +576,7 @@ class nsextcompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
                 ],
                 'mysql' => [
                     'required' => '5.0-5.7',
-                    'current' => $mysqlVersion[0],
+                    'current' => $mysqlVersion,
                 ],
             ],
             '10.x' => [
@@ -506,7 +586,7 @@ class nsextcompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
                 ],
                 'mysql' => [
                     'required' => '5.0-5.7',
-                    'current' => $mysqlVersion[0],
+                    'current' => $mysqlVersion,
                 ],
             ],
             '11.x' => [
@@ -516,7 +596,17 @@ class nsextcompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
                 ],
                 'mysql' => [
                     'required' => '5.7',
-                    'current' => $mysqlVersion[0],
+                    'current' => $mysqlVersion,
+                ],
+            ],
+            '12.x' => [
+                'php' => [
+                    'required' => '8.1',
+                    'current' => substr(phpversion(), 0, 6),
+                ],
+                'mysql' => [
+                    'required' => '8.0',
+                    'current' => $mysqlVersion,
                 ],
             ],
         ];
@@ -534,5 +624,29 @@ class nsextcompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
         } else {
             return Localize::translate($key, 'ns_ext_compatibility');
         }
+    }
+
+    /**
+     *
+     * @return array
+     * @throws Exception
+     */
+    public function getMysqlVersion(): array
+    {
+        foreach (GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionNames() as $connectionName) {
+            try {
+                $serverVersion = GeneralUtility::makeInstance(ConnectionPool::class)
+                    ->getConnectionByName($connectionName)
+                    ->getServerVersion();
+            } catch (\Exception $exception) {
+            }
+        }
+
+        if (preg_match('/MySQL ([\d.]+)/', $serverVersion, $matches)) {
+            $mysqlVersion = $matches[1]; // This will contain '10.4.33'
+        } else {
+            throw new Exception('Unable to extract MySQL version from string.');
+        }
+        return array($mysqlVersion);
     }
 }

@@ -429,6 +429,15 @@
 			<trans-unit id="unknown">
 				<source>Unknown</source>
 			</trans-unit>
+			<trans-unit id="option.label12">
+				<source>TYPO3 12.x</source>
+			</trans-unit>
+			<trans-unit id="compatible12">
+                <source>Comp. 12.x</source>
+            </trans-unit>
+			<trans-unit id="warning.TERUpdateTextComposer">
+				<source>Please kindly update your extension table using Composer, Because your last updated date is %s</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>
