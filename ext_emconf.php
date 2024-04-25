@@ -6,7 +6,7 @@ $EM_CONF[$_EXTKEY] = [
     
     ***  Live-Demo: https://demo.t3planet.com/t3-extensions/ext-compatibility *** Premium Version, Documentation & Free Support: https://t3planet.com/typo3-upgrade-extension-compatibility/',
     'category' => 'module',
-    'author' => 'T3Planet // NITSAN',
+    'author' => 'T3: Himanshu Ramavat, T3: Divya Goklani, T3: Nilesh Malankiya, QA: Krishna Dhapa',
     'author_email' => 'sanjay@nitsan.in',
     'author_company' => 'T3Planet // NITSAN',
     'shy' => '',
