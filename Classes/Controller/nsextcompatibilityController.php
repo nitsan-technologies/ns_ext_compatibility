@@ -151,7 +151,7 @@ class nsextcompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
                 }
                 $lastUpdateTime = $lastUpdate->format('Y-m-d');
                 if (date('Y-m-d', $currentTime) > $lastUpdateTime) {
-                    $this->addFlashMessage($this->translate('warning.TERUpdateText', ['date' => $lastUpdateTime]), $this->translate('warning.TERUpdateHeadline'), \TYPO3\CMS\Core\Messaging\AbstractMessage::WARNING);
+                    $this->addFlashMessage($this->translate($asPerMode, ['date' => $lastUpdateTime]), $this->translate('warning.TERUpdateHeadline'), \TYPO3\CMS\Core\Messaging\AbstractMessage::WARNING);
                 }
             }
         }

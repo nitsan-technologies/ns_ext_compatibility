@@ -436,7 +436,7 @@
                 <source>Comp. 12.x</source>
             </trans-unit>
 			<trans-unit id="warning.TERUpdateTextComposer">
-				<source>Please kindly update your extension table using Composer, Because your last updated date is %s</source>
+				<source>Please update your extension table using Schedule task: Update extension list (extensionmanager), because your last update date is %s</source>
 			</trans-unit>
 		</body>
 	</file>
