@@ -1,4 +1,5 @@
 <?php
+
 namespace NITSAN\NsExtCompatibility\Controller;
 
 /***************************************************************
@@ -56,11 +57,11 @@ class nsextcompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
      */
     protected $extensionRepository;
 
-     /**
-     * Inject extensionRepository object
-     *
-     * @param ExtensionRepository $extensionRepository object
-     */
+    /**
+    * Inject extensionRepository object
+    *
+    * @param ExtensionRepository $extensionRepository object
+    */
     public function injectExtensionRepository(ExtensionRepository $extensionRepository)
     {
         $this->extensionRepository = $extensionRepository;
@@ -92,27 +93,46 @@ class nsextcompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
         $this->NsExtCompatibilityRepository = $NsExtCompatibilityRepository;
     }
 
+    //    /**
+    //     * Inject RepositoryRepository object
+    //     *
+    //     * @param RepositoryRepository $repositoryRepository
+    //     */
+    //    public function injectRepositoryRepository(RepositoryRepository $repositoryRepository)
+    //    {
+    //        $this->repositoryRepository = $repositoryRepository;
+    //    }
+
     /**
-     * This method is used for fetch list of local extension
+     * This method is used for a fetch list of local extension
      */
     public function listAction()
     {
         $sysDetail = $this->getSysDetail();
         //Get typo3 target version from argument and set new target version start
         $arguments = $this->request->getArguments();
-        $targetVersion = $arguments['targetVersion'];
-        if (isset($targetVersion)) {
+        if (isset($arguments['targetVersion'])) {
+            $targetVersion = $arguments['targetVersion'];
             $sysDetail['targetVersion'] = $targetVersion;
         }
         //Get typo3 target version from argument and set new target version end
         $terRepo = null;
 
         //Waning Message as per typo3 installation mode
-        $environment = GeneralUtility::makeInstance(Environment::class);
-        if ($environment->isComposerMode()) {
-            $asPerMode = 'warning.TERUpdateTextComposer';
+        if (version_compare(TYPO3_branch, '9', '<')) {
+            $composerMode = file_exists(PATH_site . 'composer.json') || file_exists(PATH_site . 'composer.lock');
+            if ($composerMode) {
+                $asPerMode = 'warning.TERUpdateTextComposer';
+            } else {
+                $asPerMode = 'warning.TERUpdateText';
+            }
         } else {
-            $asPerMode = 'warning.TERUpdateText';
+            $environment = GeneralUtility::makeInstance(Environment::class);
+            if ($environment->isComposerMode()) {
+                $asPerMode = 'warning.TERUpdateTextComposer';
+            } else {
+                $asPerMode = 'warning.TERUpdateText';
+            }
         }
 
         $currentTime = strtotime('-30 days');
@@ -124,7 +144,7 @@ class nsextcompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
                     if (date('Y-m-d', $currentTime) > $lastUpdatedTime->format('Y-m-d')) {
                         $TERUpdateMessage = GeneralUtility::makeInstance(
                             'TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
-                            $this->translate( $asPerMode , ['date' => $lastUpdatedTime->format('Y-m-d')]),
+                            $this->translate($asPerMode, ['date' => $lastUpdatedTime->format('Y-m-d')]),
                             $this->translate('warning.TERUpdateHeadline'), // the header is optional
                             \TYPO3\CMS\Core\Messaging\FlashMessage::WARNING
                         );
@@ -137,14 +157,11 @@ class nsextcompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
                     }
                 }
             }
-        }else{
+        } else {
             $this->remoteRegistry = GeneralUtility::makeInstance(RemoteRegistry::class);
-            if($this->remoteRegistry){
+            $lastUpdate = null;
+            if($this->remoteRegistry) {
                 foreach ($this->remoteRegistry->getListableRemotes() as $remote) {
-                    if ((!$updated && $emptyExtensionList) || $forceUpdateCheck) {
-                        $remote->getAvailablePackages($forceUpdateCheck);
-                        $updated = $forceUpdateCheck;
-                    }
                     if ($lastUpdate === null || $lastUpdate < $remote->getLastUpdate()) {
                         $lastUpdate = $remote->getLastUpdate();
                     }
@@ -184,163 +201,8 @@ class nsextcompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
 
     }
 
-    /*
-     * This method is used for fetch all version of passed extension
-     */
-    public function viewAllVersionAction()
-    {
-        $arguments = $this->request->getArguments();
-        $extension = $arguments['extension'];
-        $nsTargetVersion = $arguments['targetVersion'];
-        $allVersions = $this->extensionRepository->findByExtensionKeyOrderedByVersion($extension);
-        $newNsVersion = 0;
-        foreach ($allVersions as $extension) {
-            foreach ($extension->getDependencies() as $dependency) {
-                if ($dependency->getIdentifier() === 'typo3') {
-                    // Extract min TYPO3 CMS version (lowest)
-                    $minVersion = $dependency->getLowestVersion();
-                    // Extract max TYPO3 CMS version (higherst)
-                    $maxVersion = $dependency->getHighestVersion();
-                    if ((($maxVersion > (int) $nsTargetVersion && $maxVersion <= (int) $nsTargetVersion + 1) || $minVersion > (int) $nsTargetVersion && $minVersion <= (int) $nsTargetVersion + 1) && ($newNsVersion < $extension->getVersion())) {
-                        $compatVersion = $extension;
-                    }
-                }
-            }
-        }
-        if (empty($compatVersion)) {
-            $compatVersion = $allVersions[0];
-        }
-        $this->view->assign('compatVersion', $compatVersion);
-        $this->view->assign('allVersions', $allVersions);
-    }
-
     /**
-     * Shows all versions of a specific extension
-     *
-     * @param string $extensionKey
-     * @return void
-     */
-    public function detailAction()
-    {
-        $totalCompatible4 = 0;
-        $totalCompatible6 = 0;
-        $totalCompatible7 = 0;
-        $totalCompatible8 = 0;
-        $totalCompatible9 = 0;
-        $totalCompatible10 = 0;
-        $totalCompatible11 = 0;
-        $totalCompatible12 = 0;
-        $totalInstalled = 0;
-        $totalNonInstalled = 0;
-        $arguments = $this->request->getArguments();
-        $extKey = $arguments['extKey'];
-        $detailTargetVersion = $arguments['targetVersion'];
-        //Get extension list
-        $myExtList = $this->objectManager->get(ListUtility::class);
-        $allExtensions = $myExtList->getAvailableAndInstalledExtensionsWithAdditionalInformation();
-        foreach ($allExtensions as $extensionKey => $nsExt) {
-            $newNsVersion = 0;
-            //Filter all local extension for whole TER data start
-            if (strtolower($nsExt['type']) == 'local' && $nsExt['key'] == $extKey) {
-                $extArray = $this->extensionRepository->findByExtensionKeyOrderedByVersion($nsExt['key']);
-                //Fetch typo3 depency of extesion  start
-                if (count($extArray) != 0) {
-                    foreach ($extArray as $extension) {
-                        foreach ($extension->getDependencies() as $dependency) {
-                            if ($dependency->getIdentifier() === 'typo3') {
-                                // Extract min TYPO3 CMS version (lowest)
-                                $minVersion = $dependency->getLowestVersion();
-                                // Extract max TYPO3 CMS version (higherst)
-                                $maxVersion = $dependency->getHighestVersion();
-                                if ($minVersion <= 7 && $maxVersion >= 6) {
-                                    $nsExt['compatible6'] = 1;
-                                }
-                                if ($minVersion <= 8 && $maxVersion >= 7) {
-                                    $nsExt['compatible7'] = 1;
-                                }
-                                if ($minVersion <= 9 && $maxVersion >= 8) {
-                                    $nsExt['compatible8'] = 1;
-                                }
-                                if ($minVersion <= 10 && $maxVersion >= 9) {
-                                    $nsExt['compatible9'] = 1;
-                                }
-                                if ($minVersion <= 11 && $maxVersion >= 10) {
-                                    $nsExt['compatible10'] = 1;
-                                }
-                                if ($minVersion <= 12 && $maxVersion >= 11) {
-                                    $nsExt['compatible11'] = 1;
-                                }
-                                if ($minVersion <= 13 && $maxVersion >= 12) {
-                                    $nsExt['compatible12'] = 1;
-                                }
-                                if ((($maxVersion > (int) $detailTargetVersion && $maxVersion <= (int) $detailTargetVersion + 1) || $minVersion > (int) $detailTargetVersion && $minVersion <= (int) $detailTargetVersion + 1) && ($newNsVersion < $extension->getVersion())) {
-                                    $newNsVersion = $extension->getVersion();
-                                    $nsExt['newVersion'] = $newNsVersion;
-                                }
-                            }
-                        }
-                    }
-                } else {
-                    $nsExt['customExt'] = true;
-                }
-                //Fetch typo3 depency of extesion  end
-
-                // Set overview Report start
-                if ($extArray[0] && empty($nsExt['newVersion'])) {
-                    $nsExt['newVersion'] = $extArray[0]->getVersion();
-                }
-                if ($extArray[0]) {
-                    $nsExt['newUplaodComment'] = $extArray[0]->getUpdateComment();
-                    $nsExt['newLastDate'] = $extArray[0]->getLastUpdated();
-                    $nsExt['newAlldownloadcounter'] = $extArray[0]->getAlldownloadcounter();
-                }
-
-                //Count Total compatibility Start
-                if ($nsExt['compatible4'] == 1) {
-                    $totalCompatible4++;
-                }
-                if ($nsExt['compatible6'] == 1) {
-                    $totalCompatible6++;
-                }
-                if ($nsExt['compatible7'] == 1) {
-                    $totalCompatible7++;
-                }
-                if ($nsExt['compatible8'] == 1) {
-                    $totalCompatible8++;
-                }
-                if ($nsExt['compatible9'] == 1) {
-                    $totalCompatible9++;
-                }
-                if ($nsExt['compatible10'] == 1) {
-                    $totalCompatible10++;
-                }
-                if ($nsExt['compatible11'] == 1) {
-                    $totalCompatible11++;
-                }
-                if ($nsExt['compatible12'] == 1) {
-                    $totalCompatible12++;
-                }
-                if ($nsExt['installed'] == 1) {
-                    $totalInstalled++;
-                } else {
-                    $totalNonInstalled++;
-                }
-
-                //Count Total compatibility End
-
-                $extension = $nsExt;
-            }
-            //Filter all local extension for whole TER data end
-        }
-        $sysDetail = $this->getSysDetail();
-
-        $sysDetail['targetVersion'] = $detailTargetVersion;
-        $this->view->assign('sysDetail', $sysDetail);
-        $this->view->assign('extension', $extension);
-    }
-
-    /**
-     * This method is used for  get detail list of local extension
+     * This method is used for get a detail list of a local extension
      */
     public function getAllExtensions($myTargetVersion)
     {
@@ -359,7 +221,7 @@ class nsextcompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
         $extensionlist = [];
         $overviewReport = [];
 
-        //Get extension list
+        //Get han extension list
         $myExtList = $this->objectManager->get(ListUtility::class);
         $allExtensions = $myExtList->getAvailableAndInstalledExtensionsWithAdditionalInformation();
 
@@ -419,31 +281,31 @@ class nsextcompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
                 }
 
                 //Count Total compatibility Start
-                if ($nsExt['compatible4'] == 1) {
+                if (isset($nsExt['compatible4']) and $nsExt['compatible4'] == 1) {
                     $totalCompatible4++;
                 }
-                if ($nsExt['compatible6'] == 1) {
+                if (isset($nsExt['compatible6']) and $nsExt['compatible6'] == 1) {
                     $totalCompatible6++;
                 }
-                if ($nsExt['compatible7'] == 1) {
+                if (isset($nsExt['compatible7']) and $nsExt['compatible7'] == 1) {
                     $totalCompatible7++;
                 }
-                if ($nsExt['compatible8'] == 1) {
+                if (isset($nsExt['compatible8']) and $nsExt['compatible8'] == 1) {
                     $totalCompatible8++;
                 }
-                if ($nsExt['compatible9'] == 1) {
+                if (isset($nsExt['compatible9']) and $nsExt['compatible9'] == 1) {
                     $totalCompatible9++;
                 }
-                if ($nsExt['compatible10'] == 1) {
+                if (isset($nsExt['compatible10']) and $nsExt['compatible10'] == 1) {
                     $totalCompatible10++;
                 }
-                if ($nsExt['compatible11'] == 1) {
+                if (isset($nsExt['compatible11']) and $nsExt['compatible11'] == 1) {
                     $totalCompatible11++;
                 }
-                if ($nsExt['compatible12'] == 1) {
+                if (isset($nsExt['compatible12']) and $nsExt['compatible12'] == 1) {
                     $totalCompatible12++;
                 }
-                if ($nsExt['installed'] == 1) {
+                if (isset($nsExt['installed']) and $nsExt['installed'] == 1) {
                     $totalInstalled++;
                 } else {
                     $totalNonInstalled++;
@@ -536,7 +398,7 @@ class nsextcompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
                 ],
                 'mysql' => [
                     'required' => '5.0-5.5',
-                    'current' => $mysqlVersion[0],
+                    'current' => $mysqlVersion,
                 ],
             ],
             '6.x' => [
@@ -546,7 +408,7 @@ class nsextcompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
                 ],
                 'mysql' => [
                     'required' => '5.1-5.6',
-                    'current' => $mysqlVersion[0],
+                    'current' => $mysqlVersion,
                 ],
             ],
             '7.x' => [
@@ -556,7 +418,7 @@ class nsextcompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
                 ],
                 'mysql' => [
                     'required' => '5.5-5.7',
-                    'current' => $mysqlVersion[0],
+                    'current' => $mysqlVersion,
                 ],
             ],
             '8.x' => [

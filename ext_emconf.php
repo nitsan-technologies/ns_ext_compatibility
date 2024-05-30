@@ -1,6 +1,6 @@
 <?php
 
-$EM_CONF[$_EXTKEY] = [
+$EM_CONF['ns_ext_compatibility'] = [
     'title' => 'Upgrade Extensions Compatibility',
     'description' => 'Are you in need of a TYPO3 Extension that offers features such as system information reporting, statistical analysis of TYPO3 extensions, downloadable compatibility options, and more? TYPO3 Extensions Compatibility Report, tailored to meet your specific requirements! Compatible with all major versions of TYPO3 , it assists you in assessing the feasibility and complexity of TYPO3 upgrades. 
     
@@ -19,7 +19,7 @@ $EM_CONF[$_EXTKEY] = [
     'modify_tables' => '',
     'clearCacheOnLoad' => 0,
     'lockType' => '',
-    'version' => '6.0.1',
+    'version' => '6.1.0',
     'constraints' => [
         'depends' => [
             'typo3' => '4.5.0-11.9.99',

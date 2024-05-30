@@ -32,7 +32,6 @@
  */
 class TxNsextcompatibilityControllerNsextcompatibility4controller extends Tx_Extbase_MVC_Controller_ActionController
 {
-
     /**
      * Constructor
      * @return void
@@ -96,119 +95,6 @@ class TxNsextcompatibilityControllerNsextcompatibility4controller extends Tx_Ext
         $assignArray['targetSystemRequirement'] = $targetSystemRequirement;
 
         $this->view->assignMultiple($assignArray);
-    }
-
-    /*
-     * This method is used for fetch all version of passed extension
-     */
-    public function viewAllVersionAction()
-    {
-        $arguments = $this->request->getArguments();
-        $extension = $arguments['extension'];
-        $nsTargetVersion = $arguments['targetVersion'];
-        $allVersions = $this->nsExtRepo->getLatestVersionsofExtension($extension);
-        $newNsVersion = 0;
-        foreach ($allVersions as $key => $updExt) {
-            $dependencies = unserialize($updExt['dependencies']);
-            if (!empty($dependencies)) {
-                foreach ($dependencies['depends'] as $depends => $value) {
-                    if ($depends == 'typo3') {
-                        $version = explode('-', $value);
-                        if ((($version[1] > (int) $nsTargetVersion && $version[1] <= (int) $nsTargetVersion + 1) || $version[0] > (int) $nsTargetVersion && $version[0] <= (int) $nsTargetVersion + 1) && ($newNsVersion < $updExt['version'])) {
-                            $newNsVersion = $updExt['version'];
-                            $compatVersion = $updExt;
-                        }
-                    }
-                }
-            }
-        }
-        if (empty($compatVersion)) {
-            $compatVersion = $allVersions[0];
-        }
-        $this->view->assign('compatVersion', $compatVersion);
-        $this->view->assign('allVersions', array_values($allVersions));
-    }
-
-    /**
-     * Shows all versions of a specific extension
-     *
-     * @param string $extensionKey
-     * @return void
-     */
-    public function detailAction()
-    {
-        $arguments = $this->request->getArguments();
-        $extKey = $arguments['extKey'];
-        $targetversion = $arguments['targetVersion'];
-
-        $extensionlists = $this->extRepo->getExtensionDetails();
-        foreach ($extensionlists['data'] as $key => $extension) {
-            if ($extension['doubleInstall'] == 'Local' && $extension['extkey'] == $extKey) {
-                $updateToVersion = $this->nsExtRepo->getLatestVersionsofExtension($extension['extkey']);
-                if (!empty($updateToVersion)) {
-                    foreach ($updateToVersion as $key => $updExt) {
-                        $dependencies = unserialize($updExt['dependencies']);
-                        if (!empty($dependencies)) {
-                            foreach ($dependencies['depends'] as $depends => $value) {
-                                if ($depends == 'typo3') {
-                                    $version = explode('-', $value);
-                                    if (($version[0] < 6 && $version[1] >= 4) || ($version[0] < 6 && $version[1] == 0.0)) {
-                                        $extension['compatible4'] = 1;
-                                    }
-                                    if ($version[0] <= 7 && $version[1] >= 6) {
-                                        $extension['compatible6'] = 1;
-                                    }
-                                    if ($version[0] <= 8 && $version[1] >= 7) {
-                                        $extension['compatible7'] = 1;
-                                    }
-                                    if ($version[0] <= 9 && $version[1] >= 8) {
-                                        $extension['compatible8'] = 1;
-                                    }
-                                    if ($version[0] <= 10 && $version[1] >= 9) {
-                                        $extension['compatible9'] = 1;
-                                    }
-                                    if ($version[0] <= 11 && $version[1] >= 10) {
-                                        $extension['compatible10'] = 1;
-                                    }
-                                    if ($version[0] <= 12 && $version[1] >= 11) {
-                                        $extension['compatible11'] = 1;
-                                    }
-                                    if ($minVersion > $version[0]) {
-                                        $minVersion = $version[0];
-                                    }
-                                    if ((($version[1] > (int) $targetversion && $version[1] <= (int) $targetversion + 1) || $version[0] > (int) $targetversion && $version[0] <= (int) $targetversion + 1) && ($newNsVersion < $extension['version'])) {
-                                        $newNsVersion = $updExt['version'];
-                                        $extension['newVersion'] = $newNsVersion;
-                                    }
-                                } else {
-                                    if (TYPO3_branch < 6) {
-                                        $extension['compatible4'] = 1;
-                                    }
-                                }
-                            }
-                        } else {
-                            if (TYPO3_branch < 6) {
-                                $extension['compatible4'] = 1;
-                            }
-                        }
-                        $extension['updateToVersion'] = $updateToVersion[0];
-                    }
-                    $extension['type'] = 'TER';
-                } else {
-                    if (TYPO3_branch < 6) {
-                        $extension['compatible4'] = 1;
-                    }
-                    $extension['type'] = 'Custom';
-                }
-                $extDetail = $extension;
-            }
-        }
-
-        $sysDetail = $this->getSysDetail();
-        $sysDetail = $this->getSysDetail();
-        $sysDetail['targetVersion'] = $targetversion;
-        $this->view->assign('sysDetail', $sysDetail);
-        $this->view->assign('extension', $extDetail);
     }
 
     /**

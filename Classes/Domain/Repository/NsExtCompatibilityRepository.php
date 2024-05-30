@@ -1,4 +1,5 @@
 <?php
+
 namespace  NITSAN\NsExtCompatibility\Domain\Repository;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -35,14 +36,13 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class NsExtCompatibilityRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
 {
-
     /*
      * This method is used for get all pages of site
     */
     public function countPages()
     {
         if (version_compare(TYPO3_branch, '9.0', '<')) {
-            $totolPages= $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('*', 'pages', 'deleted=0');
+            $totolPages = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('*', 'pages', 'deleted=0');
         } else {
             $queryBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Database\ConnectionPool::class)
             ->getQueryBuilderForTable('pages');
@@ -72,7 +72,7 @@ class NsExtCompatibilityRepository extends \TYPO3\CMS\Extbase\Persistence\Reposi
                         ->execute()
                         ->fetchColumn(0);
         }
-        if ($totalDomain>0) {
+        if ($totalDomain > 0) {
             return $totalDomain;
         } else {
             return 1;
@@ -95,6 +95,6 @@ class NsExtCompatibilityRepository extends \TYPO3\CMS\Extbase\Persistence\Reposi
                        ->execute()
                        ->fetchColumn(0);
         }
-        return $totalLang+1;
+        return $totalLang + 1;
     }
 }
