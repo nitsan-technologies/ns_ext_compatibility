@@ -28,7 +28,7 @@
  *
  *
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
- *
+ * @extensionScannerIgnoreLine
  */
 class TxNsextcompatibilityControllerNsextcompatibility4controller extends Tx_Extbase_MVC_Controller_ActionController
 {

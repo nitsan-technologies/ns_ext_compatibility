@@ -5,7 +5,6 @@ namespace NITSAN\NsExtCompatibility\Task;
 /**
  * Class SendExtensionsReportTask
  */
-use NITSAN\NsExtCompatibility\Utility\Extension;
 use TYPO3\CMS\Core\Mail\MailMessage;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -15,6 +14,10 @@ use TYPO3\CMS\Extensionmanager\Domain\Repository\ExtensionRepository;
 use TYPO3\CMS\Extensionmanager\Utility\ListUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 
+/**
+ * SendExtensionsReportTask
+ * @extensionScannerIgnoreLine
+ */
 class SendExtensionsReportTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask
 {
     /**

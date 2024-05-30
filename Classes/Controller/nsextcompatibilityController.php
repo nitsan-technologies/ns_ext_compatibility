@@ -34,7 +34,7 @@ namespace NITSAN\NsExtCompatibility\Controller;
  */
 
 use Doctrine\DBAL\Exception;
-use NITSAN\NsExtCompatibility\Utility\Extension;
+use TYPO3\CMS\Extbase\Annotation\Inject as inject;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -43,17 +43,18 @@ use TYPO3\CMS\Extbase\Utility\LocalizationUtility as Localize;
 use TYPO3\CMS\Extensionmanager\Utility\ListUtility;
 use NITSAN\NsExtCompatibility\Domain\Repository\NsExtCompatibilityRepository;
 use TYPO3\CMS\Extensionmanager\Domain\Repository\ExtensionRepository;
-use TYPO3\CMS\Extensionmanager\Domain\Repository\RepositoryRepository;
 use TYPO3\CMS\Extensionmanager\Remote\RemoteRegistry;
 
 /**
  * Backend Controller
+ * @extensionScannerIgnoreLine
  */
 class nsextcompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 {
     /**
      * @var \TYPO3\CMS\Extensionmanager\Domain\Repository\ExtensionRepository
-     * @TYPO3\CMS\Extbase\Annotation\Inject
+     * @extensionScannerIgnoreLine
+     * @inject
      */
     protected $extensionRepository;
 
@@ -69,7 +70,8 @@ class nsextcompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
 
     /**
      * @var \TYPO3\CMS\Extensionmanager\Domain\Repository\RepositoryRepository
-     * @TYPO3\CMS\Extbase\Annotation\Inject
+     * @extensionScannerIgnoreLine
+     * @inject
      */
     protected $repositoryRepository;
 
@@ -92,16 +94,6 @@ class nsextcompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
     {
         $this->NsExtCompatibilityRepository = $NsExtCompatibilityRepository;
     }
-
-    //    /**
-    //     * Inject RepositoryRepository object
-    //     *
-    //     * @param RepositoryRepository $repositoryRepository
-    //     */
-    //    public function injectRepositoryRepository(RepositoryRepository $repositoryRepository)
-    //    {
-    //        $this->repositoryRepository = $repositoryRepository;
-    //    }
 
     /**
      * This method is used for a fetch list of local extension

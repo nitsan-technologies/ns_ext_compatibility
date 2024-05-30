@@ -7,6 +7,10 @@ namespace NITSAN\NsExtCompatibility\Task;
  */
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility as Localize;
 
+/**
+ * SendExtensionsReportTaskAdditionalFieldProvider
+ * @extensionScannerIgnoreLine
+ */
 class SendExtensionsReportTaskAdditionalFieldProvider implements \TYPO3\CMS\Scheduler\AdditionalFieldProviderInterface
 {
     /**

@@ -4,7 +4,7 @@ if (!defined('TYPO3_MODE')) {
     die('Access denied.');
 }
 $_EXTKEY = 'ns_ext_compatibility';
-
+// @extensionScannerIgnoreLine
 use NITSAN\NsExtCompatibility\Controller\nsextcompatibilityController;
 
 if (version_compare(TYPO3_branch, '6.0', '<')) {
@@ -63,23 +63,19 @@ if (version_compare(TYPO3_branch, '6.0', '<')) {
             'additionalFields' => 'NITSAN\\NsExtCompatibility\\Task\\SendExtensionsReportTaskAdditionalFieldProvider'
         ];
     }
+
+    $typoScriptPath = 'Configuration/TypoScript';
+
     if (version_compare(TYPO3_branch, '6.2', '<')) {
-        \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addStaticFile(
-            $_EXTKEY,
-            'Configuration/TypoScript/nsextcompatibility6/6.1',
-            'ns_ext_compatibility'
-        );
+        $typoScriptPath .= '/nsextcompatibility6/6.1';
     } elseif (version_compare(TYPO3_branch, '7.0', '<')) {
-        \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addStaticFile(
-            $_EXTKEY,
-            'Configuration/TypoScript/nsextcompatibility6/6.2',
-            'ns_ext_compatibility'
-        );
-    } else {
-        \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addStaticFile(
-            $_EXTKEY,
-            'Configuration/TypoScript',
-            'ns_ext_compatibility'
-        );
+        $typoScriptPath .= '/nsextcompatibility6/6.2';
     }
+
+    \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addStaticFile(
+        $_EXTKEY,
+        $typoScriptPath,
+        'ns_ext_compatibility'
+    );
+
 }

@@ -28,7 +28,7 @@
  *
  *
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
- *
+ * @extensionScannerIgnoreLine
  */
 class Tx_NsExtCompatibility_Domain_Repository_NsExtCompatibility4Repository extends Tx_Extbase_Persistence_Repository
 {
