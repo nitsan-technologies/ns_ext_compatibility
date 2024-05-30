@@ -3,6 +3,7 @@
 namespace  NITSAN\NsExtCompatibility\Domain\Repository;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 
 /***************************************************************
  *  Copyright notice
@@ -98,4 +99,17 @@ class NsExtCompatibilityRepository extends \TYPO3\CMS\Extbase\Persistence\Reposi
         }
         return $totalLang + 1;
     }
+
+    function getDBVersion() {
+        foreach (GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionNames() as $connectionName) {
+            try {
+                $serverVersion = GeneralUtility::makeInstance(ConnectionPool::class)
+                    ->getConnectionByName($connectionName)
+                    ->getServerVersion();
+            } catch (\Exception $exception) {
+            }
+        }
+        return $serverVersion;
+    }
+
 }

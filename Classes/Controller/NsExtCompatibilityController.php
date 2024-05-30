@@ -49,7 +49,7 @@ use TYPO3\CMS\Extensionmanager\Remote\RemoteRegistry;
  * Backend Controller
  * @extensionScannerIgnoreLine
  */
-class nsextcompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
+class NsExtCompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 {
     /**
      * @var \TYPO3\CMS\Extensionmanager\Domain\Repository\ExtensionRepository
@@ -487,15 +487,7 @@ class nsextcompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
      */
     public function getMysqlVersion(): array
     {
-        foreach (GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionNames() as $connectionName) {
-            try {
-                $serverVersion = GeneralUtility::makeInstance(ConnectionPool::class)
-                    ->getConnectionByName($connectionName)
-                    ->getServerVersion();
-            } catch (\Exception $exception) {
-            }
-        }
-
+        $serverVersion = $this->NsExtCompatibilityRepository->getDBVersion();
         if (preg_match('/MySQL ([\d.]+)/', $serverVersion, $matches)) {
             $mysqlVersion = $matches[1]; // This will contain '10.4.33'
         } else {

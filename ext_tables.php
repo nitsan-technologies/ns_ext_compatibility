@@ -5,7 +5,7 @@ if (!defined('TYPO3_MODE')) {
 }
 $_EXTKEY = 'ns_ext_compatibility';
 // @extensionScannerIgnoreLine
-use NITSAN\NsExtCompatibility\Controller\nsextcompatibilityController;
+use NITSAN\NsExtCompatibility\Controller\NsExtCompatibilityController;
 
 if (version_compare(TYPO3_branch, '6.0', '<')) {
     if (TYPO3_MODE === 'BE') {
@@ -33,9 +33,9 @@ if (version_compare(TYPO3_branch, '6.0', '<')) {
     if (TYPO3_MODE === 'BE') {
 
         if (version_compare(TYPO3_branch, '11.0', '>=')) {
-            $moduleClass = nsextcompatibilityController::class;
+            $moduleClass = NsExtCompatibilityController::class;
         } else {
-            $moduleClass = 'nsextcompatibility';
+            $moduleClass = 'NsExtCompatibility';
         }
 
         /**
