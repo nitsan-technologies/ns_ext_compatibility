@@ -28,10 +28,10 @@
         	<f:for each="{extensionlist}" as="extension" iteration="iter">
     			<tr {f:if(condition:iter.isOdd, then: 'class="bgColor6"', else:'class="bgColor4"' )}>
     				<td>{iter.cycle}</td>
-    				<td class="ext-overview" data-uri="{f:uri.action(action: 'detail', arguments:{extKey: extension.extkey,targetVersion:sysDetail.targetVersion}, controller: 'nsextcompatibility')}" data-toggle="modal" data-target="#nsModel">
+    				<td class="ext-overview" data-uri="{f:uri.action(action: 'detail', arguments:{extKey: extension.extkey,targetVersion:sysDetail.targetVersion}, controller: 'NsExtCompatibility')}" data-toggle="modal" data-target="#nsModel">
                         <f:format.crop maxCharacters="25" append="...">{extension.title}</f:format.crop>
                     </td>
-    				<td class="ext-overview" data-uri="{f:uri.action(action: 'detail', arguments:{extKey: extension.extkey,targetVersion:sysDetail.targetVersion}, controller: 'nsextcompatibility')}" data-toggle="modal" data-target="#nsModel">{extension.extkey}</td>
+    				<td class="ext-overview" data-uri="{f:uri.action(action: 'detail', arguments:{extKey: extension.extkey,targetVersion:sysDetail.targetVersion}, controller: 'NsExtCompatibility')}" data-toggle="modal" data-target="#nsModel">{extension.extkey}</td>
                     <f:if condition="{extension.compatible4}">
                         <f:then>
                             <td class="compatible text-center">

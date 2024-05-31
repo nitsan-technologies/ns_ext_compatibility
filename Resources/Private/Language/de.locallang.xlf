@@ -1,0 +1,588 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<xliff version="1.0">
+	<file source-language="en" datatype="plaintext" original="messages" date="2018-02-10T16:41:47Z" product-name="ns_ext_compatibility" target-language="de">
+		<header/>
+		<body>
+			<trans-unit id="module.title">
+				<source>Extension Report</source>
+				<target>Erweiterungsbericht</target>
+			</trans-unit>
+			<trans-unit id="warning.TERUpdateText">
+				<source>Please kindly update your extension table from Extensions Module &gt; Get Extensions, Because your last updated date is %s</source>
+				<target>Bitte aktualisieren Sie Ihre Erweiterungstabelle im Erweiterungsmodul &gt; Erweiterungen abrufen, da Ihr letztes Aktualisierungsdatum %s ist.</target>
+			</trans-unit>
+			<trans-unit id="warning.TERUpdateHeadline">
+				<source>Update your extensions list with live TER (TYO3 Extensions Repository)</source>
+				<target>Aktualisieren Sie Ihre Erweiterungsliste mit Live-TER (TYO3 Extensions Repository)</target>
+			</trans-unit>
+			<trans-unit id="warning.selectProperTargetVersionText">
+				<source>Target version must be greater than current TYPO3 version, Please select another version of TYPO3.</source>
+				<target>Die Zielversion muss höher sein als die aktuelle TYPO3-Version. Bitte wählen Sie eine andere Version von TYPO3.</target>
+			</trans-unit>
+			<trans-unit id="typo3Upgrade6">
+				<source>TYPO3 v6.x</source>
+				<target>TYPO3 v6.x</target>
+			</trans-unit>
+			<trans-unit id="typo3Upgrade7">
+				<source>TYPO3 v7.x</source>
+				<target>TYPO3 v7.x</target>
+			</trans-unit>
+			<trans-unit id="typo3Upgrade8">
+				<source>TYPO3 v8x</source>
+				<target>TYPO3 v8x</target>
+			</trans-unit>
+			<trans-unit id="typo3Upgrade9">
+				<source>TYPO3 v9.x</source>
+				<target>TYPO3 v9.x</target>
+			</trans-unit>
+			<trans-unit id="typo3Upgrade10">
+				<source>TYPO3 v10.x</source>
+				<target>TYPO3 v10.x</target>
+			</trans-unit>
+			<trans-unit id="typo3UpgradeOptLabel">
+				<source>Choose target TYPO3 version to check compatibility : </source>
+				<target>Wählen Sie die Zielversion von TYPO3, um die Kompatibilität zu überprüfen:</target>
+			</trans-unit>
+			<trans-unit id="warning.selectProperTargetVersionHeadline">
+				<source>Please select proper target TYPO3 version.</source>
+				<target>Bitte wählen Sie die richtige TYPO3-Zielversion aus.</target>
+			</trans-unit>
+			<trans-unit id="btn.export">
+				<source>Export Report</source>
+				<target>Liste exportieren</target>
+			</trans-unit>
+			<trans-unit id="pagetitle">
+				<source>TYPO3 Extensions Compatibility Checker</source>
+				<target>Kompatibilitätsprüfung für TYPO3-Erweiterungen</target>
+			</trans-unit>
+			<trans-unit id="langague">
+				<source>Total Languages</source>
+				<target>Sprachen gesamt</target>
+			</trans-unit>
+			<trans-unit id="phpVersion">
+				<source>PHP Version</source>
+				<target>PHP-Version</target>
+			</trans-unit>
+			<trans-unit id="sysInfo">
+				<source>System Information</source>
+				<target>System Information</target>
+			</trans-unit>
+			<trans-unit id="currentTypo3Version">
+				<source>Current TYPO3 Version</source>
+				<target>Aktuelle TYPO3 Version</target>
+			</trans-unit>
+			<trans-unit id="targetTypo3Version">
+				<source>Target TYPO3 Version</source>
+				<target>Zielversion von TYPO3</target>
+			</trans-unit>
+			<trans-unit id="totalPagesofSite">
+				<source>Total Pages</source>
+				<target>Alle Seiten</target>
+			</trans-unit>
+			<trans-unit id="numberOfDomain">
+				<source>Total Domain</source>
+				<target>Gesamtdomäne</target>
+			</trans-unit>
+			<trans-unit id="overviewReport">
+				<source>Extensions Statistics</source>
+				<target>Erweiterungen Statistiken</target>
+			</trans-unit>
+			<trans-unit id="totalInstalledExt">
+				<source>Total Installed Extension</source>
+				<target>Insgesamt installierte Erweiterung</target>
+			</trans-unit>
+			<trans-unit id="totalNonInstalledExt">
+				<source>Total Not-Installed Extension</source>
+				<target>Gesamtzahl nicht installierter Erweiterungen</target>
+			</trans-unit>
+			<trans-unit id="totalUsed">
+				<source>Total Used Extension</source>
+				<target>Insgesamt genutzte Erweiterung</target>
+			</trans-unit>
+			<trans-unit id="totalCompatible4">
+				<source>Total Compatible of TYPO3 4.x</source>
+				<target>Vollständige Kompatibilität von TYPO3 4.x</target>
+			</trans-unit>
+			<trans-unit id="totalCompatible6">
+				<source>Total Compatible of TYPO3 6.x</source>
+				<target>Vollständige Kompatibilität von TYPO3 6.x</target>
+			</trans-unit>
+			<trans-unit id="totalCompatible7">
+				<source>Total Compatible of TYPO3 7.x</source>
+				<target>Vollständige Kompatibilität von TYPO3 7.x</target>
+			</trans-unit>
+			<trans-unit id="totalCompatible8">
+				<source>Total Compatible of TYPO3 8.x</source>
+				<target>Vollständige Kompatibilität von TYPO3 8.x</target>
+			</trans-unit>
+			<trans-unit id="totalCompatible9">
+				<source>Total Compatible of TYPO3 9.x</source>
+				<target>Vollständige Kompatibilität von TYPO3 9.x</target>
+			</trans-unit>
+			<trans-unit id="totalCompatible10">
+				<source>Total Compatible of TYPO3 10.x</source>
+				<target>Vollständige Kompatibilität von TYPO3 10.x</target>
+			</trans-unit>
+			<trans-unit id="totalCompatible11">
+				<source>Total Compatible of TYPO3 11.x</source>
+				<target>Vollständige Kompatibilität von TYPO3 11.x</target>
+			</trans-unit>
+			<trans-unit id="extensionlist">
+				<source>TYPO3 Extensions Report</source>
+				<target>TYPO3-Erweiterungsbericht</target>
+			</trans-unit>
+			<trans-unit id="srNo">
+				<source>#</source>
+				<target>#</target>
+			</trans-unit>
+			<trans-unit id="extkey">
+				<source>Extension Key</source>
+				<target>Erweiterungsschlüssel</target>
+			</trans-unit>
+			<trans-unit id="option.label">
+				<source>TYPO3</source>
+				<target>TYPO3</target>
+			</trans-unit>
+			<trans-unit id="option.label4">
+				<source>TYPO3 4.x</source>
+				<target>TYPO3 4.x</target>
+			</trans-unit>
+			<trans-unit id="option.label6">
+				<source>TYPO3 6.x</source>
+				<target>TYPO3 6.x</target>
+			</trans-unit>
+			<trans-unit id="option.label7">
+				<source>TYPO3 7.x</source>
+				<target>TYPO3 7.x</target>
+			</trans-unit>
+			<trans-unit id="option.label8">
+				<source>TYPO3 8.x</source>
+				<target>TYPO3 8.x</target>
+			</trans-unit>
+			<trans-unit id="option.label9">
+				<source>TYPO3 9.x</source>
+				<target>TYPO3 9.x</target>
+			</trans-unit>
+			<trans-unit id="option.label10">
+				<source>TYPO3 10.x</source>
+				<target>TYPO3 10.x</target>
+			</trans-unit>
+			<trans-unit id="option.label11">
+				<source>TYPO3 11.x</source>
+				<target>TYPO3 11.x</target>
+			</trans-unit>
+			<trans-unit id="compatible6">
+				<source>Comp. 6.x</source>
+				<target>Comp. 6.x</target>
+			</trans-unit>
+			<trans-unit id="compatible7">
+				<source>Comp. 7.x</source>
+				<target>Comp. 7.x</target>
+			</trans-unit>
+			<trans-unit id="compatible8">
+				<source>Comp. 8.x</source>
+				<target>Comp. 8.x</target>
+			</trans-unit>
+			<trans-unit id="compatible9">
+				<source>Comp. 9.x</source>
+				<target>Comp. 9.x</target>
+			</trans-unit>
+			<trans-unit id="compatible10">
+				<source>Comp. 10.x</source>
+				<target>Comp. 10.x</target>
+			</trans-unit>
+			<trans-unit id="compatible11">
+				<source>Comp. 11.x</source>
+				<target>Comp. 11.x</target>
+			</trans-unit>
+			<trans-unit id="action">
+				<source>Installed</source>
+				<target>Eingerichtet</target>
+			</trans-unit>
+			<trans-unit id="currentVersion">
+				<source>Current Ver.</source>
+				<target>Aktuelle Version.</target>
+			</trans-unit>
+			<trans-unit id="newVersion">
+				<source>Latest Ver.</source>
+				<target>Neueste Version.</target>
+			</trans-unit>
+			<trans-unit id="state">
+				<source>State</source>
+				<target>Zustand</target>
+			</trans-unit>
+			<trans-unit id="type">
+				<source>Type</source>
+				<target>Typ</target>
+			</trans-unit>
+			<trans-unit id="viewDetailTooltip">
+				<source>View Extension Detail of %s</source>
+				<target>Erweiterungsdetails von %s anzeigen</target>
+			</trans-unit>
+			<trans-unit id="viewAllVersionTooTip">
+				<source>View All Versions of %s</source>
+				<target>Alle Versionen von %s anzeigen</target>
+			</trans-unit>
+			<trans-unit id="viewTERTooltip">
+				<source>View Extension "%s" at TER</source>
+				<target>Erweiterung „%s“ bei TER anzeigen</target>
+			</trans-unit>
+			<trans-unit id="viewManualTooltip">
+				<source>Read Documenation</source>
+				<target>Dokumentation lesen</target>
+			</trans-unit>
+			<trans-unit id="contactNote">
+				<source>Do you have any issues or suggestions? Then, Please feel free to connect with us at </source>
+				<target>Haben Sie Fragen oder Anregungen? Dann kontaktieren Sie uns gerne unter</target>
+			</trans-unit>
+			<trans-unit id="github">
+				<source>Github</source>
+				<target>Github</target>
+			</trans-unit>
+			<trans-unit id="detailAction">
+				<source>Actions</source>
+				<target>Aktionen</target>
+			</trans-unit>
+			<trans-unit id="no">
+				<source>No</source>
+				<target>NEIN</target>
+			</trans-unit>
+			<trans-unit id="yes">
+				<source>Yes</source>
+				<target>Ja</target>
+			</trans-unit>
+			<trans-unit id="ter">
+				<source>TER</source>
+				<target>TER</target>
+			</trans-unit>
+			<trans-unit id="custom">
+				<source>Custom</source>
+				<target>Brauch</target>
+			</trans-unit>
+			<trans-unit id="totalPages">
+				<source>Pages where this extension used</source>
+				<target>Seiten, auf denen diese Erweiterung verwendet wurde</target>
+			</trans-unit>
+			<trans-unit id="lastUpdateComment">
+				<source>Last Updated Comment</source>
+				<target>Zuletzt aktualisierter Kommentar</target>
+			</trans-unit>
+			<trans-unit id="lastUpdateDate">
+				<source>Last Updated Date</source>
+				<target>Datum der letzten Aktualisierung</target>
+			</trans-unit>
+			<trans-unit id="alldownloadcounter">
+				<source>Total Downloads</source>
+				<target>Downloads gesamt</target>
+			</trans-unit>
+			<trans-unit id="currentVersionDepend">
+				<source>Current Version Dependency</source>
+				<target>Aktuelle Versionsabhängigkeit</target>
+			</trans-unit>
+			<trans-unit id="installed">
+				<source>Installed</source>
+				<target>Eingerichtet</target>
+			</trans-unit>
+			<trans-unit id="title">
+				<source>Title</source>
+				<target>Titel</target>
+			</trans-unit>
+			<trans-unit id="category">
+				<source>Category</source>
+				<target>Kategorie</target>
+			</trans-unit>
+			<trans-unit id="description">
+				<source>Description</source>
+				<target>Beschreibung</target>
+			</trans-unit>
+			<trans-unit id="author">
+				<source>Author</source>
+				<target>Autor</target>
+			</trans-unit>
+			<trans-unit id="company">
+				<source>Company</source>
+				<target>Unternehmen</target>
+			</trans-unit>
+			<trans-unit id="conflict">
+				<source>Conflict</source>
+				<target>Konflikt</target>
+			</trans-unit>
+			<trans-unit id="suggests">
+				<source>Suggests</source>
+				<target>Schlägt vor</target>
+			</trans-unit>
+			<trans-unit id="typo3upgrade">
+				<source>TYPO3 Extensions Compatibility Report </source>
+				<target>Kompatibilitätsbericht für TYPO3-Erweiterungen</target>
+			</trans-unit>
+			<trans-unit id="typo3upgrad1">
+				<source>TYPO3 Extensions Compatibility Report %s</source>
+				<target>TYPO3-Erweiterungskompatibilitätsbericht %s</target>
+			</trans-unit>
+			<trans-unit id="sheet.filename">
+				<source>TYPO3-Extensions-Compatibility-Report-%s</source>
+				<target>TYPO3-Erweiterungen-Kompatibilitätsbericht-%s</target>
+			</trans-unit>
+			<trans-unit id="sheet.title">
+				<source>Extension List</source>
+				<target>Erweiterungsliste</target>
+			</trans-unit>
+			<trans-unit id="notes">
+				<source>Notes</source>
+				<target>Anmerkungen</target>
+			</trans-unit>
+			<trans-unit id="allVersion.title">
+				<source>Show all versions of</source>
+				<target>Alle Versionen anzeigen von</target>
+			</trans-unit>
+			<trans-unit id="allVersion.version">
+				<source>Version</source>
+				<target>Ausführung</target>
+			</trans-unit>
+			<trans-unit id="allVersion.manual">
+				<source>Manual</source>
+				<target>Handbuch</target>
+			</trans-unit>
+			<trans-unit id="allVersion.readonline">
+				<source>Read Documenation</source>
+				<target>Dokumentation lesen</target>
+			</trans-unit>
+			<trans-unit id="state.0">
+				<source>alpha</source>
+				<target>Alpha</target>
+			</trans-unit>
+			<trans-unit id="state.1">
+				<source>beta</source>
+				<target>Beta</target>
+			</trans-unit>
+			<trans-unit id="state.2">
+				<source>stable</source>
+				<target>stabil</target>
+			</trans-unit>
+			<trans-unit id="state.3">
+				<source>experimental</source>
+				<target>Experimental-</target>
+			</trans-unit>
+			<trans-unit id="state.4">
+				<source>test</source>
+				<target>prüfen</target>
+			</trans-unit>
+			<trans-unit id="state.5">
+				<source>obsolete</source>
+				<target>veraltet</target>
+			</trans-unit>
+			<trans-unit id="state.6">
+				<source>excludeFromUpdates</source>
+				<target>Aus Updates ausschließen</target>
+			</trans-unit>
+			<trans-unit id="state.7">
+				<source>deprecated</source>
+				<target>veraltet</target>
+			</trans-unit>
+			<trans-unit id="state.999">
+				<source>n/a</source>
+				<target>n / A</target>
+			</trans-unit>
+			<trans-unit id="category.0">
+				<source>be</source>
+				<target>Sei</target>
+			</trans-unit>
+			<trans-unit id="category.1">
+				<source>module</source>
+				<target>Modul</target>
+			</trans-unit>
+			<trans-unit id="category.2">
+				<source>fe</source>
+				<target>fe</target>
+			</trans-unit>
+			<trans-unit id="category.3">
+				<source>plugin</source>
+				<target>Plugin</target>
+			</trans-unit>
+			<trans-unit id="category.4">
+				<source>misc</source>
+				<target>Sonstiges</target>
+			</trans-unit>
+			<trans-unit id="category.5">
+				<source>services</source>
+				<target>Dienstleistungen</target>
+			</trans-unit>
+			<trans-unit id="category.6">
+				<source>templates</source>
+				<target>Vorlagen</target>
+			</trans-unit>
+			<trans-unit id="category.7">
+				<source>doc</source>
+				<target>Dokument</target>
+			</trans-unit>
+			<trans-unit id="category.8">
+				<source>example</source>
+				<target>Beispiel</target>
+			</trans-unit>
+			<trans-unit id="category.9">
+				<source>distribution</source>
+				<target>Verteilung</target>
+			</trans-unit>
+			<trans-unit id="targetSystemRequirement">
+				<source>Server compatibility report of TYPO3 </source>
+				<target>Server-Kompatibilitätsbericht von TYPO3</target>
+			</trans-unit>
+			<trans-unit id="targetSystemRequirement.postMaxSize">
+				<source>Post Max Size</source>
+				<target>Maximale Beitragsgröße</target>
+			</trans-unit>
+			<trans-unit id="targetSystemRequirement.uploadMaxSize">
+				<source>Upload Max Filesize</source>
+				<target>Maximale Dateigröße hochladen</target>
+			</trans-unit>
+			<trans-unit id="targetSystemRequirement.maxInputVars">
+				<source>Max Input Vars</source>
+				<target>Max. Eingabevariablen</target>
+			</trans-unit>
+			<trans-unit id="targetSystemRequirement.memoryLimit">
+				<source>Memory Limit</source>
+				<target>Speicherlimit</target>
+			</trans-unit>
+			<trans-unit id="targetSystemRequirement.maxExecutionTime">
+				<source>Max Execution Time</source>
+				<target>Maximale Ausführungszeit</target>
+			</trans-unit>
+			<trans-unit id="targetSystemRequirement.imageMagick">
+				<source>ImageMagick</source>
+				<target>BildMagick</target>
+			</trans-unit>
+			<trans-unit id="targetSystemRequirement.mysql">
+				<source>Mysql</source>
+				<target>MySQL</target>
+			</trans-unit>
+			<trans-unit id="targetSystemRequirement.php">
+				<source>PHP</source>
+				<target>PHP</target>
+			</trans-unit>
+			<trans-unit id="targetSystemRequirement.current">
+				<source>Current</source>
+				<target>Aktuell</target>
+			</trans-unit>
+			<trans-unit id="targetSystemRequirement.required">
+				<source>Required</source>
+				<target>Erforderlich</target>
+			</trans-unit>
+			<trans-unit id="targetSystemRequirement.module">
+				<source>Module</source>
+				<target>Modul</target>
+			</trans-unit>
+			<trans-unit id="task.sendExtensionsReportTask.title">
+				<source>TYPO3 Extensions Compatibility Report via Email Notification</source>
+				<target>TYPO3-Erweiterungen-Kompatibilitätsbericht per E-Mail-Benachrichtigung</target>
+			</trans-unit>
+			<trans-unit id="task.sendExtensionsReportTask.description">
+				<source>To check any new version of TYPO3 core and extensions, Whenever new updates available then send complete report notification via Email.</source>
+				<target>Um zu prüfen, ob es neue Versionen des TYPO3-Kerns und der Erweiterungen gibt, senden Sie bei Verfügbarkeit neuer Updates eine vollständige Berichtsbenachrichtigung per E-Mail.</target>
+			</trans-unit>
+			<trans-unit id="task.sendExtensionsReportTask.additionalFields.mailSubject.label">
+				<source>Email Subject</source>
+				<target>E-Mail Betreff</target>
+			</trans-unit>
+			<trans-unit id="task.sendExtensionsReportTask.additionalFields.mailSender.label">
+				<source>From To Email Address</source>
+				<target>Von An E-Mail-Adresse</target>
+			</trans-unit>
+			<trans-unit id="task.sendExtensionsReportTask.additionalFields.mailTo.label">
+				<source>Send To Email Address (use comma(,) to set multiple email address).</source>
+				<target>An E-Mail-Adresse senden (verwenden Sie Kommas (,), um mehrere E-Mail-Adressen festzulegen).</target>
+			</trans-unit>
+			<trans-unit id="task.sendExtensionsReportTask.additionalFields.excludeExtensionsFromCheck.label">
+				<source>Exclude extensions key (use comma(,) to set multiple extensions).</source>
+				<target>Schlüssel „Erweiterungen ausschließen“ (verwenden Sie Komma (,), um mehrere Erweiterungen festzulegen).</target>
+			</trans-unit>
+			<trans-unit id="task.sendExtensionsReportTask.additionalFields.emailSubject.validation">
+				<source>Email address is not valid</source>
+				<target>Email Adresse ist nicht gültig</target>
+			</trans-unit>
+			<trans-unit id="task.sendExtensionsReportTask.additionalFields.emailMail.validation">
+				<source>Email address is not valid</source>
+				<target>Email Adresse ist nicht gültig</target>
+			</trans-unit>
+			<trans-unit id="task.checkExtensionsTask.maiSubject">
+				<source>[%s] New Version of TYPO3 Core and/or Extensions Is Available!</source>
+				<target>[%s] Neue Version des TYPO3-Kerns und/oder der Erweiterungen ist verfügbar!</target>
+			</trans-unit>
+			<trans-unit id="task.mail.hithere">
+				<source>Hi there,</source>
+				<target>Hallo,</target>
+			</trans-unit>
+			<trans-unit id="task.mail.description1" approved="yes">
+				<source>At your TYPO3 website </source>
+				<target>Auf Ihrer TYPO3-Website</target>
+			</trans-unit>
+			<trans-unit id="task.mail.description2" approved="yes">
+				<source> a new version of TYPO3 core and/or extensions is available!</source>
+				<target>eine neue Version des TYPO3-Kerns und/oder der Erweiterungen ist verfügbar!</target>
+			</trans-unit>
+			<trans-unit id="task.mail.contactonGit">
+				<source>PS: This email was auto-generated from extension ns_ext_compatibility, Please feel free to connect with us at </source>
+				<target>PS: Diese E-Mail wurde automatisch aus der Erweiterung ns_ext_compatibility generiert. Bitte kontaktieren Sie uns unter</target>
+			</trans-unit>
+			<trans-unit id="task.mail.moreInfo">
+				<source>For more information, Login to your TYPO3 backend at</source>
+				<target>Für weitere Informationen melden Sie sich bei Ihrem TYPO3-Backend an unter</target>
+			</trans-unit>
+			<trans-unit id="task.mail.moreInfo1">
+				<source> You may take a detailed report at </source>
+				<target>Einen ausführlichen Bericht erhalten Sie unter</target>
+			</trans-unit>
+			<trans-unit id="task.mail.moreInfo2">
+				<source> module, Thank you!</source>
+				<target>Modul, Danke!</target>
+			</trans-unit>
+			<trans-unit id="task.mail.newstate">
+				<source>New State</source>
+				<target>Neuer Staat</target>
+			</trans-unit>
+			<trans-unit id="task.mail.noUpdate">
+				<source>No update available!</source>
+				<target>Kein Update verfügbar!</target>
+			</trans-unit>
+			<trans-unit id="t3-newVersionSecurityRelevant">
+				<source>There is a new version of TYPO3 available, updating is security relevant. Please update to version</source>
+				<target>Es ist eine neue Version von TYPO3 verfügbar, die Aktualisierung ist sicherheitsrelevant. Bitte aktualisieren Sie auf Version</target>
+			</trans-unit>
+			<trans-unit id="t3-newVersion">
+				<source>There is a new version of TYPO3 available. You can update to version</source>
+				<target>Es ist eine neue Version von TYPO3 verfügbar. Sie können auf Version aktualisieren</target>
+			</trans-unit>
+			<trans-unit id="t3-uptodate">
+				<source>Your TYPO3 version is up-to-date.</source>
+				<target>Ihre TYPO3-Version ist auf dem neuesten Stand.</target>
+			</trans-unit>
+			<trans-unit id="t3-versionOutdated">
+				<source>The TYPO3 version you're using is not supported anymore. You should update to a supported version.</source>
+				<target>Die von Ihnen verwendete TYPO3-Version wird nicht mehr unterstützt. Sie sollten auf eine unterstützte Version aktualisieren.</target>
+			</trans-unit>
+			<trans-unit id="t3-isDevelopmentVersion">
+				<source>This version of TYPO3 seems to be a development version. Thus no update information exists.</source>
+				<target>Bei dieser Version von TYPO3 scheint es sich um eine Entwicklungsversion zu handeln. Daher liegen keine Update-Informationen vor.</target>
+			</trans-unit>
+			<trans-unit id="t3-ltsVersion">
+				<source>New TYPO3 version %s is available.</source>
+				<target>Neue TYPO3-Version %s ist verfügbar.</target>
+			</trans-unit>
+			<trans-unit id="unknown">
+				<source>Unknown</source>
+				<target>Unbekannt</target>
+			</trans-unit>
+			<trans-unit id="option.label12">
+				<source>TYPO3 12.x</source>
+				<target>TYPO3 12.x</target>
+			</trans-unit>
+			<trans-unit id="compatible12">
+				<source>Comp. 12.x</source>
+				<target>Comp. 12.x</target>
+			</trans-unit>
+			<trans-unit id="warning.TERUpdateTextComposer">
+				<source>Please update your extension table using Schedule task: Update extension list (extensionmanager), because your last update date is %s</source>
+				<target>Bitte aktualisieren Sie Ihre Erweiterungstabelle mithilfe der geplanten Aufgabe: Erweiterungsliste aktualisieren (Extensionmanager), da Ihr letztes Aktualisierungsdatum %s ist.</target>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

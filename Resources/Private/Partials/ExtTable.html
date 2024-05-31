@@ -50,18 +50,18 @@
                     <td>{iter.cycle}</td>
                     <f:if condition="{sysDetail.typo3version}<11">
                         <f:then>
-                            <td class="ext-overview" data-toggle="modal" data-target="#nsModel" title="{f:translate(key: 'viewDetailTooltip',arguments: {extension: extension.key})}" data-uri="{f:uri.action(action: 'detail', arguments: {extKey: extension.key,targetVersion:sysDetail.targetVersion}, controller: 'nsextcompatibility')}">
+                            <td class="ext-overview" data-toggle="modal" data-target="#nsModel" title="{f:translate(key: 'viewDetailTooltip',arguments: {extension: extension.key})}" data-uri="{f:uri.action(action: 'detail', arguments: {extKey: extension.key,targetVersion:sysDetail.targetVersion}, controller: 'NsExtCompatibility')}">
                                 <f:format.crop maxCharacters="25" append="...">{extension.title}</f:format.crop>
                             </td>
-                            <td class="ext-overview" data-toggle="modal" data-target="#nsModel" title="{f:translate(key: 'viewDetailTooltip',arguments: {extension: extension.key})}" data-uri="{f:uri.action(action: 'detail', arguments: {extKey: extension.key,targetVersion:sysDetail.targetVersion}, controller: 'nsextcompatibility')}">
+                            <td class="ext-overview" data-toggle="modal" data-target="#nsModel" title="{f:translate(key: 'viewDetailTooltip',arguments: {extension: extension.key})}" data-uri="{f:uri.action(action: 'detail', arguments: {extKey: extension.key,targetVersion:sysDetail.targetVersion}, controller: 'NsExtCompatibility')}">
                                 {extension.key}
                             </td>
                         </f:then>
                         <f:else>
-                            <td class="ext-overview" data-bs-toggle="modal" data-bs-target="#nsModel" title="{f:translate(key: 'viewDetailTooltip',arguments: {extension: extension.key})}" data-uri="{f:uri.action(action: 'detail', arguments: {extKey: extension.key,targetVersion:sysDetail.targetVersion}, controller: 'nsextcompatibility')}">
+                            <td class="ext-overview" data-bs-toggle="modal" data-bs-target="#nsModel" title="{f:translate(key: 'viewDetailTooltip',arguments: {extension: extension.key})}" data-uri="{f:uri.action(action: 'detail', arguments: {extKey: extension.key,targetVersion:sysDetail.targetVersion}, controller: 'NsExtCompatibility')}">
                                 <f:format.crop maxCharacters="25" append="...">{extension.title}</f:format.crop>
                             </td>
-                            <td class="ext-overview" data-bs-toggle="modal" data-bs-target="#nsModel" title="{f:translate(key: 'viewDetailTooltip',arguments: {extension: extension.key})}" data-uri="{f:uri.action(action: 'detail', arguments: {extKey: extension.key,targetVersion:sysDetail.targetVersion}, controller: 'nsextcompatibility')}">
+                            <td class="ext-overview" data-bs-toggle="modal" data-bs-target="#nsModel" title="{f:translate(key: 'viewDetailTooltip',arguments: {extension: extension.key})}" data-uri="{f:uri.action(action: 'detail', arguments: {extKey: extension.key,targetVersion:sysDetail.targetVersion}, controller: 'NsExtCompatibility')}">
                                 {extension.key}
                             </td>
                         </f:else>
@@ -74,13 +74,13 @@
                                         <f:then>
                                             <td class="compatible text-center">
                                                 <span class="hide-label"><f:translate key="yes"/></span>
-                                                <img src="../typo3conf/ext/ns_ext_compatibility/Resources/Public/Backend/Icons/righ-icon.png" width="12" height="12" />
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="17.069" height="13.374" viewBox="0 0 17.069 13.374"><path d="M6086.667,2286.433l4.934,4.933,9.661-9.661" transform="translate(-6085.43 -2280.467)" fill="none" stroke="#79a548" stroke-width="3.5"/></svg>
                                             </td>
                                         </f:then>
                                         <f:else>
                                             <td class="incompatible text-center">
                                                 <span class="hide-label"><f:translate key="no"/></span>
-                                                <img src="../typo3conf/ext/ns_ext_compatibility/Resources/Public/Backend/Icons/crose-icon.png" width="12" height="12" />
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="14.475" height="14.475" viewBox="0 0 14.475 14.475"><g transform="translate(-880.263 -885.263)"><line x2="12" y2="12" transform="translate(881.5 886.5)" fill="none" stroke="#f44" stroke-width="3.5"/><line x1="12" y2="12" transform="translate(881.5 886.5)" fill="none" stroke="#f44" stroke-width="3.5"/></g></svg>
                                             </td>
                                         </f:else>
                                     </f:if>
@@ -99,13 +99,13 @@
                                         <f:then>
                                             <td class="compatible text-center">
                                                 <span class="hide-label"><f:translate key="yes"/></span>
-                                                <img src="../typo3conf/ext/ns_ext_compatibility/Resources/Public/Backend/Icons/righ-icon.png" width="12" height="12" />
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="17.069" height="13.374" viewBox="0 0 17.069 13.374"><path d="M6086.667,2286.433l4.934,4.933,9.661-9.661" transform="translate(-6085.43 -2280.467)" fill="none" stroke="#79a548" stroke-width="3.5"/></svg>
                                             </td>
                                         </f:then>
                                         <f:else>
                                             <td class="incompatible text-center">
                                                 <span class="hide-label"><f:translate key="no"/></span>
-                                                <img src="../typo3conf/ext/ns_ext_compatibility/Resources/Public/Backend/Icons/crose-icon.png" width="12" height="12" />
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="14.475" height="14.475" viewBox="0 0 14.475 14.475"><g transform="translate(-880.263 -885.263)"><line x2="12" y2="12" transform="translate(881.5 886.5)" fill="none" stroke="#f44" stroke-width="3.5"/><line x1="12" y2="12" transform="translate(881.5 886.5)" fill="none" stroke="#f44" stroke-width="3.5"/></g></svg>
                                             </td>
                                         </f:else>
                                     </f:if>
@@ -124,13 +124,13 @@
                                         <f:then>
                                             <td class="compatible text-center">
                                                 <span class="hide-label"><f:translate key="yes"/></span>
-                                                <img src="../typo3conf/ext/ns_ext_compatibility/Resources/Public/Backend/Icons/righ-icon.png" width="12" height="12" />
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="17.069" height="13.374" viewBox="0 0 17.069 13.374"><path d="M6086.667,2286.433l4.934,4.933,9.661-9.661" transform="translate(-6085.43 -2280.467)" fill="none" stroke="#79a548" stroke-width="3.5"/></svg>
                                             </td>
                                         </f:then>
                                         <f:else>
                                             <td class="incompatible text-center">
                                                 <span class="hide-label"><f:translate key="no"/></span>
-                                                <img src="../typo3conf/ext/ns_ext_compatibility/Resources/Public/Backend/Icons/crose-icon.png" width="12" height="12" />
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="14.475" height="14.475" viewBox="0 0 14.475 14.475"><g transform="translate(-880.263 -885.263)"><line x2="12" y2="12" transform="translate(881.5 886.5)" fill="none" stroke="#f44" stroke-width="3.5"/><line x1="12" y2="12" transform="translate(881.5 886.5)" fill="none" stroke="#f44" stroke-width="3.5"/></g></svg>
                                             </td>
                                         </f:else>
                                     </f:if>
@@ -149,13 +149,13 @@
                                         <f:then>
                                             <td class="compatible text-center">
                                                 <span class="hide-label"><f:translate key="yes"/></span>
-                                                <img src="../typo3conf/ext/ns_ext_compatibility/Resources/Public/Backend/Icons/righ-icon.png" width="12" height="12" />
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="17.069" height="13.374" viewBox="0 0 17.069 13.374"><path d="M6086.667,2286.433l4.934,4.933,9.661-9.661" transform="translate(-6085.43 -2280.467)" fill="none" stroke="#79a548" stroke-width="3.5"/></svg>
                                             </td>
                                         </f:then>
                                         <f:else>
                                             <td class="incompatible text-center">
                                                 <span class="hide-label"><f:translate key="no"/></span>
-                                                <img src="../typo3conf/ext/ns_ext_compatibility/Resources/Public/Backend/Icons/crose-icon.png" width="12" height="12" />
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="14.475" height="14.475" viewBox="0 0 14.475 14.475"><g transform="translate(-880.263 -885.263)"><line x2="12" y2="12" transform="translate(881.5 886.5)" fill="none" stroke="#f44" stroke-width="3.5"/><line x1="12" y2="12" transform="translate(881.5 886.5)" fill="none" stroke="#f44" stroke-width="3.5"/></g></svg>
                                             </td>
                                         </f:else>
                                     </f:if>
@@ -174,13 +174,13 @@
                                         <f:then>
                                             <td class="compatible text-center">
                                                 <span class="hide-label"><f:translate key="yes"/></span>
-                                                <img src="../typo3conf/ext/ns_ext_compatibility/Resources/Public/Backend/Icons/righ-icon.png" width="12" height="12" />
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="17.069" height="13.374" viewBox="0 0 17.069 13.374"><path d="M6086.667,2286.433l4.934,4.933,9.661-9.661" transform="translate(-6085.43 -2280.467)" fill="none" stroke="#79a548" stroke-width="3.5"/></svg>
                                             </td>
                                         </f:then>
                                         <f:else>
                                             <td class="incompatible text-center">
                                                 <span class="hide-label"><f:translate key="no"/></span>
-                                                <img src="../typo3conf/ext/ns_ext_compatibility/Resources/Public/Backend/Icons/crose-icon.png" width="12" height="12" />
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="14.475" height="14.475" viewBox="0 0 14.475 14.475"><g transform="translate(-880.263 -885.263)"><line x2="12" y2="12" transform="translate(881.5 886.5)" fill="none" stroke="#f44" stroke-width="3.5"/><line x1="12" y2="12" transform="translate(881.5 886.5)" fill="none" stroke="#f44" stroke-width="3.5"/></g></svg>
                                             </td>
                                         </f:else>
                                     </f:if>
@@ -199,27 +199,13 @@
                                         <f:then>
                                             <td class="compatible text-center">
                                                 <span class="hide-label"><f:translate key="yes"/></span>
-                                                <f:if condition="{sysDetail.typo3version} > 11">
-                                                    <f:then>
-                                                        <img src="/typo3conf/ext/ns_ext_compatibility/Resources/Public/Backend/Icons/righ-icon.png" width="12" height="12" />
-                                                    </f:then>
-                                                    <f:else>
-                                                        <img src="../typo3conf/ext/ns_ext_compatibility/Resources/Public/Backend/Icons/righ-icon.png" width="12" height="12" />
-                                                    </f:else>
-                                                </f:if>
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="17.069" height="13.374" viewBox="0 0 17.069 13.374"><path d="M6086.667,2286.433l4.934,4.933,9.661-9.661" transform="translate(-6085.43 -2280.467)" fill="none" stroke="#79a548" stroke-width="3.5"/></svg>
                                             </td>
                                         </f:then>
                                         <f:else>
                                             <td class="incompatible text-center">
                                                 <span class="hide-label"><f:translate key="no"/></span>
-                                                <f:if condition="{sysDetail.typo3version}<11">
-                                                    <f:then>
-                                                        <img src="../typo3conf/ext/ns_ext_compatibility/Resources/Public/Backend/Icons/crose-icon.png" width="12" height="12" />
-                                                    </f:then>
-                                                    <f:else>
-                                                        <img src="/typo3conf/ext/ns_ext_compatibility/Resources/Public/Backend/Icons/crose-icon.png" width="12" height="12" />
-                                                    </f:else>
-                                                </f:if>
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="14.475" height="14.475" viewBox="0 0 14.475 14.475"><g transform="translate(-880.263 -885.263)"><line x2="12" y2="12" transform="translate(881.5 886.5)" fill="none" stroke="#f44" stroke-width="3.5"/><line x1="12" y2="12" transform="translate(881.5 886.5)" fill="none" stroke="#f44" stroke-width="3.5"/></g></svg>
                                             </td>
                                         </f:else>
                                     </f:if>
@@ -238,27 +224,13 @@
                                         <f:then>
                                             <td class="compatible text-center">
                                                 <span class="hide-label"><f:translate key="yes"/></span>
-                                                <f:if condition="{sysDetail.typo3version}<11">
-                                                    <f:then>
-                                                        <img src="../typo3conf/ext/ns_ext_compatibility/Resources/Public/Backend/Icons/righ-icon.png" width="12" height="12" />
-                                                    </f:then>
-                                                    <f:else>
-                                                        <img src="/typo3conf/ext/ns_ext_compatibility/Resources/Public/Backend/Icons/righ-icon.png" width="12" height="12" />
-                                                    </f:else>
-                                                </f:if>
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="17.069" height="13.374" viewBox="0 0 17.069 13.374"><path d="M6086.667,2286.433l4.934,4.933,9.661-9.661" transform="translate(-6085.43 -2280.467)" fill="none" stroke="#79a548" stroke-width="3.5"/></svg>
                                             </td>
                                         </f:then>
                                         <f:else>
                                             <td class="incompatible text-center">
                                                 <span class="hide-label"><f:translate key="no"/></span>
-                                                <f:if condition="{sysDetail.typo3version}<11">
-                                                    <f:then>
-                                                        <img src="../typo3conf/ext/ns_ext_compatibility/Resources/Public/Backend/Icons/crose-icon.png" width="12" height="12" />
-                                                    </f:then>
-                                                    <f:else>
-                                                        <img src="/typo3conf/ext/ns_ext_compatibility/Resources/Public/Backend/Icons/crose-icon.png" width="12" height="12" />
-                                                    </f:else>
-                                                </f:if>
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="14.475" height="14.475" viewBox="0 0 14.475 14.475"><g transform="translate(-880.263 -885.263)"><line x2="12" y2="12" transform="translate(881.5 886.5)" fill="none" stroke="#f44" stroke-width="3.5"/><line x1="12" y2="12" transform="translate(881.5 886.5)" fill="none" stroke="#f44" stroke-width="3.5"/></g></svg>
                                             </td>
                                         </f:else>
                                     </f:if>
