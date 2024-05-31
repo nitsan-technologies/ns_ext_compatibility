@@ -18,7 +18,7 @@ if (version_compare(TYPO3_branch, '6.0', '<')) {
             'nsextcompatibility',	// Submodule key
             '',						// Position
             [
-                'nsextcompatibility4' => 'list',
+                'nsextcompatibility4' => 'list, detail',
 
             ],
             [
@@ -47,7 +47,7 @@ if (version_compare(TYPO3_branch, '6.0', '<')) {
             'nsextcompatibility',	// Submodule key
             '',						// Position
             [
-                $moduleClass => 'list'
+                $moduleClass => 'list,detail'
             ],
             [
                 'access' => 'user,group',

@@ -23,26 +23,26 @@ class SendExtensionsReportTaskAdditionalFieldProvider implements \TYPO3\CMS\Sche
     public function getAdditionalFields(array &$taskInfo, $task, \TYPO3\CMS\Scheduler\Controller\SchedulerModuleController $parentObject)
     {
         if (empty($taskInfo['mailTo'])) {
-            if ($parentObject->CMD == 'add') {
+            if (($parentObject->CMD ?? '') == 'add') {
                 $taskInfo['mailTo'] = '';
             } else {
-                $taskInfo['mailTo'] = $task->mailTo;
+                $taskInfo['mailTo'] = $task->mailTo ?? '';
             }
         }
 
         if (empty($taskInfo['mailSender'])) {
-            if ($parentObject->CMD == 'add') {
+            if (($parentObject->CMD ?? '') == 'add') {
                 $taskInfo['mailSender'] = '';
             } else {
-                $taskInfo['mailSender'] = $task->mailSender;
+                $taskInfo['mailSender'] = $task->mailSender ?? '';
             }
         }
 
         if (empty($taskInfo['excludeExtensionsFromCheck'])) {
-            if ($parentObject->CMD == 'add') {
+            if (($parentObject->CMD ?? '') == 'add') {
                 $taskInfo['excludeExtensionsFromCheck'] = '';
             } else {
-                $taskInfo['excludeExtensionsFromCheck'] = $task->excludeExtensionsFromCheck;
+                $taskInfo['excludeExtensionsFromCheck'] = $task->excludeExtensionsFromCheck ??'';
             }
         }
 

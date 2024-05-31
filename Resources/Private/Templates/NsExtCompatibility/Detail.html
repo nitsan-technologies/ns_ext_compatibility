@@ -1,0 +1,294 @@
+<div class="modal-header">
+    <f:if condition="{sysDetail.typo3version}<11">
+        <f:then>
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">{extension.title}</h4>
+        </f:then>
+        <f:else>
+            <h4 class="modal-title">{extension.title}</h4>
+            <button type="button" class="close" data-bs-dismiss="modal">&times;</button>
+        </f:else>
+    </f:if>
+</div>
+<div class="modal-body">
+    <table class="typo3-extension-list t3-table table table-striped table-hover">
+        <tbody>
+            <tr>
+                <td width="30%"><strong><f:translate key="extkey"/></td>
+                <td>{extension.key}</td>
+            </tr>
+            <tr>
+                <td width="30%"><strong><f:translate key="description"/></strong></td>
+                <td>{extension.description}</td>
+            </tr>
+            <f:if condition="{extension.newUplaodComment}">
+                <tr>
+                    <td width="30%"><strong><f:translate key="lastUpdateComment"/></strong></td>
+                    <td>{extension.newUplaodComment}</td>
+                </tr>
+            </f:if>
+            <f:if condition="{extension.newLastDate}">
+                <tr>
+                    <td width="30%"><strong><f:translate key="lastUpdateDate"/></strong></td>
+                    <td><f:format.date format="d.m.Y">{extension.newLastDate}</f:format.date></td>
+                </tr>
+            </f:if>
+            <f:if condition="{extension.newAlldownloadcounter}">
+                <tr>
+                    <td width="30%"><strong><f:translate key="alldownloadcounter"/></strong></td>
+                    <td>{extension.newAlldownloadcounter}</td>
+                </tr>
+            </f:if>
+            <tr>
+                <td width="30%"><strong><f:translate key="category"/></strong></td>
+                <td>{extension.category}</td>
+            </tr>
+            <tr>
+                <td width="30%"><strong><f:translate key="state"/></strong></td>
+                <td><span class="ext-status-{extension.state}">{extension.state}</span></td>
+            </tr>
+            <f:if condition="{extension.author}">
+                <tr>
+                    <td width="30%"><strong><f:translate key="author"/></strong></td>
+                    <td>
+                    	{extension.author}
+                    	<f:if condition="{extension.author_email}"> [{extension.author_email}]</f:if>
+                	</td>
+                </tr>
+            </f:if>
+            <f:if condition="{extension.company}">
+                <tr>
+                    <td width="30%"><strong><f:translate key="company"/></strong></td>
+                    <td>{extension.company}</td>
+                </tr>
+            </f:if>
+            <tr>
+                <td width="30%"><strong><f:translate key="currentVersion"/></strong></td>
+                <td>{extension.version}</td>
+            </tr>
+            <tr>
+                <td width="30%"><strong><f:translate key="newVersion"/></strong></td>
+                <td>
+                    <f:if condition="{extension.newVersion}>={extension.version}">
+                        <f:then>
+                          <span class="ext-status-stable">{extension.newVersion}</span>
+                        </f:then>
+                        <f:else>
+                            {extension.version}
+                        </f:else>
+                    </f:if>
+                 </td>
+            </tr>
+            <tr>
+                <td width="30%"><strong><f:translate key="action"/></strong></td>
+                <td>
+                    <f:if condition="{extension.installed}==1">
+                        <f:then>
+                            <f:if condition="{sysDetail.typo3version} > 11">
+                                <f:then>
+                                    <img src="/typo3conf/ext/ns_ext_compatibility/Resources/Public/Backend/Icons/righ-icon.png" width="12" height="12" />
+                                </f:then>
+                                <f:else>
+                                    <img src="../typo3conf/ext/ns_ext_compatibility/Resources/Public/Backend/Icons/righ-icon.png" width="12" height="12" />
+                                </f:else>
+                            </f:if>
+                        </f:then>
+                        <f:else>
+                            <f:if condition="{sysDetail.typo3version} > 11">
+                                <f:then>
+                                    <img src="/typo3conf/ext/ns_ext_compatibility/Resources/Public/Backend/Icons/crose-icon.png" width="12" height="12" />
+                                </f:then>
+                                <f:else>
+                                    <img src="../typo3conf/ext/ns_ext_compatibility/Resources/Public/Backend/Icons/crose-icon.png" width="12" height="12" />
+                                </f:else>
+                            </f:if>
+                        </f:else>
+                    </f:if>
+                </td>
+            </tr>
+            <f:if condition="{sysDetail.typo3version}<7">
+                <f:if condition="{sysDetail.targetVersion}>=6">
+                    <tr>
+                        <td width="30%"><strong><f:translate key="compatible6"/></strong></td>
+                        <f:if condition="{extension.customExt} != 'true'">
+                            <f:then>
+                                <f:if condition="{extension.compatible6}">
+                                    <f:then>
+                                        <td class="compatible">
+                                            <img src="../typo3conf/ext/ns_ext_compatibility/Resources/Public/Backend/Icons/righ-icon.png" width="12" height="12" />
+                                        </td>
+                                    </f:then>
+                                    <f:else>
+                                        <td class="incompatible">
+                                            <img src="../typo3conf/ext/ns_ext_compatibility/Resources/Public/Backend/Icons/crose-icon.png" width="12" height="12" />
+                                        </td>
+                                    </f:else>
+                                </f:if>
+                            </f:then>
+                            <f:else>
+                                <td class="incompatible"><f:translate key="unknown" />
+                            </f:else>
+                        </f:if>
+                    </tr>
+                </f:if>
+            </f:if>
+            <f:if condition="{sysDetail.typo3version}<8">
+                <f:if condition="{sysDetail.targetVersion}>=7">
+                    <tr>
+                        <td width="30%"><strong><f:translate key="compatible7"/></strong></td>
+                        <f:if condition="{extension.customExt} != 'true'">
+                            <f:then>
+                                <f:if condition="{extension.compatible7}">
+                                    <f:then>
+                                        <td class="compatible">
+                                            <img src="../typo3conf/ext/ns_ext_compatibility/Resources/Public/Backend/Icons/righ-icon.png" width="12" height="12" />
+                                        </td>
+                                    </f:then>
+                                    <f:else>
+                                        <td class="incompatible">
+                                            <img src="../typo3conf/ext/ns_ext_compatibility/Resources/Public/Backend/Icons/crose-icon.png" width="12" height="12" />
+                                        </td>
+                                    </f:else>
+                                </f:if>
+                            </f:then>
+                            <f:else>
+                                <td class="incompatible"><f:translate key="unknown" />
+                            </f:else>
+                        </f:if>
+                    </tr>
+                </f:if>
+            </f:if>
+            <f:if condition="{sysDetail.typo3version}<9">
+                <f:if condition="{sysDetail.targetVersion}>=8">
+                    <tr>
+                        <td width="30%"><strong><f:translate key="compatible8"/></strong></td>
+                        <f:if condition="{extension.customExt} != 'true'">
+                            <f:then>
+                                <f:if condition="{extension.compatible8}">
+                                    <f:then>
+                                        <td class="compatible">
+                                            <img src="../typo3conf/ext/ns_ext_compatibility/Resources/Public/Backend/Icons/righ-icon.png" width="12" height="12" />
+                                        </td>
+                                    </f:then>
+                                    <f:else>
+                                        <td class="incompatible">
+                                            <img src="../typo3conf/ext/ns_ext_compatibility/Resources/Public/Backend/Icons/crose-icon.png" width="12" height="12" />
+                                        </td>
+                                    </f:else>
+                                </f:if>
+                            </f:then>
+                            <f:else>
+                                <td class="incompatible"><f:translate key="unknown" />
+                            </f:else>
+                        </f:if>
+                    </tr>
+                </f:if>
+            </f:if>
+            <f:if condition="{sysDetail.typo3version}<10">
+                <f:if condition="{sysDetail.targetVersion}>=9">
+                    <tr>
+                        <td width="30%"><strong><f:translate key="compatible9"/></strong></td>
+                        <f:if condition="{extension.customExt} != 'true'">
+                            <f:then>
+                                <f:if condition="{extension.compatible9}">
+                                    <f:then>
+                                        <td class="compatible">
+                                            <img src="../typo3conf/ext/ns_ext_compatibility/Resources/Public/Backend/Icons/righ-icon.png" width="12" height="12" />
+                                        </td>
+                                    </f:then>
+                                    <f:else>
+                                        <td class="incompatible">
+                                            <img src="../typo3conf/ext/ns_ext_compatibility/Resources/Public/Backend/Icons/crose-icon.png" width="12" height="12" />
+                                        </td>
+                                    </f:else>
+                                </f:if>
+                            </f:then>
+                            <f:else>
+                                <td class="incompatible"><f:translate key="unknown" />
+                            </f:else>
+                        </f:if>
+                    </tr>
+                </f:if>
+            </f:if>
+            <f:if condition="{sysDetail.typo3version}<11">
+                <f:if condition="{sysDetail.targetVersion}>=10">
+                    <tr>
+                        <td width="30%"><strong><f:translate key="compatible10"/></strong></td>
+                        <f:if condition="{extension.customExt} != 'true'">
+                            <f:then>
+                                <f:if condition="{extension.compatible10}">
+                                    <f:then>
+                                        <td class="compatible">
+                                            <img src="../typo3conf/ext/ns_ext_compatibility/Resources/Public/Backend/Icons/righ-icon.png" width="12" height="12" />
+                                        </td>
+                                    </f:then>
+                                    <f:else>
+                                        <td class="incompatible">
+                                            <img src="../typo3conf/ext/ns_ext_compatibility/Resources/Public/Backend/Icons/crose-icon.png" width="12" height="12" />
+                                        </td>
+                                    </f:else>
+                                </f:if>
+                            </f:then>
+                            <f:else>
+                                <td class="incompatible"><f:translate key="unknown" />
+                            </f:else>
+                        </f:if>
+                    </tr>
+                </f:if>
+            </f:if>
+            <f:if condition="{extension.constraints.depends}">
+                <tr>
+                    <td width="30%"><strong><f:translate key="currentVersionDepend"/></strong></td>
+                    <td>
+                        <f:for each="{extension.constraints.depends}"  key='name' as="depends">
+                            <f:if condition="{depends}">
+                                <f:then>
+                                    {name} => '{depends}'<br/>
+                                </f:then>
+                                <f:else>
+                                    {name} =>'&nbsp;'<br/>
+                                </f:else>
+                            </f:if>
+                        </f:for>
+                    </td>
+                </tr>
+            </f:if>
+            <f:if condition="{extension.constraints.conflicts}">
+                <tr>
+                    <td width="30%"><strong><f:translate key="conflict"/></strong></td>
+                    <td>
+                        <f:for each="{extension.constraints.conflicts}"  key='name' as="conflicts">
+                            <f:if condition="{conflicts}">
+                                <f:then>
+                                    {name} => '{conflicts}'<br/>
+                                </f:then>
+                                <f:else>
+                                    {name} =>'&nbsp;'<br/>
+                                </f:else>
+
+                            </f:if>
+                        </f:for>
+                    </td>
+                </tr>
+            </f:if>
+            <f:if condition="{extension.constraints.suggests}">
+                <tr>
+                    <td width="30%"><strong><f:translate key="suggests"/></strong></td>
+                    <td>
+                        <f:for each="{extension.constraints.suggests}"  key='name' as="suggests">
+                            <f:if condition="{suggests}">
+                                <f:then>
+                                    {name} => '{suggests}'<br/>
+                                </f:then>
+                                <f:else>
+                                    {name} =>'&nbsp;'<br/>
+                                </f:else>
+
+                            </f:if>
+                        </f:for>
+                    </td>
+                </tr>
+            </f:if>
+        </tbody>
+    </table>
+</div>
