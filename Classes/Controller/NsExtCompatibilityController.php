@@ -111,7 +111,7 @@ class NsExtCompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
         $terRepo = null;
 
         //Waning Message as per typo3 installation mode
-        if (version_compare(TYPO3_branch, '11', '<')) {
+        if (version_compare(TYPO3_branch, '9', '<')) {
             $composerMode = file_exists(PATH_site . 'composer.json') || file_exists(PATH_site . 'composer.lock');
             if ($composerMode) {
                 $asPerMode = 'warning.TERUpdateTextComposer';
