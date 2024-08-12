@@ -5,4 +5,5 @@ module.tx_nsextcompatibility {
         partialRootPath = {$module.tx_nsextcompatibility.view.partialRootPath}
         layoutRootPath = {$module.tx_nsextcompatibility.view.layoutRootPath}
     }
+
 }

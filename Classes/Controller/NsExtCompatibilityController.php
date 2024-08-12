@@ -111,7 +111,7 @@ class NsExtCompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
         $terRepo = null;
 
         //Waning Message as per typo3 installation mode
-        if (version_compare(TYPO3_branch, '9', '<')) {
+        if (version_compare(TYPO3_branch, '11', '<')) {
             $composerMode = file_exists(PATH_site . 'composer.json') || file_exists(PATH_site . 'composer.lock');
             if ($composerMode) {
                 $asPerMode = 'warning.TERUpdateTextComposer';
@@ -159,9 +159,9 @@ class NsExtCompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
                     }
                 }
                 $lastUpdateTime = $lastUpdate->format('Y-m-d');
-                if (date('Y-m-d', $currentTime) > $lastUpdateTime) {
-                    $this->addFlashMessage($this->translate($asPerMode, ['date' => $lastUpdateTime]), $this->translate('warning.TERUpdateHeadline'), \TYPO3\CMS\Core\Messaging\AbstractMessage::WARNING);
-                }
+                // if (date('Y-m-d', $currentTime) > $lastUpdateTime) {
+                //     // $this->addFlashMessage($this->translate($asPerMode, ['date' => $lastUpdateTime]), $this->translate('warning.TERUpdateHeadline'), \TYPO3\CMS\Core\Messaging\AbstractMessage::WARNING);
+                // }
             }
         }
 
@@ -172,16 +172,12 @@ class NsExtCompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
                     'TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
                     $this->translate('warning.selectProperTargetVersionText'),
                     $this->translate('warning.selectProperTargetVersionHeadline'), // the header is optional
-                    \TYPO3\CMS\Core\Messaging\FlashMessage::WARNING
+                    // \TYPO3\CMS\Core\Messaging\FlashMessage::WARNING
                 );
 
                 \TYPO3\CMS\Core\Messaging\FlashMessageQueue::addMessage($selectProperTargetVersionMessage);
             }
-        } else {
-            if ((int)$sysDetail['targetVersion'] < $sysDetail['typo3version']) {
-                $this->addFlashMessage($this->translate('warning.selectProperTargetVersionText'), $this->translate('warning.selectProperTargetVersionHeadline'), \TYPO3\CMS\Core\Messaging\AbstractMessage::WARNING);
-            }
-        }
+        } 
         //Check typo3 target version from extension settings end
         $targetSystemRequirement = $this->getSysRequirementForTargetVersion($sysDetail['targetVersion']);
 
