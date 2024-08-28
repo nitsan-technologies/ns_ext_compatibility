@@ -4,6 +4,7 @@ namespace  NITSAN\NsExtCompatibility\Domain\Repository;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Utility\VersionNumberUtility;
 
 /***************************************************************
  *  Copyright notice
@@ -38,12 +39,28 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 
 class NsExtCompatibilityRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
 {
+    /**
+        * @var string
+        */
+    protected $currentVersion;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        parent::__construct();
+        $this->currentVersion = VersionNumberUtility::getCurrentTypo3Version();
+
+    }
+
+
     /*
      * This method is used for get all pages of site
     */
     public function countPages()
     {
-        if (version_compare(TYPO3_branch, '9.0', '<')) {
+        if (version_compare($this->currentVersion, '9.0', '<')) {
             $totolPages = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('*', 'pages', 'deleted=0');
         } else {
             $queryBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Database\ConnectionPool::class)
@@ -51,8 +68,8 @@ class NsExtCompatibilityRepository extends \TYPO3\CMS\Extbase\Persistence\Reposi
             $totolPages = $queryBuilder
                        ->count('uid')
                        ->from('pages')
-                       ->execute()
-                       ->fetchColumn(0);
+                       ->executeQuery()
+                       ->fetchOne();
         }
         return $totolPages;
     }
@@ -62,7 +79,7 @@ class NsExtCompatibilityRepository extends \TYPO3\CMS\Extbase\Persistence\Reposi
     */
     public function countDomain()
     {
-        if (version_compare(TYPO3_branch, '9.0', '<')) {
+        if (version_compare($this->currentVersion, '9.0', '<')) {
             $totalDomain = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('DISTINCT pid', 'sys_domain', 'hidden=0');
         } else {
             $queryBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Database\ConnectionPool::class)
@@ -71,8 +88,8 @@ class NsExtCompatibilityRepository extends \TYPO3\CMS\Extbase\Persistence\Reposi
                         ->count('pid')
                         ->from('sys_domain')
                         ->groupBy('pid')
-                        ->execute()
-                        ->fetchColumn(0);
+                        ->executeQuery()
+                        ->fetchOne();
         }
         if ($totalDomain > 0) {
             return $totalDomain;
@@ -86,7 +103,7 @@ class NsExtCompatibilityRepository extends \TYPO3\CMS\Extbase\Persistence\Reposi
     */
     public function sysLang()
     {
-        if (version_compare(TYPO3_branch, '9.0', '<')) {
+        if (version_compare($this->currentVersion, '9.0', '<')) {
             $totalLang = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('*', 'sys_language', 'hidden=0');
         } else {
             $queryBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Database\ConnectionPool::class)
@@ -94,13 +111,14 @@ class NsExtCompatibilityRepository extends \TYPO3\CMS\Extbase\Persistence\Reposi
             $totalLang = $queryBuilder
                        ->count('uid')
                        ->from('sys_language')
-                       ->execute()
-                       ->fetchColumn(0);
+                       ->executeQuery()
+                       ->fetchOne();
         }
         return $totalLang + 1;
     }
 
-    function getDBVersion() {
+    public function getDBVersion()
+    {
         foreach (GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionNames() as $connectionName) {
             try {
                 $serverVersion = GeneralUtility::makeInstance(ConnectionPool::class)

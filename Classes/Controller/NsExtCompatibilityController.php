@@ -26,12 +26,7 @@ namespace NITSAN\NsExtCompatibility\Controller;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-/**
- *
- *
- * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
- *
- */
+
 
 use Doctrine\DBAL\Exception;
 use TYPO3\CMS\Extbase\Annotation\Inject as inject;
@@ -44,6 +39,7 @@ use TYPO3\CMS\Extensionmanager\Utility\ListUtility;
 use NITSAN\NsExtCompatibility\Domain\Repository\NsExtCompatibilityRepository;
 use TYPO3\CMS\Extensionmanager\Domain\Repository\ExtensionRepository;
 use TYPO3\CMS\Extensionmanager\Remote\RemoteRegistry;
+use TYPO3\CMS\Core\Page\PageRenderer;
 
 /**
  * Backend Controller
@@ -51,48 +47,34 @@ use TYPO3\CMS\Extensionmanager\Remote\RemoteRegistry;
  */
 class NsExtCompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 {
-    /**
-     * @var \TYPO3\CMS\Extensionmanager\Domain\Repository\ExtensionRepository
-     * @extensionScannerIgnoreLine
-     * @inject
-     */
     protected $extensionRepository;
 
-    /**
-    * Inject extensionRepository object
-    *
-    * @param ExtensionRepository $extensionRepository object
-    */
-    public function injectExtensionRepository(ExtensionRepository $extensionRepository)
-    {
-        $this->extensionRepository = $extensionRepository;
-    }
-
-    /**
-     * @var \TYPO3\CMS\Extensionmanager\Domain\Repository\RepositoryRepository
-     * @extensionScannerIgnoreLine
-     * @inject
-     */
     protected $repositoryRepository;
 
-    /**
-     * @var \TYPO3\CMS\Extensionmanager\Remote\RemoteRegistry
-     */
     protected $remoteRegistry;
 
-    /**
-     * @var \NITSAN\NsExtCompatibility\Domain\Repository\NsExtCompatibilityRepository
-     */
     protected $NsExtCompatibilityRepository;
 
+    protected $currentVersion;
+
+
+
     /**
-     * Inject NsExtCompatibilityRepository object
-     *
-     * @param NsExtCompatibilityRepository $NsExtCompatibilityRepository object
-     */
-    public function injectResourceFactory(NsExtCompatibilityRepository $NsExtCompatibilityRepository)
-    {
-        $this->NsExtCompatibilityRepository = $NsExtCompatibilityRepository;
+    * @var ListUtility
+    */
+    protected $listUtility;
+    public function __construct(
+        NsExtCompatibilityRepository $NsExtCompatibilityRepository,
+        ExtensionRepository $extensionRepository,
+        RemoteRegistry $remoteRegistry,
+        ListUtility $listUtility
+    ) {
+        $this->NsExtCompatibilityRepository  = $NsExtCompatibilityRepository;
+        $this->extensionRepository = $extensionRepository;
+        $this->remoteRegistry = $remoteRegistry;
+        $this->currentVersion = VersionNumberUtility::getCurrentTypo3Version();
+        $this->listUtility = $listUtility;
+
     }
 
     /**
@@ -100,18 +82,29 @@ class NsExtCompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
      */
     public function listAction()
     {
+        // $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
+
+        // // Include CSS
+        // $pageRenderer->addCssFile('EXT:ns_ext_compatibility/Resources/Public/Css/main.css', 'stylesheet', 'all');
+
+        // // Include JavaScript
+        // $pageRenderer->addJsFile('EXT:ns_ext_compatibility/Resources/Public/JavaScript/main.js');
+
         $sysDetail = $this->getSysDetail();
         //Get typo3 target version from argument and set new target version start
         $arguments = $this->request->getArguments();
         if (isset($arguments['targetVersion'])) {
             $targetVersion = $arguments['targetVersion'];
+            \TYPO3\CMS\Core\Utility\DebugUtility::debug($targetVersion);
+            exit;
+
             $sysDetail['targetVersion'] = $targetVersion;
         }
         //Get typo3 target version from argument and set new target version end
         $terRepo = null;
 
         //Waning Message as per typo3 installation mode
-        if (version_compare(TYPO3_branch, '9', '<')) {
+        if (version_compare($this->currentVersion, '9', '<')) {
             $composerMode = file_exists(PATH_site . 'composer.json') || file_exists(PATH_site . 'composer.lock');
             if ($composerMode) {
                 $asPerMode = 'warning.TERUpdateTextComposer';
@@ -128,11 +121,11 @@ class NsExtCompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
         }
 
         $currentTime = strtotime('-30 days');
-        if (version_compare(TYPO3_branch, '11', '<')) {
+        if (version_compare($this->currentVersion, '11', '<')) {
             $terRepo = $this->repositoryRepository->findOneTypo3OrgRepository();
             if ($terRepo != null) {
                 $lastUpdatedTime = $terRepo->getLastUpdate();
-                if (version_compare(TYPO3_branch, '6.2', '<')) {
+                if (version_compare($this->currentVersion, '6.2', '<')) {
                     if (date('Y-m-d', $currentTime) > $lastUpdatedTime->format('Y-m-d')) {
                         $TERUpdateMessage = GeneralUtility::makeInstance(
                             'TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
@@ -159,25 +152,29 @@ class NsExtCompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
                     }
                 }
                 $lastUpdateTime = $lastUpdate->format('Y-m-d');
-                // if (date('Y-m-d', $currentTime) > $lastUpdateTime) {
-                //     // $this->addFlashMessage($this->translate($asPerMode, ['date' => $lastUpdateTime]), $this->translate('warning.TERUpdateHeadline'), \TYPO3\CMS\Core\Messaging\AbstractMessage::WARNING);
-                // }
+                if (date('Y-m-d', $currentTime) > $lastUpdateTime) {
+                    $this->addFlashMessage($this->translate($asPerMode, ['date' => $lastUpdateTime]), $this->translate('warning.TERUpdateHeadline'), \TYPO3\CMS\Core\Messaging\AbstractMessage::WARNING);
+                }
             }
         }
 
         //Check typo3 target version from extension settings start
-        if (version_compare(TYPO3_branch, '6.2', '<')) {
+        if (version_compare($this->currentVersion, '6.2', '<')) {
             if ($sysDetail['targetVersion'] < $sysDetail['typo3version']) {
                 $selectProperTargetVersionMessage = GeneralUtility::makeInstance(
                     'TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
                     $this->translate('warning.selectProperTargetVersionText'),
                     $this->translate('warning.selectProperTargetVersionHeadline'), // the header is optional
-                    // \TYPO3\CMS\Core\Messaging\FlashMessage::WARNING
+                    \TYPO3\CMS\Core\Messaging\FlashMessage::WARNING
                 );
 
                 \TYPO3\CMS\Core\Messaging\FlashMessageQueue::addMessage($selectProperTargetVersionMessage);
             }
-        } 
+        } else {
+            if ((int)$sysDetail['targetVersion'] < $sysDetail['typo3version']) {
+                $this->addFlashMessage($this->translate('warning.selectProperTargetVersionText'), $this->translate('warning.selectProperTargetVersionHeadline'), \TYPO3\CMS\Core\Messaging\AbstractMessage::WARNING);
+            }
+        }
         //Check typo3 target version from extension settings end
         $targetSystemRequirement = $this->getSysRequirementForTargetVersion($sysDetail['targetVersion']);
 
@@ -185,12 +182,23 @@ class NsExtCompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
         $assignArray = $this->getAllExtensions($sysDetail['targetVersion']);
         $assignArray['sysDetail'] = $sysDetail;
         $assignArray['targetSystemRequirement'] = $targetSystemRequirement;
+
+
+        // $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
+        // $pageRenderer->loadJavaScriptModule(
+        //     'TYPO3/CMS/NsExtCompatibility/Main'
+        // );
+
+        // $this->pageRenderer->loadJavaScriptModule('TYPO3/CMS/NsExtCompatibility/Main');
+
         $this->view->assignMultiple($assignArray);
+
+        return $this->htmlResponse();
 
     }
 
 
-        /**
+    /**
      * Shows all versions of a specific extension
      *
      * @param string $extensionKey
@@ -212,8 +220,9 @@ class NsExtCompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
         $extKey = $arguments['extKey'];
         $detailTargetVersion = $arguments['targetVersion'];
         //Get extension list
-        $myExtList = $this->objectManager->get(ListUtility::class);
-        $allExtensions = $myExtList->getAvailableAndInstalledExtensionsWithAdditionalInformation();
+
+        $allExtensions = $this->listUtility->getAvailableAndInstalledExtensionsWithAdditionalInformation();
+
         foreach ($allExtensions as $extensionKey => $nsExt) {
             $newNsVersion = 0;
             //Filter all local extension for whole TER data start
@@ -271,7 +280,7 @@ class NsExtCompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
                     $nsExt['newAlldownloadcounter'] = $extArray[0]->getAlldownloadcounter();
                 }
 
-                 //Count Total compatibility Start
+                //Count Total compatibility Start
                 if (isset($nsExt['compatible4']) && $nsExt['compatible4'] == 1) {
                     $totalCompatible4++;
                 }
@@ -311,7 +320,7 @@ class NsExtCompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
         $sysDetail = $this->getSysDetail();
 
         $sysDetail['targetVersion'] = $detailTargetVersion;
-        $this->view->assign('sysDetail', $sysDetail);   
+        $this->view->assign('sysDetail', $sysDetail);
         $this->view->assign('extension', $extension);
     }
 
@@ -336,8 +345,8 @@ class NsExtCompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
         $overviewReport = [];
 
         //Get han extension list
-        $myExtList = $this->objectManager->get(ListUtility::class);
-        $allExtensions = $myExtList->getAvailableAndInstalledExtensionsWithAdditionalInformation();
+        $allExtensions = $this->listUtility->getAvailableAndInstalledExtensionsWithAdditionalInformation();
+
 
         foreach ($allExtensions as $extensionKey => $nsExt) {
             //Filter all local extension for whole TER data start
@@ -432,6 +441,7 @@ class NsExtCompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
             }
             //Filter all local extension for whole TER data end
         }
+
         //Set overview array start
         $overviewReport['totalInstalled'] = $totalInstalled;
         $overviewReport['totalNonInstalled'] = $totalNonInstalled;
@@ -457,7 +467,8 @@ class NsExtCompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
     public function getSysDetail()
     {
         $sysDetail = [];
-        if (version_compare(TYPO3_branch, '10.0', '>=')) {
+
+        if (version_compare($this->currentVersion, '10.0', '>=')) {
             $extConfig = $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['ns_ext_compatibility'];
 
         } else {
@@ -468,7 +479,7 @@ class NsExtCompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
         $sysDetail['sitename'] = $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'];
         $sysDetail['typo3version'] = VersionNumberUtility::getNumericTypo3Version();
         $sysDetail['totalPages'] = $this->NsExtCompatibilityRepository->countPages();
-        if (version_compare(TYPO3_branch, '10', '<')) {
+        if (version_compare($this->currentVersion, '10', '<')) {
             $sysDetail['totalDomain'] = $this->NsExtCompatibilityRepository->countDomain();
         }
         $sysDetail['totalLang'] = $this->NsExtCompatibilityRepository->sysLang();
@@ -491,7 +502,7 @@ class NsExtCompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
                 preg_match('@[0-9]+\.[0-9]+\.[0-9]+@', shell_exec('mysql -V'), $mysqlVersion);
             }
         } catch (\Exception $e) {
-            if (version_compare(TYPO3_branch, '6.2', '<')) {
+            if (version_compare($this->currentVersion, '6.2', '<')) {
                 $erorrMessage = GeneralUtility::makeInstance(
                     'TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
                     $e->getMessage(),
