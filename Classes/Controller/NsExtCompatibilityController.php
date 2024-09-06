@@ -29,6 +29,9 @@ namespace NITSAN\NsExtCompatibility\Controller;
 
 
 use Doctrine\DBAL\Exception;
+use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Backend\Template\ModuleTemplate;
+use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Extbase\Annotation\Inject as inject;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -67,7 +70,8 @@ class NsExtCompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
         NsExtCompatibilityRepository $NsExtCompatibilityRepository,
         ExtensionRepository $extensionRepository,
         RemoteRegistry $remoteRegistry,
-        ListUtility $listUtility
+        ListUtility $listUtility,
+        protected ModuleTemplateFactory $moduleTemplateFactory
     ) {
         $this->NsExtCompatibilityRepository  = $NsExtCompatibilityRepository;
         $this->extensionRepository = $extensionRepository;
@@ -191,9 +195,11 @@ class NsExtCompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
 
         // $this->pageRenderer->loadJavaScriptModule('TYPO3/CMS/NsExtCompatibility/Main');
 
-        $this->view->assignMultiple($assignArray);
 
-        return $this->htmlResponse();
+        $view = $this->initializeModuleTemplate($this->request);
+        $view->assignMultiple($assignArray);
+        return $view->renderResponse();
+
 
     }
 
@@ -596,6 +602,16 @@ class NsExtCompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
                     'current' => $mysqlVersion,
                 ],
             ],
+            '13.x' => [
+                'php' => [
+                    'required' => '8.1',
+                    'current' => substr(phpversion(), 0, 6),
+                ],
+                'mysql' => [
+                    'required' => '8.0',
+                    'current' => $mysqlVersion,
+                ],
+            ],
         ];
         return $typo3Config[$targetVersion];
     }
@@ -627,5 +643,10 @@ class NsExtCompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
             throw new Exception('Unable to extract MySQL version from string.');
         }
         return array($mysqlVersion);
+    }
+    protected function initializeModuleTemplate(
+        ServerRequestInterface $request
+    ): ModuleTemplate {
+        return $this->moduleTemplateFactory->create($request);
     }
 }

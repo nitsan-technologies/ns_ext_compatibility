@@ -1,19 +1,20 @@
+<html xmlns:f="https://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
 <f:layout name="Default" />
-  
-<f:section name="Content">
 
-    <f:render partial="Common/Main" arguments="{overviewReport:overviewReport,sysDetail:sysDetail,targetSystemRequirement:targetSystemRequirement}"/>
-    
+<f:section name="Content">
+    <f:be.pageRenderer
+        includeRequireJsModules="{
+            0:'TYPO3/CMS/NsExtCompatibility/Main'
+        }"
+    />
+    <f:flashMessages />
+    <f:render partial="Common/Main" arguments="{overviewReport:overviewReport, sysDetail:sysDetail, targetSystemRequirement:targetSystemRequirement}"/>
     <div class="ext-report-wrapper">
         <h2><f:translate key="extensionlist"/></h2>
-        <f:comment>
-           <!-- Render Extension table Start -->
-        </f:comment>
-            <f:render partial="ExtTable" arguments="{_all}"/>
-        <f:comment>
-           <!-- Render Extension table End -->
-        </f:comment>
+        <f:render partial="ExtTable" arguments="{_all}"/>
         <p class="contactnote"><f:translate key="contactNote"/><f:link.external  uri="https://github.com/nitsan-technologies/ns_ext_compatibility/issues/"  target="_blank"><f:translate key="github"/></f:link.external></p>
     </div>
     <f:render partial="Common/NsModel" />
 </f:section>
+
+</html>

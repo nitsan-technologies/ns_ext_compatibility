@@ -1,7 +1,7 @@
 <h1><f:translate key="typo3upgrade"/></h1>
 
 <f:form id="changeTargtVersion" action="list" class="form-inline">
-    <select class="form-control" id="targetVersion" onchange="this.form.submit()" name="tx_nsextcompatibility_tools_nsextcompatibilitynsextcompatibility[targetVersion]">
+    <select class="form-control" id="targetVersion" name="tx_nsextcompatibility_tools_nsextcompatibilitynsextcompatibility[targetVersion]">
         <option value="{sysDetail.targetVersion}"><f:translate key="option.label"/> {sysDetail.targetVersion}</option>
         <f:if condition=" '{sysDetail.typo3version}' < '6' ">
             <f:if condition="{sysDetail.targetVersion}!='4.x'">
@@ -41,6 +41,11 @@
         <f:if condition="{sysDetail.typo3version}<13">
             <f:if condition="{sysDetail.targetVersion}!='12.x'">
                 <option value="12.x"><f:translate key="option.label12"/></option>
+            </f:if>
+        </f:if>
+        <f:if condition="{sysDetail.typo3version}<14">
+            <f:if condition="{sysDetail.targetVersion}!='13.x'">
+                <option value="13.x"><f:translate key="option.label13"/></option>
             </f:if>
         </f:if>
     </select>

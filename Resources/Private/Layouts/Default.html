@@ -1,6 +1,9 @@
-<f:be.container pageTitle="{f:translate(key: 'pagetitle')}"	includeRequireJsModules="{0:'TYPO3/CMS/NsExtCompatibility/Main'}">
-    <link rel="stylesheet" type="text/css" href="{f:uri.resource(path:'Css/main.css', extensionName: 'ns_ext_compatibility')}" media="all">
-    <f:flashMessages />
-	<f:render section="Content" />
+<html xmlns:f="https://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
 
-</f:be.container>
+<link rel="stylesheet" type="text/css" href="{f:uri.resource(path:'Css/main.css', extensionName: 'ns_ext_compatibility')}" media="all">
+<link rel="stylesheet" type="text/css" href="{f:uri.resource(path:'Css/backend.css', extensionName: 'backend')}" media="all">
+
+<f:render section="Content" />
+
+
+</html>

@@ -69,5 +69,13 @@
 				</tr>
 			</f:if>
 		</f:if>
+		<f:if condition="{typo3version}<13">
+			<f:if condition="{targetVersion}>=21">
+				<tr  class="bgColor6" >
+					<td><f:translate key="totalCompatible12"/></td>
+					<td><strong>{overviewReport.totalCompatible11}</strong></td>
+				</tr>
+			</f:if>
+		</f:if>
 	</tbody>
 </table>

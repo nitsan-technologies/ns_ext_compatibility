@@ -1,8 +1,12 @@
+
 define([
     'jquery',
     'TYPO3/CMS/NsExtCompatibility/Datatables'
 ], function ($) {
- 
+    const dropdown = document.getElementById("targetVersion");
+    dropdown.addEventListener("change", function() {
+        document.getElementById("changeTargtVersion").submit();
+    });
     var mainDataTable = $('#typo3-extension-list').DataTable({
         paging: false
     });
