@@ -22,5 +22,3 @@ $typoScriptPath = 'Configuration/TypoScript';
     $typoScriptPath,
     'ns_ext_compatibility'
 );
-
-

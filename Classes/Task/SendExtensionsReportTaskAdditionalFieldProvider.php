@@ -42,7 +42,7 @@ class SendExtensionsReportTaskAdditionalFieldProvider implements \TYPO3\CMS\Sche
             if (($parentObject->CMD ?? '') == 'add') {
                 $taskInfo['excludeExtensionsFromCheck'] = '';
             } else {
-                $taskInfo['excludeExtensionsFromCheck'] = $task->excludeExtensionsFromCheck ??'';
+                $taskInfo['excludeExtensionsFromCheck'] = $task->excludeExtensionsFromCheck ?? '';
             }
         }
 

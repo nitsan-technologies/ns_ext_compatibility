@@ -1,8 +1,0 @@
-# Module configuration
-module.tx_nsextcompatibility {
-    view {
-        templateRootPath = EXT:ns_ext_compatibility/Resources/Private/Templates/
-        partialRootPath = EXT:ns_ext_compatibility/Resources/Private/Partials/
-        layoutRootPath = EXT:ns_ext_compatibility/Resources/Private/Layouts/nsextcompatibility6/6.1/
-    }
-}

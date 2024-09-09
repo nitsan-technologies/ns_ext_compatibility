@@ -39,6 +39,11 @@
                     <th  class="text-center"><f:translate key="compatible12"/></th>
                 </f:if>
             </f:if>
+            <f:if condition="{sysDetail.typo3version}<14">
+                <f:if condition="{sysDetail.targetVersion}>=13">
+                    <th  class="text-center"><f:translate key="compatible13"/></th>
+                </f:if>
+            </f:if>
             <th class="text-center"><f:translate key="currentVersion"/></th>
             <th class="text-center"><f:translate key="state"/></th>
         </tr>
@@ -221,6 +226,31 @@
                             <f:if condition="{extension.customExt} != 'true'">
                                 <f:then>
                                     <f:if condition="{extension.compatible12}">
+                                        <f:then>
+                                            <td class="compatible text-center">
+                                                <span class="hide-label"><f:translate key="yes"/></span>
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="17.069" height="13.374" viewBox="0 0 17.069 13.374"><path d="M6086.667,2286.433l4.934,4.933,9.661-9.661" transform="translate(-6085.43 -2280.467)" fill="none" stroke="#79a548" stroke-width="3.5"/></svg>
+                                            </td>
+                                        </f:then>
+                                        <f:else>
+                                            <td class="incompatible text-center">
+                                                <span class="hide-label"><f:translate key="no"/></span>
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="14.475" height="14.475" viewBox="0 0 14.475 14.475"><g transform="translate(-880.263 -885.263)"><line x2="12" y2="12" transform="translate(881.5 886.5)" fill="none" stroke="#f44" stroke-width="3.5"/><line x1="12" y2="12" transform="translate(881.5 886.5)" fill="none" stroke="#f44" stroke-width="3.5"/></g></svg>
+                                            </td>
+                                        </f:else>
+                                    </f:if>
+                                </f:then>
+                                <f:else>
+                                    <td class="incompatible text-center"><f:translate key="unknown" />
+                                </f:else>
+                            </f:if>
+                        </f:if>
+                    </f:if>
+                    <f:if condition="{sysDetail.typo3version}<14">
+                        <f:if condition="{sysDetail.targetVersion}>=13">
+                            <f:if condition="{extension.customExt} != 'true'">
+                                <f:then>
+                                    <f:if condition="{extension.compatible13}">
                                         <f:then>
                                             <td class="compatible text-center">
                                                 <span class="hide-label"><f:translate key="yes"/></span>

@@ -86,61 +86,59 @@ class NsExtCompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
      */
     public function listAction()
     {
-    
+
         $sysDetail = $this->getSysDetail();
-        
+
         //Get typo3 target version from argument and set new target version start
         $arguments = $this->request->getArguments();
-    
-      
-          if (isset($arguments['tx_nsextcompatibility_tools_nsextcompatibilitynsextcompatibility']['targetVersion'])) {
-        
+
+
+        if (isset($arguments['tx_nsextcompatibility_tools_nsextcompatibilitynsextcompatibility']['targetVersion'])) {
+
             $targetVersion = $arguments['tx_nsextcompatibility_tools_nsextcompatibilitynsextcompatibility']['targetVersion'];
             $sysDetail['targetVersion'] = $targetVersion;
-            
+
         }
-            //Get typo3 target version from argument and set new target version end
-            $terRepo = null;
-   
-            $environment = GeneralUtility::makeInstance(Environment::class);
-            if ($environment->isComposerMode()) {
-                $asPerMode = 'warning.TERUpdateTextComposer';
-            } else {
-                $asPerMode = 'warning.TERUpdateText';
-            }
-     
+        //Get typo3 target version from argument and set new target version end
+        $terRepo = null;
+
+        $environment = GeneralUtility::makeInstance(Environment::class);
+        if ($environment->isComposerMode()) {
+            $asPerMode = 'warning.TERUpdateTextComposer';
+        } else {
+            $asPerMode = 'warning.TERUpdateText';
+        }
+
 
         $currentTime = strtotime('-30 days');
-      
-            $this->remoteRegistry = GeneralUtility::makeInstance(RemoteRegistry::class);
-            $lastUpdate = null;
-            if($this->remoteRegistry) {
-                foreach ($this->remoteRegistry->getListableRemotes() as $remote) {
-                    if ($lastUpdate === null || $lastUpdate < $remote->getLastUpdate()) {
-                        $lastUpdate = $remote->getLastUpdate();
-                    }
-                }
-                $lastUpdateTime = $lastUpdate->format('Y-m-d');
-                if (date('Y-m-d', $currentTime) > $lastUpdateTime) {
-                    $this->addFlashMessage($this->translate($asPerMode, ['date' => $lastUpdateTime]), $this->translate('warning.TERUpdateHeadline'), \TYPO3\CMS\Core\Messaging\AbstractMessage::WARNING);
+
+        $this->remoteRegistry = GeneralUtility::makeInstance(RemoteRegistry::class);
+        $lastUpdate = null;
+        if($this->remoteRegistry) {
+            foreach ($this->remoteRegistry->getListableRemotes() as $remote) {
+                if ($lastUpdate === null || $lastUpdate < $remote->getLastUpdate()) {
+                    $lastUpdate = $remote->getLastUpdate();
                 }
             }
-        
-            // if ((int)$sysDetail['targetVersion'] < $sysDetail['typo3version']) {
-            //     $this->addFlashMessage($this->translate('warning.selectProperTargetVersionText'), $this->translate('warning.selectProperTargetVersionHeadline'), \TYPO3\CMS\Core\Messaging\AbstractMessage::WARNING);
-            // }
+            $lastUpdateTime = $lastUpdate->format('Y-m-d');
+            if (date('Y-m-d', $currentTime) > $lastUpdateTime) {
+                $this->addFlashMessage($this->translate($asPerMode, ['date' => $lastUpdateTime]), $this->translate('warning.TERUpdateHeadline'), \TYPO3\CMS\Core\Messaging\AbstractMessage::WARNING);
+            }
+        }
+
+        // if ((int)$sysDetail['targetVersion'] < $sysDetail['typo3version']) {
+        //     $this->addFlashMessage($this->translate('warning.selectProperTargetVersionText'), $this->translate('warning.selectProperTargetVersionHeadline'), \TYPO3\CMS\Core\Messaging\AbstractMessage::WARNING);
+        // }
 
         //Check typo3 target version from extension settings end
         $targetSystemRequirement = $this->getSysRequirementForTargetVersion($sysDetail['targetVersion']);
-    
+
         $assignArray = $this->getAllExtensions($sysDetail['targetVersion']);
         $assignArray['sysDetail'] = $sysDetail;
         $assignArray['targetSystemRequirement'] = $targetSystemRequirement;
         $view = $this->initializeModuleTemplate($this->request);
         $view->assignMultiple($assignArray);
         return $view->renderResponse();
-
-
     }
 
 
@@ -165,15 +163,13 @@ class NsExtCompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
         $totalNonInstalled = 0;
         $arguments = $this->request->getArguments();
         $extKey = $arguments['extKey'];
-        $detailTargetVersion =$arguments['tx_nsextcompatibility_tools_nsextcompatibilitynsextcompatibility']['targetVersion'];
-        \TYPO3\CMS\Core\Utility\DebugUtility::debug($detailTargetVersion);
-        exit;
-        
-        
+        $detailTargetVersion = $arguments['tx_nsextcompatibility_tools_nsextcompatibilitynsextcompatibility']['targetVersion'];
+
+
         //Get extension list
-        
+
         $allExtensions = $this->listUtility->getAvailableAndInstalledExtensionsWithAdditionalInformation();
-    
+
         foreach ($allExtensions as $extensionKey => $nsExt) {
             $newNsVersion = 0;
             //Filter all local extension for whole TER data start
@@ -306,21 +302,23 @@ class NsExtCompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
         $allExtensions = $this->listUtility->getAvailableAndInstalledExtensionsWithAdditionalInformation();
 
         foreach ($allExtensions as $extensionKey => $nsExt) {
-          
+
+
             //Filter all local extension for whole TER data start
             if (strtolower($nsExt['type']) == 'local' && $nsExt['key'] != 'ns_ext_compatibility') {
 
                 $newNsVersion = 0;
                 $extArray = $this->extensionRepository->findByExtensionKeyOrderedByVersion($nsExt['key']);
- 
+
                 //Fetch typo3 depency of extesion  start
                 if (count($extArray) != 0) {
-                 
+
                     foreach ($extArray as $extension) {
                         foreach ($extension->getDependencies() as $dependency) {
                             if ($dependency->getIdentifier() === 'typo3') {
                                 // Extract min TYPO3 CMS version (lowest)
                                 $minVersion = (int) $dependency->getLowestVersion();
+
                                 // Extract max TYPO3 CMS version (higherst)
                                 $maxVersion = (int) $dependency->getHighestVersion();
 
@@ -392,7 +390,8 @@ class NsExtCompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
                     $totalCompatible12++;
                 }
                 if (isset($nsExt['compatible13']) and $nsExt['compatible13'] == 1) {
-                    $totalCompatible12++;
+                    $totalCompatible13++;
+
                 }
                 if (isset($nsExt['installed']) and $nsExt['installed'] == 1) {
                     $totalInstalled++;
@@ -437,11 +436,11 @@ class NsExtCompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
         $extConfig = $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['ns_ext_compatibility'];
         $sysDetail['phpversion'] = substr(phpversion(), 0, 6);
         $sysDetail['targetVersion'] = $extConfig['typo3TargetVersion'];
-        $sysDetail['sitename'] = $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'];    
+        $sysDetail['sitename'] = $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'];
         $sysDetail['typo3version'] = VersionNumberUtility::getNumericTypo3Version();
         $sysDetail['totalPages'] = $this->NsExtCompatibilityRepository->countPages();
 
-        
+
         if (version_compare($this->currentVersion, '10', '<')) {
             $sysDetail['totalDomain'] = $this->NsExtCompatibilityRepository->countDomain();
         }

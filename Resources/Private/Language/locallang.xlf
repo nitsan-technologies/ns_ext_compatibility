@@ -102,6 +102,9 @@
             <trans-unit id="totalCompatible12">
                 <source>Total Compatible of TYPO3 12.x</source>
             </trans-unit>
+			 <trans-unit id="totalCompatible13">
+                <source>Total Compatible of TYPO3 13.x</source>
+            </trans-unit>
 			<trans-unit id="extensionlist">
 				<source>TYPO3 Extensions Report</source>
 			</trans-unit>
@@ -152,6 +155,9 @@
 			</trans-unit>
             <trans-unit id="compatible11">
                 <source>Comp. 11.x</source>
+            </trans-unit>
+			 <trans-unit id="compatible13">
+                <source>Comp. 13.x</source>
             </trans-unit>
 			<trans-unit id="action">
 				<source>Installed</source>
@@ -443,6 +449,9 @@
 			</trans-unit>
 			<trans-unit id="compatible12">
                 <source>Comp. 12.x</source>
+            </trans-unit>
+			<trans-unit id="compatible13">
+                <source>Comp. 13.x</source>
             </trans-unit>
 			<trans-unit id="warning.TERUpdateTextComposer">
 				<source>Please update your extension table using Schedule task: Update extension list (extensionmanager), because your last update date is %s</source>

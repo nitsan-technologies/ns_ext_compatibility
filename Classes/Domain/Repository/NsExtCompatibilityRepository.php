@@ -106,13 +106,13 @@ class NsExtCompatibilityRepository extends \TYPO3\CMS\Extbase\Persistence\Reposi
         if (version_compare($this->currentVersion, '9.0', '<')) {
             $totalLang = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('*', 'sys_language', 'hidden=0');
         } else {
-//            $queryBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Database\ConnectionPool::class)
-//            ->getQueryBuilderForTable('sys_language');
-//            $totalLang = $queryBuilder
-//                       ->count('uid')
-//                       ->from('sys_language')
-//                       ->executeQuery()
-//                       ->fetchOne();
+            //            $queryBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Database\ConnectionPool::class)
+            //            ->getQueryBuilderForTable('sys_language');
+            //            $totalLang = $queryBuilder
+            //                       ->count('uid')
+            //                       ->from('sys_language')
+            //                       ->executeQuery()
+            //                       ->fetchOne();
         }
         return 1;
     }
