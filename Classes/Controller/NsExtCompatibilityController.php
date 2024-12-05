@@ -26,15 +26,13 @@ namespace NITSAN\NsExtCompatibility\Controller;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-
-
 use Doctrine\DBAL\Exception;
+use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Extbase\Annotation\Inject as inject;
 use TYPO3\CMS\Core\Core\Environment;
-use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\VersionNumberUtility;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility as Localize;
@@ -42,25 +40,21 @@ use TYPO3\CMS\Extensionmanager\Utility\ListUtility;
 use NITSAN\NsExtCompatibility\Domain\Repository\NsExtCompatibilityRepository;
 use TYPO3\CMS\Extensionmanager\Domain\Repository\ExtensionRepository;
 use TYPO3\CMS\Extensionmanager\Remote\RemoteRegistry;
-use TYPO3\CMS\Core\Page\PageRenderer;
+use \TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 
 /**
  * Backend Controller
  * @extensionScannerIgnoreLine
  */
-class NsExtCompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
+class NsExtCompatibilityController extends ActionController
 {
     protected $extensionRepository;
-
-    protected $repositoryRepository;
 
     protected $remoteRegistry;
 
     protected $NsExtCompatibilityRepository;
 
     protected $currentVersion;
-
-
 
     /**
     * @var ListUtility
@@ -84,23 +78,17 @@ class NsExtCompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
     /**
      * This method is used for a fetch list of local extension
      */
-    public function listAction()
+    public function listAction(): ResponseInterface
     {
-
         $sysDetail = $this->getSysDetail();
 
         //Get typo3 target version from argument and set new target version start
         $arguments = $this->request->getArguments();
 
-
         if (isset($arguments['tx_nsextcompatibility_tools_nsextcompatibilitynsextcompatibility']['targetVersion'])) {
-
             $targetVersion = $arguments['tx_nsextcompatibility_tools_nsextcompatibilitynsextcompatibility']['targetVersion'];
             $sysDetail['targetVersion'] = $targetVersion;
-
         }
-        //Get typo3 target version from argument and set new target version end
-        $terRepo = null;
 
         $environment = GeneralUtility::makeInstance(Environment::class);
         if ($environment->isComposerMode()) {
@@ -108,7 +96,6 @@ class NsExtCompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
         } else {
             $asPerMode = 'warning.TERUpdateText';
         }
-
 
         $currentTime = strtotime('-30 days');
 
@@ -121,14 +108,15 @@ class NsExtCompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
                 }
             }
             $lastUpdateTime = $lastUpdate->format('Y-m-d');
+
             if (date('Y-m-d', $currentTime) > $lastUpdateTime) {
-                $this->addFlashMessage($this->translate($asPerMode, ['date' => $lastUpdateTime]), $this->translate('warning.TERUpdateHeadline'), \TYPO3\CMS\Core\Messaging\AbstractMessage::WARNING);
+                $this->addFlashMessage($this->translate($asPerMode, ['date' => $lastUpdateTime]), $this->translate('warning.TERUpdateHeadline'), \TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::WARNING);
             }
         }
 
-        // if ((int)$sysDetail['targetVersion'] < $sysDetail['typo3version']) {
-        //     $this->addFlashMessage($this->translate('warning.selectProperTargetVersionText'), $this->translate('warning.selectProperTargetVersionHeadline'), \TYPO3\CMS\Core\Messaging\AbstractMessage::WARNING);
-        // }
+         if ((int)$sysDetail['targetVersion'] < $sysDetail['typo3version']) {
+             $this->addFlashMessage($this->translate('warning.selectProperTargetVersionText'), $this->translate('warning.selectProperTargetVersionHeadline'), \TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::WARNING);
+         }
 
         //Check typo3 target version from extension settings end
         $targetSystemRequirement = $this->getSysRequirementForTargetVersion($sysDetail['targetVersion']);
@@ -148,7 +136,7 @@ class NsExtCompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
      * @param string $extensionKey
      * @return void
      */
-    public function detailAction()
+    public function detailAction(): ResponseInterface
     {
         $totalCompatible4 = 0;
         $totalCompatible6 = 0;
@@ -163,14 +151,12 @@ class NsExtCompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
         $totalNonInstalled = 0;
         $arguments = $this->request->getArguments();
         $extKey = $arguments['extKey'];
-        $detailTargetVersion = $arguments['tx_nsextcompatibility_tools_nsextcompatibilitynsextcompatibility']['targetVersion'];
-
+        $detailTargetVersion = $arguments['targetVersion'];
 
         //Get extension list
-
         $allExtensions = $this->listUtility->getAvailableAndInstalledExtensionsWithAdditionalInformation();
-
-        foreach ($allExtensions as $extensionKey => $nsExt) {
+        $extension = [];
+        foreach ($allExtensions as $nsExt) {
             $newNsVersion = 0;
             //Filter all local extension for whole TER data start
             if (strtolower($nsExt['type']) == 'local' && $nsExt['key'] == $extKey) {
@@ -206,7 +192,7 @@ class NsExtCompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
                                     $nsExt['compatible12'] = 1;
                                 }
                                 if ($minVersion <= 14 && $maxVersion >= 13) {
-                                    $nsExt['compatible12'] = 1;
+                                    $nsExt['compatible13'] = 1;
                                 }
                                 if ((($maxVersion > (int) $detailTargetVersion && $maxVersion <= (int) $detailTargetVersion + 1) || $minVersion > (int) $detailTargetVersion && $minVersion <= (int) $detailTargetVersion + 1) && ($newNsVersion < $extension->getVersion())) {
                                     $newNsVersion = $extension->getVersion();
@@ -218,7 +204,6 @@ class NsExtCompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
                 } else {
                     $nsExt['customExt'] = true;
                 }
-                //Fetch typo3 depency of extesion  end
 
                 // Set overview Report start
                 if ($extArray[0] && empty($nsExt['newVersion'])) {
@@ -256,7 +241,7 @@ class NsExtCompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
                     $totalCompatible12++;
                 }
                 if (isset($nsExt['compatible13']) && $nsExt['compatible13'] == 1) {
-                    $totalCompatible12++;
+                    $totalCompatible13++;
                 }
                 if (isset($nsExt['installed']) && $nsExt['installed'] == 1) {
                     $totalInstalled++;
@@ -265,16 +250,14 @@ class NsExtCompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
                 }
 
                 //Count Total compatibility End
-
                 $extension = $nsExt;
             }
-            //Filter all local extension for whole TER data end
         }
         $sysDetail = $this->getSysDetail();
-
         $sysDetail['targetVersion'] = $detailTargetVersion;
         $this->view->assign('sysDetail', $sysDetail);
         $this->view->assign('extension', $extension);
+        return $this->htmlResponse();
     }
 
     /**
@@ -445,7 +428,6 @@ class NsExtCompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
             $sysDetail['totalDomain'] = $this->NsExtCompatibilityRepository->countDomain();
         }
         $sysDetail['totalLang'] = $this->NsExtCompatibilityRepository->sysLang();
-
         return $sysDetail;
     }
 
@@ -469,12 +451,12 @@ class NsExtCompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
                     'TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
                     $e->getMessage(),
                     'Exception: ' . $e->getCode(),  // the header is optional
-                    \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR
+                    \TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::ERROR
                 );
 
                 \TYPO3\CMS\Core\Messaging\FlashMessageQueue::addMessage($erorrMessage);
             } else {
-                $this->addFlashMessage($e->getMessage(), 'Exception: ' . $e->getCode(), \TYPO3\CMS\Core\Messaging\AbstractMessage::ERROR);
+                $this->addFlashMessage($e->getMessage(), 'Exception: ' . $e->getCode(), \TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::ERROR);
             }
         }
         $typo3Config = [

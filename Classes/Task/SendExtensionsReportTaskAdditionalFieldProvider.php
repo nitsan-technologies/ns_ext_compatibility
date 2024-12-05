@@ -11,6 +11,8 @@ use TYPO3\CMS\Extbase\Utility\LocalizationUtility as Localize;
  * SendExtensionsReportTaskAdditionalFieldProvider
  * @extensionScannerIgnoreLine
  */
+
+// @extensionScannerIgnoreFile
 class SendExtensionsReportTaskAdditionalFieldProvider implements \TYPO3\CMS\Scheduler\AdditionalFieldProviderInterface
 {
     /**
@@ -97,7 +99,7 @@ class SendExtensionsReportTaskAdditionalFieldProvider implements \TYPO3\CMS\Sche
             return true;
         }
 
-        $parentObject->addMessage(implode(' / ', $errorMsgs), \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
+        $parentObject->addMessage(implode(' / ', $errorMsgs), \TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::ERROR);
         return false;
     }
 

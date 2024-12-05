@@ -46,7 +46,7 @@ tr.head:hover,.ext-overview:hover{
 .close {
     color: #000;
     float: right;
-    font-size: 30px;
+    font-size: 20px;
     font-weight: 700;
     opacity: 0.2;
     text-shadow: 0 1px 0 #fff;
@@ -345,4 +345,8 @@ a:hover,a:focus{
 
 .modal-backdrop{
     z-index: 1040;
+}
+
+.ext-report-wrapper .dataTables_wrapper .dataTables_filter label{
+    align-items: center;
 }

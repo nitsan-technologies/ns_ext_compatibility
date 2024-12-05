@@ -53,6 +53,7 @@ class SendExtensionsReportTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask
         $extReports = [];
         $i = 1;
         // Create objects
+        // @extensionScannerIgnoreLine
         $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
         $extensionRepository = $objectManager->get(ExtensionRepository::class);
 
@@ -132,6 +133,7 @@ class SendExtensionsReportTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask
             $mail->setFrom($sender);
             $mail->setTo($receiver);
             $mail->setSubject($subject);
+            // @extensionScannerIgnoreLine
             if (version_compare(TYPO3_branch, '11', '<')) {
                 $mail->setBody($body, $bodyType);
             } else {
