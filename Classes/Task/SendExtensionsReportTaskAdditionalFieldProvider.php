@@ -5,7 +5,15 @@ namespace NITSAN\NsExtCompatibility\Task;
 /**
  * Class SendExtensionsReportTaskAdditionalFieldProvider
  */
+
+use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Messaging\FlashMessageService;
+use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility as Localize;
+use TYPO3\CMS\Scheduler\AdditionalFieldProviderInterface;
+use \TYPO3\CMS\Scheduler\Controller\SchedulerModuleController;
+use \TYPO3\CMS\Scheduler\Task\AbstractTask;
 
 /**
  * SendExtensionsReportTaskAdditionalFieldProvider
@@ -13,16 +21,16 @@ use TYPO3\CMS\Extbase\Utility\LocalizationUtility as Localize;
  */
 
 // @extensionScannerIgnoreFile
-class SendExtensionsReportTaskAdditionalFieldProvider implements \TYPO3\CMS\Scheduler\AdditionalFieldProviderInterface
+class SendExtensionsReportTaskAdditionalFieldProvider implements AdditionalFieldProviderInterface
 {
     /**
      * Create additional fields
      * @param array $taskInfo
-     * @param \NITSAN\NsExtCompatibility\Task\SendExtensionsReportTask $task
-     * @param \TYPO3\CMS\Scheduler\Controller\SchedulerModuleController $parentObject
+     * @param SendExtensionsReportTask $task
+     * @param SchedulerModuleController $parentObject
      * @return array
      */
-    public function getAdditionalFields(array &$taskInfo, $task, \TYPO3\CMS\Scheduler\Controller\SchedulerModuleController $parentObject)
+    public function getAdditionalFields(array &$taskInfo, $task, SchedulerModuleController $parentObject): array
     {
         if (empty($taskInfo['mailTo'])) {
             if (($parentObject->CMD ?? '') == 'add') {
@@ -70,10 +78,10 @@ class SendExtensionsReportTaskAdditionalFieldProvider implements \TYPO3\CMS\Sche
     /**
      * Validates the input value(s)
      * @param array $submittedData
-     * @param \TYPO3\CMS\Scheduler\Controller\SchedulerModuleController $parentObject
+     * @param SchedulerModuleController $parentObject
      * @return bool
      */
-    public function validateAdditionalFields(array &$submittedData, \TYPO3\CMS\Scheduler\Controller\SchedulerModuleController $parentObject)
+    public function validateAdditionalFields(array &$submittedData, SchedulerModuleController $parentObject): bool
     {
         $ok = true;
         $errorMsgs = [];
@@ -99,16 +107,20 @@ class SendExtensionsReportTaskAdditionalFieldProvider implements \TYPO3\CMS\Sche
             return true;
         }
 
-        $parentObject->addMessage(implode(' / ', $errorMsgs), \TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::ERROR);
+        $flashMessage = GeneralUtility::makeInstance(FlashMessage::class, implode(' / ', $errorMsgs), '', ContextualFeedbackSeverity::ERROR);
+        $service = GeneralUtility::makeInstance(FlashMessageService::class);
+        $queue = $service->getMessageQueueByIdentifier();
+        $queue->enqueue($flashMessage);
+
         return false;
     }
 
     /**
      * Saves the input value
      * @param array $submittedData
-     * @param \TYPO3\CMS\Scheduler\Task\AbstractTask $task
+     * @param AbstractTask $task
      */
-    public function saveAdditionalFields(array $submittedData, \TYPO3\CMS\Scheduler\Task\AbstractTask $task)
+    public function saveAdditionalFields(array $submittedData, AbstractTask $task): void
     {
         $task->mailSender = trim($submittedData['mailSender']);
         $task->mailTo = trim($submittedData['mailTo']);
@@ -117,10 +129,10 @@ class SendExtensionsReportTaskAdditionalFieldProvider implements \TYPO3\CMS\Sche
 
     /**
      * @param $key
-     * @param $arguments
+     * @param string $arguments
      * @return null|string
      */
-    protected function translate($key, $arguments = '')
+    protected function translate($key, string $arguments = ''): ?string
     {
         if ($arguments != '') {
             return Localize::translate($key, 'ns_ext_compatibility', $arguments);

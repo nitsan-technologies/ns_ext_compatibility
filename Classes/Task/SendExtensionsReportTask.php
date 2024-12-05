@@ -13,33 +13,29 @@ use TYPO3\CMS\Extbase\Utility\LocalizationUtility as Localize;
 use TYPO3\CMS\Extensionmanager\Domain\Repository\ExtensionRepository;
 use TYPO3\CMS\Extensionmanager\Utility\ListUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
+use TYPO3\CMS\Scheduler\Task\AbstractTask;
 
 /**
  * SendExtensionsReportTask
  * @extensionScannerIgnoreLine
  */
-class SendExtensionsReportTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask
+class SendExtensionsReportTask extends AbstractTask
 {
     /**
      * @var string
      */
-    public $mailFrom;
+    public string $mailTo;
 
     /**
      * @var string
      */
-    public $mailTo;
-
-    /**
-     * @var string
-     */
-    public $excludeExtensionsFromCheck;
+    public string $excludeExtensionsFromCheck;
 
     /**
      * Executs the scheduler job
      * @return bool
      */
-    public function execute()
+    public function execute(): bool
     {
         $this->getExtReoport();
         return true;
@@ -48,21 +44,20 @@ class SendExtensionsReportTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask
     /**
      * Checks, if there are updates available fo rinstalled extensions
      */
-    protected function getExtReoport()
+    protected function getExtReoport(): bool
     {
         $extReports = [];
         $i = 1;
-        // Create objects
-        // @extensionScannerIgnoreLine
-        $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
-        $extensionRepository = $objectManager->get(ExtensionRepository::class);
 
-        $myExtList = $objectManager->get(ListUtility::class);
+        $extensionRepository = GeneralUtility::makeInstance(ExtensionRepository::class);
+        $myExtList = GeneralUtility::makeInstance(ListUtility::class);
+
         $allExtensions = $myExtList->getAvailableAndInstalledExtensionsWithAdditionalInformation();
         $excludeExtensions =  GeneralUtility::trimExplode(',', $this->excludeExtensionsFromCheck);
 
         foreach ($allExtensions as $extensionKey => $nsExt) {
-            if (strtolower($nsExt['type']) == 'local' && $nsExt['key'] != 'ns_ext_compatibility' && !in_array($extensionKey, $excludeExtensions) && $nsExt['updateAvailable'] == true && $nsExt['installed'] == true) {
+            $updateAvailable = $nsExt['updateAvailable'] ?? '';
+            if (strtolower($nsExt['type']) == 'local' && $nsExt['key'] != 'ns_ext_compatibility' && !in_array($extensionKey, $excludeExtensions) && $updateAvailable && $nsExt['installed']) {
                 $extArray = $extensionRepository->findByExtensionKeyOrderedByVersion($nsExt['key']);
 
                 if ($extArray[0]) {
@@ -88,7 +83,7 @@ class SendExtensionsReportTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask
      *
      * @return string
     */
-    protected function renderMailContent($extReports)
+    protected function renderMailContent(array $extReports): string
     {
         $view = GeneralUtility::makeInstance(StandaloneView::class);
 
@@ -101,8 +96,6 @@ class SendExtensionsReportTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask
         }
 
         $projectName = $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'];
-
-        $view->getRequest()->setControllerExtensionName('ns_ext_compatibility'); // path the extension name to get translation work
         $view->setPartialRootPaths(['0' => ExtensionManagementUtility::extPath('ns_ext_compatibility') . 'Resources/Private/Partials/']);
         $view->setLayoutRootPaths(['0' => ExtensionManagementUtility::extPath('ns_ext_compatibility') . 'Resources/Private/Layouts/']);
         $view->setTemplatePathAndFilename(ExtensionManagementUtility::extPath('ns_ext_compatibility') . 'Resources/Private/Templates/Mail/Report.html');
@@ -117,15 +110,15 @@ class SendExtensionsReportTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask
      * sends an email
      *
      * @param array $receiver Array with receiver
-     * @param array $sender Array with sender
+     * @param string $sender string with sender
      * @param string $subject Subject of mail
      * @param string $body Body content for mail
-     * @param string $attachment Path to a file
      * @param string $bodyType text/html or text/plain
      *
      * return boolean
+     * @return bool
      */
-    protected function sendMail($receiver = [], $sender = [], $subject = '', $body = '', $bodyType = 'text/html')
+    protected function sendMail(array $receiver = [], string $sender = '', string $subject = '', string $body = '', string $bodyType = 'text/html'): bool
     {
         $mail = GeneralUtility::makeInstance(MailMessage::class);
         if (!empty($receiver) && !empty($sender)) {
@@ -133,12 +126,7 @@ class SendExtensionsReportTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask
             $mail->setFrom($sender);
             $mail->setTo($receiver);
             $mail->setSubject($subject);
-            // @extensionScannerIgnoreLine
-            if (version_compare(TYPO3_branch, '11', '<')) {
-                $mail->setBody($body, $bodyType);
-            } else {
-                $mail->html($body, $bodyType);
-            }
+            $mail->html($body, $bodyType);
             return $mail->send();
 
         } else {
@@ -148,10 +136,10 @@ class SendExtensionsReportTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask
 
     /**
      * @param string $key
-     * @param array $arguments
+     * @param array|string $arguments
      * @return null|string
     */
-    protected function translate($key, $arguments = '')
+    protected function translate(string $key, array|string $arguments = ''): ?string
     {
         if ($arguments != '') {
             return Localize::translate($key, 'ns_ext_compatibility', $arguments);

@@ -1,5 +1,5 @@
 # Records
 ###########################
 
-# cat=basic/11;type=options[4.x,6.x,7.x,8.x,9.x,10.x,11.x,12.x,13.x]; label=Typo3 Target Version
+# cat=basic/11;type=options[13.x]; label=Typo3 Target Version
 typo3TargetVersion= 13.x

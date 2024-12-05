@@ -77,6 +77,8 @@ class NsExtCompatibilityController extends ActionController
 
     /**
      * This method is used for a fetch list of local extension
+     * @return ResponseInterface
+     * @throws Exception
      */
     public function listAction(): ResponseInterface
     {
@@ -132,23 +134,10 @@ class NsExtCompatibilityController extends ActionController
 
     /**
      * Shows all versions of a specific extension
-     *
-     * @param string $extensionKey
-     * @return void
+     * @return ResponseInterface
      */
     public function detailAction(): ResponseInterface
     {
-        $totalCompatible4 = 0;
-        $totalCompatible6 = 0;
-        $totalCompatible7 = 0;
-        $totalCompatible8 = 0;
-        $totalCompatible9 = 0;
-        $totalCompatible10 = 0;
-        $totalCompatible11 = 0;
-        $totalCompatible12 = 0;
-        $totalCompatible13 = 0;
-        $totalInstalled = 0;
-        $totalNonInstalled = 0;
         $arguments = $this->request->getArguments();
         $extKey = $arguments['extKey'];
         $detailTargetVersion = $arguments['targetVersion'];
@@ -170,21 +159,6 @@ class NsExtCompatibilityController extends ActionController
                                 $minVersion = $dependency->getLowestVersion();
                                 // Extract max TYPO3 CMS version (higherst)
                                 $maxVersion = $dependency->getHighestVersion();
-                                if ($minVersion <= 7 && $maxVersion >= 6) {
-                                    $nsExt['compatible6'] = 1;
-                                }
-                                if ($minVersion <= 8 && $maxVersion >= 7) {
-                                    $nsExt['compatible7'] = 1;
-                                }
-                                if ($minVersion <= 9 && $maxVersion >= 8) {
-                                    $nsExt['compatible8'] = 1;
-                                }
-                                if ($minVersion <= 10 && $maxVersion >= 9) {
-                                    $nsExt['compatible9'] = 1;
-                                }
-                                if ($minVersion <= 11 && $maxVersion >= 10) {
-                                    $nsExt['compatible10'] = 1;
-                                }
                                 if ($minVersion <= 12 && $maxVersion >= 11) {
                                     $nsExt['compatible11'] = 1;
                                 }
@@ -215,40 +189,6 @@ class NsExtCompatibilityController extends ActionController
                     $nsExt['newAlldownloadcounter'] = $extArray[0]->getAlldownloadcounter();
                 }
 
-                //Count Total compatibility Start
-                if (isset($nsExt['compatible4']) && $nsExt['compatible4'] == 1) {
-                    $totalCompatible4++;
-                }
-                if (isset($nsExt['compatible6']) && $nsExt['compatible6'] == 1) {
-                    $totalCompatible6++;
-                }
-                if (isset($nsExt['compatible7']) && $nsExt['compatible7'] == 1) {
-                    $totalCompatible7++;
-                }
-                if (isset($nsExt['compatible8']) && $nsExt['compatible8'] == 1) {
-                    $totalCompatible8++;
-                }
-                if (isset($nsExt['compatible9']) && $nsExt['compatible9'] == 1) {
-                    $totalCompatible9++;
-                }
-                if (isset($nsExt['compatible10']) && $nsExt['compatible10'] == 1) {
-                    $totalCompatible10++;
-                }
-                if (isset($nsExt['compatible11']) && $nsExt['compatible11'] == 1) {
-                    $totalCompatible11++;
-                }
-                if (isset($nsExt['compatible12']) && $nsExt['compatible12'] == 1) {
-                    $totalCompatible12++;
-                }
-                if (isset($nsExt['compatible13']) && $nsExt['compatible13'] == 1) {
-                    $totalCompatible13++;
-                }
-                if (isset($nsExt['installed']) && $nsExt['installed'] == 1) {
-                    $totalInstalled++;
-                } else {
-                    $totalNonInstalled++;
-                }
-
                 //Count Total compatibility End
                 $extension = $nsExt;
             }
@@ -266,13 +206,6 @@ class NsExtCompatibilityController extends ActionController
     public function getAllExtensions($myTargetVersion)
     {
         $i = 1;
-        $totalCompatible4 = 0;
-        $totalCompatible6 = 0;
-        $totalCompatible7 = 0;
-        $totalCompatible8 = 0;
-        $totalCompatible9 = 0;
-        $totalCompatible10 = 0;
-        $totalCompatible11 = 0;
         $totalCompatible12 = 0;
         $totalCompatible13 = 0;
         $totalInstalled = 0;
@@ -284,7 +217,7 @@ class NsExtCompatibilityController extends ActionController
         //Get han extension list
         $allExtensions = $this->listUtility->getAvailableAndInstalledExtensionsWithAdditionalInformation();
 
-        foreach ($allExtensions as $extensionKey => $nsExt) {
+        foreach ($allExtensions as $nsExt) {
 
 
             //Filter all local extension for whole TER data start
@@ -305,21 +238,6 @@ class NsExtCompatibilityController extends ActionController
                                 // Extract max TYPO3 CMS version (higherst)
                                 $maxVersion = (int) $dependency->getHighestVersion();
 
-                                if ($minVersion <= 7 && $maxVersion >= 6) {
-                                    $nsExt['compatible6'] = 1;
-                                }
-                                if ($minVersion <= 8 && $maxVersion >= 7) {
-                                    $nsExt['compatible7'] = 1;
-                                }
-                                if ($minVersion <= 9 && $maxVersion >= 8) {
-                                    $nsExt['compatible8'] = 1;
-                                }
-                                if ($minVersion <= 10 && $maxVersion >= 9) {
-                                    $nsExt['compatible9'] = 1;
-                                }
-                                if ($minVersion <= 11 && $maxVersion >= 10) {
-                                    $nsExt['compatible10'] = 1;
-                                }
                                 if ($minVersion <= 12 && $maxVersion >= 11) {
                                     $nsExt['compatible11'] = 1;
                                 }
@@ -339,8 +257,6 @@ class NsExtCompatibilityController extends ActionController
                 } else {
                     $nsExt['customExt'] = true;
                 }
-                //Fetch typo3 depency of extesion  end
-
                 // Set overview Report start
 
                 if ($extArray[0] && empty($nsExt['newVersion'])) {
@@ -348,27 +264,6 @@ class NsExtCompatibilityController extends ActionController
                 }
 
                 //Count Total compatibility Start
-                if (isset($nsExt['compatible4']) and $nsExt['compatible4'] == 1) {
-                    $totalCompatible4++;
-                }
-                if (isset($nsExt['compatible6']) and $nsExt['compatible6'] == 1) {
-                    $totalCompatible6++;
-                }
-                if (isset($nsExt['compatible7']) and $nsExt['compatible7'] == 1) {
-                    $totalCompatible7++;
-                }
-                if (isset($nsExt['compatible8']) and $nsExt['compatible8'] == 1) {
-                    $totalCompatible8++;
-                }
-                if (isset($nsExt['compatible9']) and $nsExt['compatible9'] == 1) {
-                    $totalCompatible9++;
-                }
-                if (isset($nsExt['compatible10']) and $nsExt['compatible10'] == 1) {
-                    $totalCompatible10++;
-                }
-                if (isset($nsExt['compatible11']) and $nsExt['compatible11'] == 1) {
-                    $totalCompatible11++;
-                }
                 if (isset($nsExt['compatible12']) and $nsExt['compatible12'] == 1) {
                     $totalCompatible12++;
                 }
@@ -393,12 +288,6 @@ class NsExtCompatibilityController extends ActionController
         //Set overview array start
         $overviewReport['totalInstalled'] = $totalInstalled;
         $overviewReport['totalNonInstalled'] = $totalNonInstalled;
-        $overviewReport['totalCompatible6'] = $totalCompatible6;
-        $overviewReport['totalCompatible7'] = $totalCompatible7;
-        $overviewReport['totalCompatible8'] = $totalCompatible8;
-        $overviewReport['totalCompatible9'] = $totalCompatible9;
-        $overviewReport['totalCompatible10'] = $totalCompatible10;
-        $overviewReport['totalCompatible11'] = $totalCompatible11;
         $overviewReport['totalCompatible12'] = $totalCompatible12;
         $overviewReport['totalCompatible13'] = $totalCompatible13;
 
@@ -438,6 +327,7 @@ class NsExtCompatibilityController extends ActionController
      */
     public function getSysRequirementForTargetVersion($targetVersion)
     {
+        $mysqlVersion = '';
         try {
             if ((int)VersionNumberUtility::getNumericTypo3Version() > 7) {
                 list($mysqlVersion) = $this->getMysqlVersion();
@@ -446,90 +336,9 @@ class NsExtCompatibilityController extends ActionController
                 preg_match('@[0-9]+\.[0-9]+\.[0-9]+@', shell_exec('mysql -V'), $mysqlVersion);
             }
         } catch (\Exception $e) {
-            if (version_compare($this->currentVersion, '6.2', '<')) {
-                $erorrMessage = GeneralUtility::makeInstance(
-                    'TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
-                    $e->getMessage(),
-                    'Exception: ' . $e->getCode(),  // the header is optional
-                    \TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::ERROR
-                );
-
-                \TYPO3\CMS\Core\Messaging\FlashMessageQueue::addMessage($erorrMessage);
-            } else {
-                $this->addFlashMessage($e->getMessage(), 'Exception: ' . $e->getCode(), \TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::ERROR);
-            }
+            $this->addFlashMessage($e->getMessage(), 'Exception: ' . $e->getCode(), \TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::ERROR);
         }
         $typo3Config = [
-            '4.x' => [
-                'php' => [
-                    'required' => '5.2-5.5',
-                    'current' => substr(phpversion(), 0, 6),
-                ],
-                'mysql' => [
-                    'required' => '5.0-5.5',
-                    'current' => $mysqlVersion,
-                ],
-            ],
-            '6.x' => [
-                'php' => [
-                    'required' => '5.3',
-                    'current' => substr(phpversion(), 0, 6),
-                ],
-                'mysql' => [
-                    'required' => '5.1-5.6',
-                    'current' => $mysqlVersion,
-                ],
-            ],
-            '7.x' => [
-                'php' => [
-                    'required' => '5.5',
-                    'current' => substr(phpversion(), 0, 6),
-                ],
-                'mysql' => [
-                    'required' => '5.5-5.7',
-                    'current' => $mysqlVersion,
-                ],
-            ],
-            '8.x' => [
-                'php' => [
-                    'required' => '7',
-                    'current' => substr(phpversion(), 0, 6),
-                ],
-                'mysql' => [
-                    'required' => '5.0-5.7',
-                    'current' => $mysqlVersion,
-                ],
-            ],
-            '9.x' => [
-                'php' => [
-                    'required' => '7.2',
-                    'current' => substr(phpversion(), 0, 6),
-                ],
-                'mysql' => [
-                    'required' => '5.0-5.7',
-                    'current' => $mysqlVersion,
-                ],
-            ],
-            '10.x' => [
-                'php' => [
-                    'required' => '7.2',
-                    'current' => substr(phpversion(), 0, 6),
-                ],
-                'mysql' => [
-                    'required' => '5.0-5.7',
-                    'current' => $mysqlVersion,
-                ],
-            ],
-            '11.x' => [
-                'php' => [
-                    'required' => '7.4',
-                    'current' => substr(phpversion(), 0, 6),
-                ],
-                'mysql' => [
-                    'required' => '5.7',
-                    'current' => $mysqlVersion,
-                ],
-            ],
             '12.x' => [
                 'php' => [
                     'required' => '8.1',

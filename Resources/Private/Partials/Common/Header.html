@@ -3,47 +3,12 @@
 <f:form id="changeTargtVersion" action="list" class="form-inline">
     <select class="form-control" id="targetVersion" name="tx_nsextcompatibility_tools_nsextcompatibilitynsextcompatibility[targetVersion]">
         <option value="{sysDetail.targetVersion}"><f:translate key="option.label"/> {sysDetail.targetVersion}</option>
-        <f:if condition=" '{sysDetail.typo3version}' < '6' ">
-            <f:if condition="{sysDetail.targetVersion}!='4.x'">
-                <option value="4.x"><f:translate key="option.label4"/></option>
-            </f:if>
-        </f:if>
-        <f:if condition=" '{sysDetail.typo3version}' <7">
-            <f:if condition="{sysDetail.targetVersion}!=6.x">
-                <option value="6.x"><f:translate key="option.label6"/></option>
-            </f:if>
-        </f:if>
-        <f:if condition=" '{sysDetail.typo3version}' <8">
-            <f:if condition="{sysDetail.targetVersion}!='7.x'">
-                <option value="7.x"><f:translate key="option.label7"/></option>
-            </f:if>
-        </f:if>
-        <f:if condition=" '{sysDetail.typo3version}' <9">
-            <f:if condition="{sysDetail.targetVersion}!='8.x'">
-                <option value="8.x"><f:translate key="option.label8"/></option>
-            </f:if>
-        </f:if>
-        <f:if condition=" '{sysDetail.typo3version}' <10">
-            <f:if condition="{sysDetail.targetVersion}!='9.x'">
-                <option value="9.x"><f:translate key="option.label9"/></option>
-            </f:if>
-        </f:if>
-        <f:if condition=" '{sysDetail.typo3version}' <11">
-            <f:if condition="{sysDetail.targetVersion}!='10.x'">
-                <option value="10.x"><f:translate key="option.label10"/></option>
-            </f:if>
-        </f:if>
-        <f:if condition="{sysDetail.typo3version}  < 12">
-            <f:if condition="{sysDetail.targetVersion} != '11.x'">
-                <option value="11.x"><f:translate key="option.label11"/></option>
-            </f:if>
-        </f:if>
-        <f:if condition="{sysDetail.typo3version}<13">
+        <f:if condition="{sysDetail.typo3version} < 13">
             <f:if condition="{sysDetail.targetVersion}!='12.x'">
                 <option value="12.x"><f:translate key="option.label12"/></option>
             </f:if>
         </f:if>
-        <f:if condition="{sysDetail.typo3version}<14">
+        <f:if condition="{sysDetail.typo3version} < 14">
             <f:if condition="{sysDetail.targetVersion}!='13.x'">
                 <option value="13.x"><f:translate key="option.label13"/></option>
             </f:if>
