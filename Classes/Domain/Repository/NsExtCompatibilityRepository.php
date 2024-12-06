@@ -83,14 +83,16 @@ class NsExtCompatibilityRepository extends Repository
     public function countDomain()
     {
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getQueryBuilderForTable('sys_domain');
+        ->getQueryBuilderForTable('pages');
         $totalDomain = $queryBuilder
             ->count('pid')
-            ->from('sys_domain')
+            ->from('pages')
+            ->where(
+                $queryBuilder->expr()->eq('is_siteroot', 1)
+            )
             ->groupBy('pid')
             ->executeQuery()
             ->fetchOne();
-
         if ($totalDomain > 0) {
             return $totalDomain;
         } else {

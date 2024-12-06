@@ -41,6 +41,7 @@ use NITSAN\NsExtCompatibility\Domain\Repository\NsExtCompatibilityRepository;
 use TYPO3\CMS\Extensionmanager\Domain\Repository\ExtensionRepository;
 use TYPO3\CMS\Extensionmanager\Remote\RemoteRegistry;
 use \TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
+use \TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 
 /**
  * Backend Controller
@@ -112,12 +113,12 @@ class NsExtCompatibilityController extends ActionController
             $lastUpdateTime = $lastUpdate->format('Y-m-d');
 
             if (date('Y-m-d', $currentTime) > $lastUpdateTime) {
-                $this->addFlashMessage($this->translate($asPerMode, ['date' => $lastUpdateTime]), $this->translate('warning.TERUpdateHeadline'), \TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::WARNING);
+                $this->addFlashMessage($this->translate($asPerMode, ['date' => $lastUpdateTime]), $this->translate('warning.TERUpdateHeadline'), ContextualFeedbackSeverity::WARNING);
             }
         }
 
          if ((int)$sysDetail['targetVersion'] < $sysDetail['typo3version']) {
-             $this->addFlashMessage($this->translate('warning.selectProperTargetVersionText'), $this->translate('warning.selectProperTargetVersionHeadline'), \TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::WARNING);
+             $this->addFlashMessage($this->translate('warning.selectProperTargetVersionText'), $this->translate('warning.selectProperTargetVersionHeadline'), ContextualFeedbackSeverity::WARNING);
          }
 
         //Check typo3 target version from extension settings end
@@ -311,11 +312,7 @@ class NsExtCompatibilityController extends ActionController
         $sysDetail['sitename'] = $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'];
         $sysDetail['typo3version'] = VersionNumberUtility::getNumericTypo3Version();
         $sysDetail['totalPages'] = $this->NsExtCompatibilityRepository->countPages();
-
-
-        if (version_compare($this->currentVersion, '10', '<')) {
-            $sysDetail['totalDomain'] = $this->NsExtCompatibilityRepository->countDomain();
-        }
+        $sysDetail['totalDomain'] = $this->NsExtCompatibilityRepository->countDomain();
         $sysDetail['totalLang'] = $this->NsExtCompatibilityRepository->sysLang();
         return $sysDetail;
     }

@@ -29,6 +29,11 @@ class SendExtensionsReportTask extends AbstractTask
     /**
      * @var string
      */
+    public string $mailSender;
+
+    /**
+     * @var string
+     */
     public string $excludeExtensionsFromCheck;
 
     /**
