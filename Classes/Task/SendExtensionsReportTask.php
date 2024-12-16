@@ -62,7 +62,7 @@ class SendExtensionsReportTask extends AbstractTask
 
         foreach ($allExtensions as $extensionKey => $nsExt) {
             $updateAvailable = $nsExt['updateAvailable'] ?? '';
-            if (strtolower($nsExt['type']) == 'local' && $nsExt['key'] != 'ns_ext_compatibility' && !in_array($extensionKey, $excludeExtensions) && $updateAvailable && $nsExt['installed']) {
+            if (strtolower($nsExt['type']) == 'local' && $nsExt['key'] != 'ns_ext_compatibility' && !in_array($extensionKey, $excludeExtensions) && $updateAvailable && isset($nsExt['installed']) && $nsExt['installed']) {
                 $extArray = $extensionRepository->findByExtensionKeyOrderedByVersion($nsExt['key']);
 
                 if ($extArray[0]) {
