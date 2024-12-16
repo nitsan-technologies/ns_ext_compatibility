@@ -485,7 +485,7 @@ class NsExtCompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
         $sysDetail['phpversion'] = substr(phpversion(), 0, 6);
         $sysDetail['targetVersion'] = $extConfig['typo3TargetVersion'];
         $sysDetail['sitename'] = $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'];
-        $sysDetail['typo3version'] = VersionNumberUtility::getNumericTypo3Version();
+        $sysDetail['typo3version'] = (int)VersionNumberUtility::getNumericTypo3Version();
         $sysDetail['totalPages'] = $this->NsExtCompatibilityRepository->countPages();
         if (version_compare(TYPO3_branch, '10', '<')) {
             $sysDetail['totalDomain'] = $this->NsExtCompatibilityRepository->countDomain();
