@@ -127,6 +127,15 @@
 				<source>Total Compatible of TYPO3 11.x</source>
 				<target>Vollständige Kompatibilität von TYPO3 11.x</target>
 			</trans-unit>
+			<trans-unit id="totalCompatible12">
+				<source>Total Compatible of TYPO3 12.x</source>
+				<target>Vollständige Kompatibilität von TYPO3 12.x</target>
+			</trans-unit>
+			<trans-unit id="totalCompatible13">
+				<source>Total Compatible of TYPO3 13.x</source>
+				<target>Vollständige Kompatibilität von TYPO3 13.x</target>
+			</trans-unit>
+
 			<trans-unit id="extensionlist">
 				<source>TYPO3 Extensions Report</source>
 				<target>TYPO3-Erweiterungsbericht</target>
@@ -171,6 +180,14 @@
 				<source>TYPO3 11.x</source>
 				<target>TYPO3 11.x</target>
 			</trans-unit>
+			<trans-unit id="option.label12">
+				<source>TYPO3 12.x</source>
+				<target>TYPO3 12.x</target>
+			</trans-unit>
+			<trans-unit id="option.label13">
+				<source>TYPO3 13.x</source>
+				<target>TYPO3 13.x</target>
+			</trans-unit>
 			<trans-unit id="compatible6">
 				<source>Comp. 6.x</source>
 				<target>Comp. 6.x</target>
@@ -194,6 +211,14 @@
 			<trans-unit id="compatible11">
 				<source>Comp. 11.x</source>
 				<target>Comp. 11.x</target>
+			</trans-unit>
+			<trans-unit id="compatible12">
+				<source>Comp. 12.x</source>
+				<target>Comp. 12.x</target>
+			</trans-unit>
+			<trans-unit id="compatible13">
+				<source>Comp. 13.x</source>
+				<target>Comp. 13.x</target>
 			</trans-unit>
 			<trans-unit id="action">
 				<source>Installed</source>

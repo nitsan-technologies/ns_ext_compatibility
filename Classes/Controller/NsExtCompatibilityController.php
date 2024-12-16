@@ -210,6 +210,7 @@ class NsExtCompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
         $totalCompatible10 = 0;
         $totalCompatible11 = 0;
         $totalCompatible12 = 0;
+        $totalCompatible13 = 0;
         $totalInstalled = 0;
         $totalNonInstalled = 0;
         $arguments = $this->request->getArguments();
@@ -252,6 +253,9 @@ class NsExtCompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
                                 }
                                 if ($minVersion <= 13 && $maxVersion >= 12) {
                                     $nsExt['compatible12'] = 1;
+                                }
+                                if ($minVersion <= 14 && $maxVersion >= 13) {
+                                    $nsExt['compatible13'] = 1;
                                 }
                                 if ((($maxVersion > (int) $detailTargetVersion && $maxVersion <= (int) $detailTargetVersion + 1) || $minVersion > (int) $detailTargetVersion && $minVersion <= (int) $detailTargetVersion + 1) && ($newNsVersion < $extension->getVersion())) {
                                     $newNsVersion = $extension->getVersion();
@@ -300,6 +304,9 @@ class NsExtCompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
                 if (isset($nsExt['compatible12']) && $nsExt['compatible12'] == 1) {
                     $totalCompatible12++;
                 }
+                if (isset($nsExt['compatible13']) && $nsExt['compatible13'] == 1) {
+                    $totalCompatible13++;
+                }
                 if (isset($nsExt['installed']) && $nsExt['installed'] == 1) {
                     $totalInstalled++;
                 } else {
@@ -315,7 +322,7 @@ class NsExtCompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
         $sysDetail = $this->getSysDetail();
 
         $sysDetail['targetVersion'] = $detailTargetVersion;
-        $this->view->assign('sysDetail', $sysDetail);   
+        $this->view->assign('sysDetail', $sysDetail);
         $this->view->assign('extension', $extension);
     }
 
@@ -333,6 +340,7 @@ class NsExtCompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
         $totalCompatible10 = 0;
         $totalCompatible11 = 0;
         $totalCompatible12 = 0;
+        $totalCompatible13 = 0;
         $totalInstalled = 0;
         $totalNonInstalled = 0;
         $assignArray = [];
@@ -380,6 +388,9 @@ class NsExtCompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
                                 if ($minVersion <= 13 && $maxVersion >= 12) {
                                     $nsExt['compatible12'] = 1;
                                 }
+                                if ($minVersion <= 14 && $maxVersion >= 13) {
+                                    $nsExt['compatible13'] = 1;
+                                }
                                 if ((($maxVersion > (int) $myTargetVersion && $maxVersion <= (int) $myTargetVersion + 1) || $minVersion > (int) $myTargetVersion && $minVersion <= (int) $myTargetVersion + 1) && ($newNsVersion < $extension->getVersion())) {
                                     $newNsVersion = $extension->getVersion();
                                     $nsExt['newVersion'] = $newNsVersion;
@@ -423,6 +434,9 @@ class NsExtCompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
                 if (isset($nsExt['compatible12']) and $nsExt['compatible12'] == 1) {
                     $totalCompatible12++;
                 }
+                if (isset($nsExt['compatible13']) and $nsExt['compatible13'] == 1) {
+                    $totalCompatible13++;
+                }
                 if (isset($nsExt['installed']) and $nsExt['installed'] == 1) {
                     $totalInstalled++;
                 } else {
@@ -446,6 +460,7 @@ class NsExtCompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
         $overviewReport['totalCompatible10'] = $totalCompatible10;
         $overviewReport['totalCompatible11'] = $totalCompatible11;
         $overviewReport['totalCompatible12'] = $totalCompatible12;
+        $overviewReport['totalCompatible13'] = $totalCompatible13;
 
         //Set overview array end
 
@@ -582,6 +597,16 @@ class NsExtCompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
             '12.x' => [
                 'php' => [
                     'required' => '8.1',
+                    'current' => substr(phpversion(), 0, 6),
+                ],
+                'mysql' => [
+                    'required' => '8.0',
+                    'current' => $mysqlVersion,
+                ],
+            ],
+            '13.x' => [
+                'php' => [
+                    'required' => '8.2',
                     'current' => substr(phpversion(), 0, 6),
                 ],
                 'mysql' => [

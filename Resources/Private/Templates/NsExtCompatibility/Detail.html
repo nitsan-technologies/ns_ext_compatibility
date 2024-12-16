@@ -236,6 +236,84 @@
                     </tr>
                 </f:if>
             </f:if>
+            <f:if condition="{sysDetail.typo3version}<12">
+                <f:if condition="{sysDetail.targetVersion}>=11">
+                    <tr>
+                        <td width="30%"><strong><f:translate key="compatible11"/></strong></td>
+                        <f:if condition="{extension.customExt} != 'true'">
+                            <f:then>
+                                <f:if condition="{extension.compatible11}">
+                                    <f:then>
+                                        <td class="compatible">
+                                            <img src="../typo3conf/ext/ns_ext_compatibility/Resources/Public/Backend/Icons/righ-icon.png" width="12" height="12" />
+                                        </td>
+                                    </f:then>
+                                    <f:else>
+                                        <td class="incompatible">
+                                            <img src="../typo3conf/ext/ns_ext_compatibility/Resources/Public/Backend/Icons/crose-icon.png" width="12" height="12" />
+                                        </td>
+                                    </f:else>
+                                </f:if>
+                            </f:then>
+                            <f:else>
+                                <td class="incompatible"><f:translate key="unknown" />
+                            </f:else>
+                        </f:if>
+                    </tr>
+                </f:if>
+            </f:if>
+            <f:if condition="{sysDetail.typo3version}<13">
+                <f:if condition="{sysDetail.targetVersion}>=12">
+                    <tr>
+                        <td width="30%"><strong><f:translate key="compatible12"/></strong></td>
+                        <f:if condition="{extension.customExt} != 'true'">
+                            <f:then>
+                                <f:if condition="{extension.compatible12}">
+                                    <f:then>
+                                        <td class="compatible">
+                                            <img src="../typo3conf/ext/ns_ext_compatibility/Resources/Public/Backend/Icons/righ-icon.png" width="12" height="12" />
+                                        </td>
+                                    </f:then>
+                                    <f:else>
+                                        <td class="incompatible">
+                                            <img src="../typo3conf/ext/ns_ext_compatibility/Resources/Public/Backend/Icons/crose-icon.png" width="12" height="12" />
+                                        </td>
+                                    </f:else>
+                                </f:if>
+                            </f:then>
+                            <f:else>
+                                <td class="incompatible"><f:translate key="unknown" />
+                            </f:else>
+                        </f:if>
+                    </tr>
+                </f:if>
+            </f:if>
+            <f:if condition="{sysDetail.typo3version}<14">
+                <f:if condition="{sysDetail.targetVersion}>=13">
+                    <tr>
+                        <td width="30%"><strong><f:translate key="compatible13"/></strong></td>
+                        <f:if condition="{extension.customExt} != 'true'">
+                            <f:then>
+                                <f:if condition="{extension.compatible13}">
+                                    <f:then>
+                                        <td class="compatible">
+                                            <img src="../typo3conf/ext/ns_ext_compatibility/Resources/Public/Backend/Icons/righ-icon.png" width="12" height="12" />
+                                        </td>
+                                    </f:then>
+                                    <f:else>
+                                        <td class="incompatible">
+                                            <img src="../typo3conf/ext/ns_ext_compatibility/Resources/Public/Backend/Icons/crose-icon.png" width="12" height="12" />
+                                        </td>
+                                    </f:else>
+                                </f:if>
+                            </f:then>
+                            <f:else>
+                                <td class="incompatible"><f:translate key="unknown" />
+                            </f:else>
+                        </f:if>
+                    </tr>
+                </f:if>
+            </f:if>
             <f:if condition="{extension.constraints.depends}">
                 <tr>
                     <td width="30%"><strong><f:translate key="currentVersionDepend"/></strong></td>

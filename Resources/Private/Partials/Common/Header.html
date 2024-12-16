@@ -42,6 +42,11 @@
                 <option value="12.x"><f:translate key="option.label12"/></option>
             </f:if>
         </f:if>
+        <f:if condition="{sysDetail.typo3version}<14">
+            <f:if condition="{sysDetail.targetVersion}!='13.x'">
+                <option value="13.x"><f:translate key="option.label13"/></option>
+            </f:if>
+        </f:if>
     </select>
 </f:form>
 <p class="upgradeLabel"><f:translate key="typo3UpgradeOptLabel"/></p>
