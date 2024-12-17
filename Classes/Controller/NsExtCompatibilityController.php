@@ -150,10 +150,10 @@ class NsExtCompatibilityController extends \TYPO3\CMS\Extbase\Mvc\Controller\Act
                 }
             }
         } else {
-            $this->remoteRegistry = GeneralUtility::makeInstance(RemoteRegistry::class);
+            $remoteRegistry = GeneralUtility::makeInstance(RemoteRegistry::class);
             $lastUpdate = null;
-            if($this->remoteRegistry) {
-                foreach ($this->remoteRegistry->getListableRemotes() as $remote) {
+            if($remoteRegistry) {
+                foreach ($remoteRegistry->getListableRemotes() as $remote) {
                     if ($lastUpdate === null || $lastUpdate < $remote->getLastUpdate()) {
                         $lastUpdate = $remote->getLastUpdate();
                     }
