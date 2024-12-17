@@ -78,6 +78,9 @@ tr.head:hover,.ext-overview:hover{
 .modal-body table{
     width: 100%
 }
+table{
+    border: 1px solid #ccc;
+}
 .btn-export{
     float:right;
     border: none;
