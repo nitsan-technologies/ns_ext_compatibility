@@ -28,6 +28,11 @@ class SendExtensionsReportTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask
     /**
      * @var string
      */
+    public $mailSender;
+
+    /**
+     * @var string
+     */
     public $mailTo;
 
     /**
@@ -61,7 +66,7 @@ class SendExtensionsReportTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask
         $excludeExtensions =  GeneralUtility::trimExplode(',', $this->excludeExtensionsFromCheck);
 
         foreach ($allExtensions as $extensionKey => $nsExt) {
-            if (strtolower($nsExt['type']) == 'local' && $nsExt['key'] != 'ns_ext_compatibility' && !in_array($extensionKey, $excludeExtensions) && $nsExt['updateAvailable'] == true && $nsExt['installed'] == true) {
+            if (strtolower($nsExt['type']) == 'local' && $nsExt['key'] != 'ns_ext_compatibility' && !in_array($extensionKey, $excludeExtensions) && isset($nsExt['updateAvailable']) && $nsExt['updateAvailable'] == true && isset($nsExt['installed']) && $nsExt['installed'] == true) {
                 $extArray = $extensionRepository->findByExtensionKeyOrderedByVersion($nsExt['key']);
 
                 if ($extArray[0]) {
@@ -132,7 +137,7 @@ class SendExtensionsReportTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask
             $mail->setFrom($sender);
             $mail->setTo($receiver);
             $mail->setSubject($subject);
-            if (version_compare(TYPO3_branch, '11', '<')) {
+            if (version_compare(TYPO3_branch, '10', '<')) {
                 $mail->setBody($body, $bodyType);
             } else {
                 $mail->html($body, $bodyType);
