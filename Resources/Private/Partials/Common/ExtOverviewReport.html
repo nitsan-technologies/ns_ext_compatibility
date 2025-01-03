@@ -13,59 +13,18 @@
 			<td><f:translate key="totalNonInstalledExt"/></td>
 			<td><strong>{overviewReport.totalNonInstalled}</strong></td>
 		</tr>
-		<f:if condition="{typo3version}<6">
-			<f:if condition="{targetVersion}>=4">
-				<tr  class="bgColor6" >
-					<td><f:translate key="totalCompatible4"/></td>
-					<td><strong>{overviewReport.totalCompatible4}</strong></td>
+
+		<f:if condition="{typo3version}<13">
+			<f:if condition="{targetVersion}>=12">
+				<tr class="bgColor6">
+					<td><f:translate key="totalCompatible12"/></td>
+					<td><strong>{overviewReport.totalCompatible12}</strong></td>
 				</tr>
 			</f:if>
-		</f:if>
-		<f:if condition="{typo3version}<7">
-			<f:if condition="{targetVersion}>=6">
-				<tr  class="bgColor4" >
-					<td><f:translate key="totalCompatible6"/></td>
-					<td><strong>{overviewReport.totalCompatible6}</strong></td>
-				</tr>
-			</f:if>
-		</f:if>
-		<f:if condition="{typo3version}<8">
-			<f:if condition="{targetVersion}>=7">
-				<tr  class="bgColor6" >
-					<td><f:translate key="totalCompatible7"/></td>
-					<td><strong>{overviewReport.totalCompatible7}</strong></td>
-				</tr>
-			</f:if>
-		</f:if>
-		<f:if condition="{typo3version}<9">
-			<f:if condition="{targetVersion}>=8">
-				<tr  class="bgColor4" >
-					<td><f:translate key="totalCompatible8"/></td>
-					<td><strong>{overviewReport.totalCompatible8}</strong></td>
-				</tr>
-			</f:if>
-		</f:if>
-		<f:if condition="{typo3version}<10">
-			<f:if condition="{targetVersion}>=9">
-				<tr  class="bgColor6" >
-					<td><f:translate key="totalCompatible9"/></td>
-					<td><strong>{overviewReport.totalCompatible9}</strong></td>
-				</tr>
-			</f:if>
-		</f:if>
-        <f:if condition="{typo3version}<11">
-            <f:if condition="{targetVersion}>=10">
-                <tr  class="bgColor6" >
-                    <td><f:translate key="totalCompatible10"/></td>
-                    <td><strong>{overviewReport.totalCompatible10}</strong></td>
-                </tr>
-            </f:if>
-        </f:if>
-		<f:if condition="{typo3version}<12">
-			<f:if condition="{targetVersion}>=11">
-				<tr  class="bgColor6" >
-					<td><f:translate key="totalCompatible11"/></td>
-					<td><strong>{overviewReport.totalCompatible11}</strong></td>
+			<f:if condition="{targetVersion}>=13">
+				<tr class="bgColor6">
+					<td><f:translate key="totalCompatible13"/></td>
+					<td><strong>{overviewReport.totalCompatible13}</strong></td>
 				</tr>
 			</f:if>
 		</f:if>

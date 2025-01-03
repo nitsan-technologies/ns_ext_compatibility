@@ -19,10 +19,10 @@ $EM_CONF['ns_ext_compatibility'] = [
     'modify_tables' => '',
     'clearCacheOnLoad' => 0,
     'lockType' => '',
-    'version' => '6.1.0',
+    'version' => '12.0.0',
     'constraints' => [
         'depends' => [
-            'typo3' => '4.5.0-11.9.99',
+            'typo3' => '12.0.0-12.9.99',
         ],
         'conflicts' => [
         ],

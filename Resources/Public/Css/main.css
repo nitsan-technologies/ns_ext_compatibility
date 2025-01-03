@@ -6,6 +6,7 @@ body {
     color: #000;
     font-weight: 400;
     font-family:'Roboto', sans-serif;
+    overflow: auto;
 }
 h1, h2, h3, h4 {
     font-weight: 500;
@@ -46,7 +47,7 @@ tr.head:hover,.ext-overview:hover{
 .close {
     color: #000;
     float: right;
-    font-size: 30px;
+    font-size: 20px;
     font-weight: 700;
     opacity: 0.2;
     text-shadow: 0 1px 0 #fff;
@@ -77,6 +78,9 @@ tr.head:hover,.ext-overview:hover{
 }
 .modal-body table{
     width: 100%
+}
+table{
+    border: 1px solid #ccc;
 }
 .btn-export{
     float:right;
@@ -314,7 +318,7 @@ table.t3-table tbody td a {
 
 
 select.form-control:not([size]):not(.form-select-no-siblings), select.form-control[size="1"]:not(.form-select-no-siblings) {
-    background-image: url('../../Public/Icons/actions-view-list-expand.svg');
+    background-image: url('../Icons/actions-view-list-expand.svg');
     background-position: right 4px center;
     background-repeat: no-repeat;
     background-size: 16px 16px;
@@ -345,4 +349,8 @@ a:hover,a:focus{
 
 .modal-backdrop{
     z-index: 1040;
+}
+
+.ext-report-wrapper .dataTables_wrapper .dataTables_filter label{
+    align-items: center;
 }

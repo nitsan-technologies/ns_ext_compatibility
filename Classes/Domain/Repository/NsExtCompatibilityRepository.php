@@ -2,8 +2,12 @@
 
 namespace  NITSAN\NsExtCompatibility\Domain\Repository;
 
+use Doctrine\DBAL\Exception;
+use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Utility\VersionNumberUtility;
+use TYPO3\CMS\Extbase\Persistence\Repository;
 
 /***************************************************************
  *  Copyright notice
@@ -36,44 +40,59 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
  * @extensionScannerIgnoreLine
  */
 
-class NsExtCompatibilityRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
+class NsExtCompatibilityRepository extends Repository
 {
+    /**
+        * @var string
+        */
+    protected string $currentVersion;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        parent::__construct();
+        $this->currentVersion = VersionNumberUtility::getCurrentTypo3Version();
+    }
+
+
     /*
      * This method is used for get all pages of site
     */
+    /**
+     * @throws Exception
+     */
     public function countPages()
     {
-        if (version_compare(TYPO3_branch, '9.0', '<')) {
-            $totolPages = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('*', 'pages', 'deleted=0');
-        } else {
-            $queryBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Database\ConnectionPool::class)
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getQueryBuilderForTable('pages');
-            $totolPages = $queryBuilder
-                       ->count('uid')
-                       ->from('pages')
-                       ->execute()
-                       ->fetchColumn(0);
-        }
-        return $totolPages;
+        return $queryBuilder
+            ->count('uid')
+            ->from('pages')
+            ->executeQuery()
+            ->fetchOne();
     }
 
     /*
      * This method is used for get all domains of site
     */
+    /**
+     * @throws Exception
+     */
     public function countDomain()
     {
-        if (version_compare(TYPO3_branch, '9.0', '<')) {
-            $totalDomain = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('DISTINCT pid', 'sys_domain', 'hidden=0');
-        } else {
-            $queryBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Database\ConnectionPool::class)
-            ->getQueryBuilderForTable('sys_domain');
-            $totalDomain = $queryBuilder
-                        ->count('pid')
-                        ->from('sys_domain')
-                        ->groupBy('pid')
-                        ->execute()
-                        ->fetchColumn(0);
-        }
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+        ->getQueryBuilderForTable('pages');
+        $totalDomain = $queryBuilder
+            ->count('pid')
+            ->from('pages')
+            ->where(
+                $queryBuilder->expr()->eq('is_siteroot', 1)
+            )
+            ->groupBy('pid')
+            ->executeQuery()
+            ->fetchOne();
         if ($totalDomain > 0) {
             return $totalDomain;
         } else {
@@ -84,30 +103,32 @@ class NsExtCompatibilityRepository extends \TYPO3\CMS\Extbase\Persistence\Reposi
     /*
      * This method is used for get all system language of site
     */
-    public function sysLang()
+    public function sysLang(): int
     {
-        if (version_compare(TYPO3_branch, '9.0', '<')) {
-            $totalLang = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('*', 'sys_language', 'hidden=0');
-        } else {
-            $queryBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Database\ConnectionPool::class)
-            ->getQueryBuilderForTable('sys_language');
-            $totalLang = $queryBuilder
-                       ->count('uid')
-                       ->from('sys_language')
-                       ->execute()
-                       ->fetchColumn(0);
+        $allSiteConfiguration = GeneralUtility::makeInstance(SiteFinder::class)->getAllSites();
+        $uniqueArray = [];
+
+        foreach ($allSiteConfiguration as $site) {
+            foreach ($site->getAllLanguages() as $lang) {
+                // @extensionScannerIgnoreLine
+                $uniqueArray[] = $lang->getLanguageId();
+            }
         }
-        return $totalLang + 1;
+
+        $uniqueArray = array_unique($uniqueArray);
+
+        return count($uniqueArray) ?? 1;
     }
 
-    function getDBVersion() {
+    public function getDBVersion()
+    {
+        $serverVersion = '';
         foreach (GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionNames() as $connectionName) {
             try {
                 $serverVersion = GeneralUtility::makeInstance(ConnectionPool::class)
                     ->getConnectionByName($connectionName)
                     ->getServerVersion();
-            } catch (\Exception $exception) {
-            }
+            } catch (\Exception $exception) {}
         }
         return $serverVersion;
     }
