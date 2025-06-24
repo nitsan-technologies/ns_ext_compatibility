@@ -1,14 +1,13 @@
 <?php
 
 $EM_CONF['ns_ext_compatibility'] = [
-    'title' => 'Upgrade Extensions Compatibility',
-    'description' => 'Are you in need of a TYPO3 Extension that offers features such as system information reporting, statistical analysis of TYPO3 extensions, downloadable compatibility options, and more? TYPO3 Extensions Compatibility Report, tailored to meet your specific requirements! Compatible with all major versions of TYPO3 , it assists you in assessing the feasibility and complexity of TYPO3 upgrades. 
+    'title' => 'TYPO3 Extension Upgrade Checker',
+    'description' => 'Analyze the compatibility of your TYPO3 extensions before upgrading. Get insights, reports, and recommendations to ensure smooth version upgrades and better system stability.',
     
-    ***  Live-Demo: https://demo.t3planet.com/t3-extensions/ext-compatibility *** Premium Version, Documentation & Free Support: https://t3planet.com/typo3-upgrade-extension-compatibility/',
     'category' => 'module',
-    'author' => 'T3: Himanshu Ramavat, T3: Divya Goklani, T3: Nilesh Malankiya, QA: Krishna Dhapa',
-    'author_email' => 'sanjay@nitsan.in',
-    'author_company' => 'T3Planet // NITSAN',
+    'author' => 'Team T3Planet',
+    'author_email' => 'info@t3planet.de',
+    'author_company' => 'T3Planet',
     'shy' => '',
     'priority' => '',
     'module' => '',
