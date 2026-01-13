@@ -1,8 +1,8 @@
 {
-  "name": "nitsan/ns_ext_compatibility",
+  "name": "nitsan/ns-ext-compatibility",
   "type": "typo3-cms-extension",
-  "description": "Are you in need of a TYPO3 Extension that offers features such as system information reporting, statistical analysis of TYPO3 extensions, downloadable compatibility options, and more? TYPO3 Extensions Compatibility Report, tailored to meet your specific requirements!",
-  "homepage": "https://t3planet.com/typo3-upgrade-extension-compatibility",
+  "description": "Are you in need of a TYPO3 Extension that offers features such as system information reporting, statistical analysis of TYPO3 extensions, downloadable compatibility options, and more? TYPO3 Extensions Compatibility Report, tailored to meet your specific requirements! Compatible with all major versions of TYPO3 12.x, it assists you in assessing the feasibility and complexity of TYPO3 upgrades. ***  Live-Demo: https://demo.t3planet.com/t3-extensions/ext-compatibility *** Premium Version, Documentation & Free Support: https://t3planet.com/typo3-upgrade-extension-compatibility/",
+  "homepage": "https://t3terminal.com/typo3-extensions-compatibility-report-free/",
   "license": "GPL-2.0+",
   "keywords": [
     "TYPO3",
@@ -16,13 +16,14 @@
   ],
   "authors": [
     {
-      "name": "T3Planet // NITSAN",
+      "name": "NITSAN Technologies",
       "role": "Developer",
       "homepage": "https://www.nitsan.in/"
     }
   ],
   "require": {
-    "typo3/cms-core": "^12.0"
+    "typo3/cms-core": "^12",
+    "nitsan/ns-license": "^13"
   },
   "autoload": {
     "psr-4": {
@@ -30,7 +31,7 @@
     }
   },
   "replace": {
-    "typo3-ter/ns_ext_compatibility": "self.version"
+    "nitsan/ns_ext_compatibility": "self.version"
   },
   "config": {
     "vendor-dir": ".Build/vendor/",

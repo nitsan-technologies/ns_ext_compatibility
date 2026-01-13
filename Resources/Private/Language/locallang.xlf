@@ -3,14 +3,17 @@
 	<file source-language="en" datatype="plaintext" original="messages" date="2018-02-10T16:41:47Z" product-name="ns_ext_compatibility">
 		<header/>
 		<body>
-			<trans-unit id="mlang_tabs_tab">
+			<trans-unit id="module.title">
 				<source>Extension Report</source>
 			</trans-unit>
-			<trans-unit id="module.title">
+			<trans-unit id="mlang_tabs_tab">
 				<source>Extension Report</source>
 			</trans-unit>
 			<trans-unit id="warning.TERUpdateText">
 				<source>Please kindly update your extension table from Extensions Module > Get Extensions, Because your last updated date is %s</source>
+			</trans-unit>
+			<trans-unit id="warning.TERUpdateTextComposer">
+				<source>Please update your extension table using Scheduler task: Update extension list (extensionmanager), because your last update date is %s</source>
 			</trans-unit>
 			<trans-unit id="warning.TERUpdateHeadline">
 				<source>Update your extensions list with live TER (TYO3 Extensions Repository)</source>
@@ -29,9 +32,6 @@
 			</trans-unit>
 			<trans-unit id="typo3Upgrade9">
 				<source>TYPO3 v9.x</source>
-			</trans-unit>
-			<trans-unit id="typo3Upgrade10">
-				<source>TYPO3 v10.x</source>
 			</trans-unit>
 			<trans-unit id="typo3UpgradeOptLabel">
 				<source>Choose target TYPO3 version to check compatibility : </source>
@@ -99,12 +99,12 @@
 			<trans-unit id="totalCompatible11">
 				<source>Total Compatible of TYPO3 11.x</source>
 			</trans-unit>
-            <trans-unit id="totalCompatible12">
-                <source>Total Compatible of TYPO3 12.x</source>
-            </trans-unit>
-			 <trans-unit id="totalCompatible13">
-                <source>Total Compatible of TYPO3 13.x</source>
-            </trans-unit>
+			<trans-unit id="totalCompatible12">
+				<source>Total Compatible of TYPO3 12.x</source>
+			</trans-unit>
+			<trans-unit id="totalCompatible13">
+				<source>Total Compatible of TYPO3 13.x</source>
+			</trans-unit>
 			<trans-unit id="extensionlist">
 				<source>TYPO3 Extensions Report</source>
 			</trans-unit>
@@ -138,6 +138,12 @@
 			<trans-unit id="option.label11">
 				<source>TYPO3 11.x</source>
 			</trans-unit>
+			<trans-unit id="option.label12">
+				<source>TYPO3 12.x</source>
+			</trans-unit>
+			<trans-unit id="option.label13">
+				<source>TYPO3 13.x</source>
+			</trans-unit>
 			<trans-unit id="compatible6">
 				<source>Comp. 6.x</source>
 			</trans-unit>
@@ -153,12 +159,15 @@
 			<trans-unit id="compatible10">
 				<source>Comp. 10.x</source>
 			</trans-unit>
-            <trans-unit id="compatible11">
-                <source>Comp. 11.x</source>
-            </trans-unit>
-			 <trans-unit id="compatible13">
-                <source>Comp. 13.x</source>
-            </trans-unit>
+			<trans-unit id="compatible11">
+				<source>Comp. 11.x</source>
+			</trans-unit>
+			<trans-unit id="compatible12">
+				<source>Comp. 12.x</source>
+			</trans-unit>
+			<trans-unit id="compatible13">
+				<source>Comp. 13.x</source>
+			</trans-unit>
 			<trans-unit id="action">
 				<source>Installed</source>
 			</trans-unit>
@@ -417,11 +426,14 @@
 			<trans-unit id="task.mail.newstate">
 				<source>New State</source>
 			</trans-unit>
+			<trans-unit id="newVersionComment">
+				<source>Latest Version Comment</source>
+			</trans-unit>
 			<trans-unit id="task.mail.noUpdate">
 				<source>No update available!</source>
 			</trans-unit>
 			<trans-unit id="t3-newVersionSecurityRelevant">
-				<source>There is a new version of TYPO3 available, updating is security relevant. Please update to version</source>
+				<source>There is a new version of TYPO3 available, updating is security relevant. Please update to version %s</source>
 			</trans-unit>
 			<trans-unit id="t3-newVersion">
 				<source>There is a new version of TYPO3 available. You can update to version</source>
@@ -440,21 +452,6 @@
 			</trans-unit>
 			<trans-unit id="unknown">
 				<source>Unknown</source>
-			</trans-unit>
-			<trans-unit id="option.label12">
-				<source>TYPO3 12.x</source>
-			</trans-unit>
-			<trans-unit id="option.label13">
-				<source>TYPO3 13.x</source>
-			</trans-unit>
-			<trans-unit id="compatible12">
-                <source>Comp. 12.x</source>
-            </trans-unit>
-			<trans-unit id="compatible13">
-                <source>Comp. 13.x</source>
-            </trans-unit>
-			<trans-unit id="warning.TERUpdateTextComposer">
-				<source>Please update your extension table using Schedule task: Update extension list (extensionmanager), because your last update date is %s</source>
 			</trans-unit>
 		</body>
 	</file>

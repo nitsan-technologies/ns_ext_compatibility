@@ -1,12 +1,12 @@
 <?php
 
-namespace  NITSAN\NsExtCompatibility\Domain\Repository;
+namespace NITSAN\NsExtCompatibility\Domain\Repository;
 
 use Doctrine\DBAL\Exception;
+use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Utility\VersionNumberUtility;
 use TYPO3\CMS\Extbase\Persistence\Repository;
 
 /***************************************************************
@@ -37,23 +37,19 @@ use TYPO3\CMS\Extbase\Persistence\Repository;
  *
  *
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
- * @extensionScannerIgnoreLine
+ *
  */
+
 
 class NsExtCompatibilityRepository extends Repository
 {
     /**
-        * @var string
-        */
-    protected string $currentVersion;
-
-    /**
-     * Constructor
+     * @param string $tableName
+     * @return QueryBuilder
      */
-    public function __construct()
+    public function getQueryBuilderForTable(string $tableName): QueryBuilder
     {
-        parent::__construct();
-        $this->currentVersion = VersionNumberUtility::getCurrentTypo3Version();
+        return GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($tableName);
     }
 
 
@@ -65,8 +61,7 @@ class NsExtCompatibilityRepository extends Repository
      */
     public function countPages()
     {
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getQueryBuilderForTable('pages');
+        $queryBuilder = $this->getQueryBuilderForTable('pages');
         return $queryBuilder
             ->count('uid')
             ->from('pages')
@@ -77,13 +72,9 @@ class NsExtCompatibilityRepository extends Repository
     /*
      * This method is used for get all domains of site
     */
-    /**
-     * @throws Exception
-     */
     public function countDomain()
     {
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-        ->getQueryBuilderForTable('pages');
+        $queryBuilder = $this->getQueryBuilderForTable('pages');
         $totalDomain = $queryBuilder
             ->count('pid')
             ->from('pages')
@@ -119,18 +110,4 @@ class NsExtCompatibilityRepository extends Repository
 
         return count($uniqueArray) ?? 1;
     }
-
-    public function getDBVersion()
-    {
-        $serverVersion = '';
-        foreach (GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionNames() as $connectionName) {
-            try {
-                $serverVersion = GeneralUtility::makeInstance(ConnectionPool::class)
-                    ->getConnectionByName($connectionName)
-                    ->getServerVersion();
-            } catch (\Exception $exception) {}
-        }
-        return $serverVersion;
-    }
-
 }

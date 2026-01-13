@@ -14,7 +14,9 @@ return [
         'controllerActions' => [
             NsExtCompatibilityController::class => [
                 'list',
-                'detail'
+                'detail',
+                'viewAllVersion',
+                'exportXls'
             ],
         ],
     ],

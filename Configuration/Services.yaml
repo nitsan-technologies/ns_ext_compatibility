@@ -7,3 +7,5 @@ services:
   NITSAN\NsExtCompatibility\:
     resource: '../Classes/*'
     exclude: '../Classes/Domain/Model/*'
+
+    

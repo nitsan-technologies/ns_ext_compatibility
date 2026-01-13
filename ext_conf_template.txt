@@ -1,5 +1,11 @@
 # Records
 ###########################
 
-# cat=basic/11;type=options[13.x]; label=Typo3 Target Version
-typo3TargetVersion= 13.x
+# cat=basic/11;type=options[12.x , 13.x]; label=Typo3 Target Version
+typo3TargetVersion = 13.x
+
+# cat=basic/12;type=string; label=Logo of PDF report: Allowed only JPG and PNG file extensions
+pdflogo=
+
+# cat=basic/13;type=string; label=Copyright Text at footer of PDF Reports
+pdfcopyright=T3planet.
