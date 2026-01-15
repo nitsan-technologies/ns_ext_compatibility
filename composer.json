@@ -22,8 +22,8 @@
     }
   ],
   "require": {
-    "typo3/cms-core": "^12",
-    "nitsan/ns-license": "^13"
+    "typo3/cms-core": "^12"
+
   },
   "autoload": {
     "psr-4": {
