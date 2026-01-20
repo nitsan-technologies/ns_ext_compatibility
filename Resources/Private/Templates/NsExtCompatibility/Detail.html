@@ -1,17 +1,9 @@
 <div class="modal-header">
-    <f:if condition="{sysDetail.typo3version}<11">
-        <f:then>
-            <button type="button" class="close" data-dismiss="modal">&times;</button>
-            <h4 class="modal-title">{extension.title}</h4>
-        </f:then>
-        <f:else>
-            <h4 class="modal-title">{extension.title}</h4>
-            <button type="button" class="close" data-bs-dismiss="modal">&times;</button>
-        </f:else>
-    </f:if>
+    <h4 class="modal-title">{extension.title}</h4>
+    <button type="button" class="close" {f:if(condition: '{sysDetail.typo3version}>11', then: 'data-bs-dismiss', else: 'data-dismiss')}="modal">&times;</button>
 </div>
 <div class="modal-body">
-    <table class="typo3-extension-list t3-table table table-striped table-hover">
+    <table class="ns-ext-datatable typo3-extension-list t3-table table table-striped table-hover">
         <tbody>
             <tr>
                 <td width="30%"><strong><f:translate key="extkey"/></td>
@@ -69,7 +61,7 @@
             <tr>
                 <td width="30%"><strong><f:translate key="newVersion"/></strong></td>
                 <td>
-                    <f:if condition="{extension.newVersion}>={extension.version}">
+                    <f:if condition="{extension.newVersion}>{extension.version}">
                         <f:then>
                           <span class="ext-status-stable">{extension.newVersion}</span>
                         </f:then>
@@ -84,24 +76,10 @@
                 <td>
                     <f:if condition="{extension.installed}==1">
                         <f:then>
-                            <f:if condition="{sysDetail.typo3version} > 11">
-                                <f:then>
-                                    <img src="/typo3conf/ext/ns_ext_compatibility/Resources/Public/Backend/Icons/righ-icon.png" width="12" height="12" />
-                                </f:then>
-                                <f:else>
-                                    <img src="../typo3conf/ext/ns_ext_compatibility/Resources/Public/Backend/Icons/righ-icon.png" width="12" height="12" />
-                                </f:else>
-                            </f:if>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="17.069" height="13.374" viewBox="0 0 17.069 13.374"><path d="M6086.667,2286.433l4.934,4.933,9.661-9.661" transform="translate(-6085.43 -2280.467)" fill="none" stroke="#79a548" stroke-width="3.5"/></svg>
                         </f:then>
                         <f:else>
-                            <f:if condition="{sysDetail.typo3version} > 11">
-                                <f:then>
-                                    <img src="/typo3conf/ext/ns_ext_compatibility/Resources/Public/Backend/Icons/crose-icon.png" width="12" height="12" />
-                                </f:then>
-                                <f:else>
-                                    <img src="../typo3conf/ext/ns_ext_compatibility/Resources/Public/Backend/Icons/crose-icon.png" width="12" height="12" />
-                                </f:else>
-                            </f:if>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14.475" height="14.475" viewBox="0 0 14.475 14.475"><g transform="translate(-880.263 -885.263)"><line x2="12" y2="12" transform="translate(881.5 886.5)" fill="none" stroke="#f44" stroke-width="3.5"/><line x1="12" y2="12" transform="translate(881.5 886.5)" fill="none" stroke="#f44" stroke-width="3.5"/></g></svg>
                         </f:else>
                     </f:if>
                 </td>
@@ -131,7 +109,7 @@
                         </f:if>
                     </tr>
                 </f:if>
-                <f:if condition="{sysDetail.targetVersion}>=12">
+                <f:if condition="{sysDetail.targetVersion}>=13">
                     <tr>
                         <td width="30%"><strong><f:translate key="compatible13"/></strong></td>
                         <f:if condition="{extension.customExt} != 'true'">
@@ -168,6 +146,7 @@
                                 <f:else>
                                     {name} =>'&nbsp;'<br/>
                                 </f:else>
+
                             </f:if>
                         </f:for>
                     </td>
@@ -212,3 +191,4 @@
         </tbody>
     </table>
 </div>
+

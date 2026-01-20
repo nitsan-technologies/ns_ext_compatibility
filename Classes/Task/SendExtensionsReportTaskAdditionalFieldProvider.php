@@ -13,12 +13,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility as Localize;
 use TYPO3\CMS\Scheduler\AdditionalFieldProviderInterface;
 use \TYPO3\CMS\Scheduler\Controller\SchedulerModuleController;
-use \TYPO3\CMS\Scheduler\Task\AbstractTask;
-
-/**
- * SendExtensionsReportTaskAdditionalFieldProvider
- * @extensionScannerIgnoreLine
- */
+use TYPO3\CMS\Scheduler\Task\AbstractTask;
 
 // @extensionScannerIgnoreFile
 class SendExtensionsReportTaskAdditionalFieldProvider implements AdditionalFieldProviderInterface
@@ -30,10 +25,10 @@ class SendExtensionsReportTaskAdditionalFieldProvider implements AdditionalField
      * @param SchedulerModuleController $parentObject
      * @return array
      */
-    public function getAdditionalFields(array &$taskInfo, $task, SchedulerModuleController $parentObject): array
+    public function getAdditionalFields(array &$taskInfo, $task, SchedulerModuleController $parentObject)
     {
         if (empty($taskInfo['mailTo'])) {
-            if (($parentObject->CMD ?? '') == 'add') {
+            if (isset($parentObject->CMD) && $parentObject->CMD == 'add') {
                 $taskInfo['mailTo'] = '';
             } else {
                 $taskInfo['mailTo'] = $task->mailTo ?? '';
@@ -41,7 +36,7 @@ class SendExtensionsReportTaskAdditionalFieldProvider implements AdditionalField
         }
 
         if (empty($taskInfo['mailSender'])) {
-            if (($parentObject->CMD ?? '') == 'add') {
+            if (isset($parentObject->CMD) && $parentObject->CMD == 'add') {
                 $taskInfo['mailSender'] = '';
             } else {
                 $taskInfo['mailSender'] = $task->mailSender ?? '';
@@ -49,7 +44,7 @@ class SendExtensionsReportTaskAdditionalFieldProvider implements AdditionalField
         }
 
         if (empty($taskInfo['excludeExtensionsFromCheck'])) {
-            if (($parentObject->CMD ?? '') == 'add') {
+            if (isset($parentObject->CMD) && $parentObject->CMD == 'add') {
                 $taskInfo['excludeExtensionsFromCheck'] = '';
             } else {
                 $taskInfo['excludeExtensionsFromCheck'] = $task->excludeExtensionsFromCheck ?? '';
@@ -111,7 +106,6 @@ class SendExtensionsReportTaskAdditionalFieldProvider implements AdditionalField
         $service = GeneralUtility::makeInstance(FlashMessageService::class);
         $queue = $service->getMessageQueueByIdentifier();
         $queue->enqueue($flashMessage);
-
         return false;
     }
 
@@ -128,11 +122,11 @@ class SendExtensionsReportTaskAdditionalFieldProvider implements AdditionalField
     }
 
     /**
-     * @param $key
-     * @param string $arguments
+     * @param string $key
+     * @param array|string $arguments
      * @return null|string
      */
-    protected function translate($key, string $arguments = ''): ?string
+    protected function translate(string $key, array|string $arguments = ''): ?string
     {
         if ($arguments != '') {
             return Localize::translate($key, 'ns_ext_compatibility', $arguments);

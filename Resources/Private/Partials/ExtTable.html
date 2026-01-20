@@ -1,64 +1,43 @@
-    <table id="typo3-extension-list" class="typo3-extension-list t3-table table table-striped table-hover">
+<table id="typo3-extension-list" class="ns-ext-datatable typo3-extension-list t3-table table table-striped table-hover">
     <thead>
         <tr class="head">
-            <th><f:translate key="srNo"/></th>
+            <th width="4%"><f:translate key="srNo"/></th>
             <th width="11%"><f:translate key="title"/></th>
             <th width="11%"><f:translate key="extkey"/></th>
-            <f:if condition="{sysDetail.typo3version}<13">
+            <f:if condition="{sysDetail.typo3version} < 13">
                 <f:if condition="{sysDetail.targetVersion}>=12">
-                    <th  class="text-center"><f:translate key="compatible12"/></th>
+                    <th class="text-center"><f:translate key="compatible12"/></th>
                 </f:if>
             </f:if>
-            <f:if condition="{sysDetail.typo3version}<14">
+            <f:if condition="{sysDetail.typo3version} < 14">
                 <f:if condition="{sysDetail.targetVersion}>=13">
-                    <th  class="text-center"><f:translate key="compatible13"/></th>
+                    <th class="text-center"><f:translate key="compatible13"/></th>
                 </f:if>
             </f:if>
+            <th  class="text-center"><f:translate key="action"/></th>
             <th class="text-center"><f:translate key="currentVersion"/></th>
+            <th class="text-center"><f:translate key="newVersion"/></th>
             <th class="text-center"><f:translate key="state"/></th>
+            <th class="text-center"><f:translate key="type"/></th>
+            <th class="text-center"><f:translate key="detailAction"/></th>
         </tr>
     </thead>
     <tbody>
 	    <f:for each="{extensionlist}" as="extension" iteration="iter">
 	        <f:if condition="{extension.key} != 'ns_ext_compatibility'">
 	            <tr>
-                    <td>{iter.cycle}</td>
+	                <td>{iter.cycle}</td>
                     <td class="ext-overview" data-bs-toggle="modal" data-bs-target="#nsModel" title="{f:translate(key: 'viewDetailTooltip',arguments: {extension: extension.key})}" data-uri="{f:uri.action(action: 'detail', arguments: {extKey: extension.key,targetVersion:sysDetail.targetVersion}, controller: 'NsExtCompatibility')}">
                         <f:format.crop maxCharacters="25" append="...">{extension.title}</f:format.crop>
                     </td>
                     <td class="ext-overview" data-bs-toggle="modal" data-bs-target="#nsModel" title="{f:translate(key: 'viewDetailTooltip',arguments: {extension: extension.key})}" data-uri="{f:uri.action(action: 'detail', arguments: {extKey: extension.key,targetVersion:sysDetail.targetVersion}, controller: 'NsExtCompatibility')}">
                         {extension.key}
                     </td>
-                    <f:if condition="{sysDetail.typo3version}<12">
-                        <f:if condition="{sysDetail.targetVersion}>=11">
-                            <f:if condition="{extension.customExt} != 'true'">
-                                <f:then>
-                                    <f:if condition="{extension.compatible11}">
-                                        <f:then>
-                                            <td class="compatible text-center">
-                                                <span class="hide-label"><f:translate key="yes"/></span>
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="17.069" height="13.374" viewBox="0 0 17.069 13.374"><path d="M6086.667,2286.433l4.934,4.933,9.661-9.661" transform="translate(-6085.43 -2280.467)" fill="none" stroke="#79a548" stroke-width="3.5"/></svg>
-                                            </td>
-                                        </f:then>
-                                        <f:else>
-                                            <td class="incompatible text-center">
-                                                <span class="hide-label"><f:translate key="no"/></span>
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="14.475" height="14.475" viewBox="0 0 14.475 14.475"><g transform="translate(-880.263 -885.263)"><line x2="12" y2="12" transform="translate(881.5 886.5)" fill="none" stroke="#f44" stroke-width="3.5"/><line x1="12" y2="12" transform="translate(881.5 886.5)" fill="none" stroke="#f44" stroke-width="3.5"/></g></svg>
-                                            </td>
-                                        </f:else>
-                                    </f:if>
-                                </f:then>
-                                <f:else>
-                                    <td class="incompatible text-center"><f:translate key="unknown" />
-                                </f:else>
-                            </f:if>
-                        </f:if>
-                    </f:if>
-                    <f:if condition="{sysDetail.typo3version}<13">
+                    <f:if condition="{sysDetail.typo3version} < 13">
                         <f:if condition="{sysDetail.targetVersion}>=12">
                             <f:if condition="{extension.customExt} != 'true'">
                                 <f:then>
-                                    <f:if condition="{extension.compatible12}">
+                                    <f:if condition="{extension.compatible12}==1">
                                         <f:then>
                                             <td class="compatible text-center">
                                                 <span class="hide-label"><f:translate key="yes"/></span>
@@ -78,13 +57,11 @@
                                 </f:else>
                             </f:if>
                         </f:if>
-                    </f:if>
-
-                    <f:if condition="{sysDetail.typo3version}<14">
+                        <f:if condition="{sysDetail.typo3version} < 14"></f:if>
                         <f:if condition="{sysDetail.targetVersion}>=13">
                             <f:if condition="{extension.customExt} != 'true'">
                                 <f:then>
-                                    <f:if condition="{extension.compatible13}">
+                                    <f:if condition="{extension.compatible13}==1">
                                         <f:then>
                                             <td class="compatible text-center">
                                                 <span class="hide-label"><f:translate key="yes"/></span>
@@ -105,10 +82,122 @@
                             </f:if>
                         </f:if>
                     </f:if>
+		            <td class="text-center">
+		            <f:if condition="{extension.installed}">
+		                <f:then>
+		                    <span class="hide-label"><f:translate key="yes"/></span>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="17.069" height="13.374" viewBox="0 0 17.069 13.374"><path d="M6086.667,2286.433l4.934,4.933,9.661-9.661" transform="translate(-6085.43 -2280.467)" fill="none" stroke="#79a548" stroke-width="3.5"/></svg>
+		                </f:then>
+		                <f:else>
+		                    <span class="hide-label"><f:translate key="no"/></span>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14.475" height="14.475" viewBox="0 0 14.475 14.475"><g transform="translate(-880.263 -885.263)"><line x2="12" y2="12" transform="translate(881.5 886.5)" fill="none" stroke="#f44" stroke-width="3.5"/><line x1="12" y2="12" transform="translate(881.5 886.5)" fill="none" stroke="#f44" stroke-width="3.5"/></g></svg>
+		                </f:else>
+		            </f:if>
+		            </td>
 		            <td class="text-center" data-toggle="modal" data-target="#extModel-{iter.cycle}">{extension.version}</td>
+		            <td class="text-center">
+                        <f:if condition="{extension.latestNew}!=''">
+                            <f:then>
+                                <span class="ext-status-stable">{extension.latestNew}</span>
+                            </f:then>
+                            <f:else>
+                                {extension.version}
+                            </f:else>
+                        </f:if>
+		            </td>
 		            <td class="text-center">
 			           <span class="ext-status-{extension.state}">{extension.state}</span>
 		            </td>
+		            <td class="text-center">
+			           	<f:if condition="{extension.terObject}">
+	                    	<f:then>
+	                    		<f:translate key="ter"/>
+	                    	</f:then>
+	                    	<f:else>
+	                    		<f:translate key="custom"/>
+	                    	</f:else>
+	                    </f:if>
+		            </td>
+		             <td class="text-center">
+                         <div class="ns-ext-row-actions">
+                             <a href="javascript:;" class="ext-overview" data-bs-toggle="modal" data-bs-target="#nsModel" title="{f:translate(key: 'viewDetailTooltip',arguments: {extension: extension.key})}" data-uri="{f:uri.action(action: 'detail', arguments: {extKey: extension.key,targetVersion:sysDetail.targetVersion}, controller: 'NsExtCompatibility')}">
+                                 <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22"><path d="M8.6,14.123A5.523,5.523,0,0,1,14.123,8.6a5.591,5.591,0,0,1,1.554.272V5.108L12.048,1.49H3.066A1.576,1.576,0,0,0,1.49,3.066V17.287a1.576,1.576,0,0,0,1.576,1.576h8.222A5.511,5.511,0,0,1,8.6,14.123ZM3.86,8.6H9.394v1.576H3.86Zm3.164,4.74H3.86V11.753H7.024Z" transform="translate(1.2 0.653)" fill="#212424"/><path d="M16.4,15.277a3.969,3.969,0,1,0-1.134,1.134l2.007,2.007a.805.805,0,0,0,1.134,0h0a.805.805,0,0,0,0-1.134Zm-3.141.193A2.37,2.37,0,1,1,15.528,13.2,2.37,2.37,0,0,1,13.26,15.47Z" transform="translate(2.222 1.676)" fill="#212424"/><rect width="22" height="22" fill="none"/></svg>
+                             </a>
+                            <f:if condition="{extension.terObject}">
+                                <f:then>
+                                    <a class="terLink viewAllVersionLink"  data-bs-toggle="modal" data-bs-target="#nsModel" data-uri="{f:uri.action(action: 'viewAllVersion', arguments: {extension: extension.key,targetVersion:sysDetail.targetVersion}, controller: 'NsExtCompatibility')}" href="#" title="{f:translate(key: 'viewAllVersionTooTip',arguments: {extension: extension.key})}" >
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22"><rect width="4.134" height="4.134" rx="0.48" transform="translate(3.223 3.25)" fill="#212424"/><rect width="4.134" height="4.134" rx="0.48" transform="translate(3.223 8.927)" fill="#212424"/><rect width="4.134" height="4.134" rx="0.48" transform="translate(3.223 14.616)" fill="#212424"/><rect width="10.341" height="4.134" rx="0.48" transform="translate(9.435 3.25)" fill="#212424"/><rect width="10.341" height="4.134" rx="0.48" transform="translate(9.435 8.927)" fill="#212424"/><rect width="10.341" height="4.134" rx="0.48" transform="translate(9.435 14.616)" fill="#212424"/><rect width="22" height="22" fill="none"/></svg>
+                                    </a>
+                                    <f:if condition="{extension.link}">
+                                        <f:then>
+                                            <f:link.external class="terLink" uri="{extension.link}" title="{f:translate(key: 'viewManualTooltip',arguments: {extension: extension.key})}" target="_blank">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22">
+                                                    <g transform="translate(-1669 -627)">
+                                                        <g transform="translate(1671.75 628.833)">
+                                                            <path d="M55.221,80H44.693a.694.694,0,0,0-.693.693v13.99a.694.694,0,0,0,.693.693H55.221a.694.694,0,0,0,.693-.693V80.693A.694.694,0,0,0,55.221,80Zm-2.35,9.758H47.253a.591.591,0,1,1,0-1.183h5.618a.591.591,0,1,1,0,1.183Zm0-2.366H47.253a.591.591,0,1,1,0-1.183h5.618a.591.591,0,1,1,0,1.183Zm0-2.366H47.253a.591.591,0,1,1,0-1.183h5.618a.591.591,0,1,1,0,1.183Z" transform="translate(-44 -77.043)" fill="#212424"/>
+                                                            <path d="M110.786,1.774V14.785a1.837,1.837,0,0,1-1.985,1.774V3.65a1.878,1.878,0,0,0-1.875-1.876H97.69A1.831,1.831,0,0,1,99.569,0h9.338A1.831,1.831,0,0,1,110.786,1.774Z" transform="translate(-95.705)" fill="#212424"/>
+                                                        </g>
+                                                        <g transform="translate(1669 627)">
+                                                            <rect id="Rectangle_147" data-name="Rectangle 147" width="22" height="22" fill="none"/>
+                                                        </g>
+                                                    </g>
+                                                </svg>
+                                            </f:link.external>
+                                        </f:then>
+                                        <f:else>
+                                            <f:if condition="{extension.terObject.documentationLink}">
+                                                <f:then>
+                                                    <f:link.external class="terLink" uri="{extension.terObject.documentationLink}" title="{f:translate(key: 'viewManualTooltip',arguments: {extension: extension.key})}" target="_blank">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22">
+                                                            <g transform="translate(-1669 -627)">
+                                                                <g transform="translate(1671.75 628.833)">
+                                                                    <path d="M55.221,80H44.693a.694.694,0,0,0-.693.693v13.99a.694.694,0,0,0,.693.693H55.221a.694.694,0,0,0,.693-.693V80.693A.694.694,0,0,0,55.221,80Zm-2.35,9.758H47.253a.591.591,0,1,1,0-1.183h5.618a.591.591,0,1,1,0,1.183Zm0-2.366H47.253a.591.591,0,1,1,0-1.183h5.618a.591.591,0,1,1,0,1.183Zm0-2.366H47.253a.591.591,0,1,1,0-1.183h5.618a.591.591,0,1,1,0,1.183Z" transform="translate(-44 -77.043)" fill="#212424"/>
+                                                                    <path d="M110.786,1.774V14.785a1.837,1.837,0,0,1-1.985,1.774V3.65a1.878,1.878,0,0,0-1.875-1.876H97.69A1.831,1.831,0,0,1,99.569,0h9.338A1.831,1.831,0,0,1,110.786,1.774Z" transform="translate(-95.705)" fill="#212424"/>
+                                                                </g>
+                                                                <g transform="translate(1669 627)">
+                                                                    <rect id="Rectangle_147" data-name="Rectangle 147" width="22" height="22" fill="none"/>
+                                                                </g>
+                                                            </g>
+                                                        </svg>
+                                                    </f:link.external>
+                                                </f:then>
+                                                <f:else>
+                                                    <f:if condition="{extension.vendor}">
+                                                        <f:link.external class="terLink" uri="https://docs.typo3.org/p/{extension.vendor}/main/en-us/" title="{f:translate(key: 'viewManualTooltip',arguments: {extension: extension.key})}" target="_blank">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22">
+                                                                <g transform="translate(-1669 -627)">
+                                                                    <g transform="translate(1671.75 628.833)">
+                                                                        <path d="M55.221,80H44.693a.694.694,0,0,0-.693.693v13.99a.694.694,0,0,0,.693.693H55.221a.694.694,0,0,0,.693-.693V80.693A.694.694,0,0,0,55.221,80Zm-2.35,9.758H47.253a.591.591,0,1,1,0-1.183h5.618a.591.591,0,1,1,0,1.183Zm0-2.366H47.253a.591.591,0,1,1,0-1.183h5.618a.591.591,0,1,1,0,1.183Zm0-2.366H47.253a.591.591,0,1,1,0-1.183h5.618a.591.591,0,1,1,0,1.183Z" transform="translate(-44 -77.043)" fill="#212424"/>
+                                                                        <path d="M110.786,1.774V14.785a1.837,1.837,0,0,1-1.985,1.774V3.65a1.878,1.878,0,0,0-1.875-1.876H97.69A1.831,1.831,0,0,1,99.569,0h9.338A1.831,1.831,0,0,1,110.786,1.774Z" transform="translate(-95.705)" fill="#212424"/>
+                                                                    </g>
+                                                                    <g transform="translate(1669 627)">
+                                                                        <rect id="Rectangle_147" data-name="Rectangle 147" width="22" height="22" fill="none"/>
+                                                                    </g>
+                                                                </g>
+                                                            </svg>
+                                                        </f:link.external>
+                                                    </f:if>
+                                                </f:else>
+                                            </f:if>
+                                        </f:else>
+                                    </f:if>
+                                    <f:link.external class="terLink" uri="https://extensions.typo3.org/extension/{extension.key}" title="{f:translate(key: 'viewTERTooltip',arguments: {extension: extension.key})}" target="_blank">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22">
+                                            <g transform="translate(-1752 -629)">
+                                              <g transform="translate(1754.743 631.75)">
+                                                <path d="M1561.427,935.7a2.235,2.235,0,0,1-.686.1c-2.068,0-5.1-7.227-5.1-9.632,0-.886.209-1.181.505-1.435-2.531.3-5.568,1.224-6.539,2.405a2.364,2.364,0,0,0-.338,1.35c0,3.755,4.007,12.275,6.834,12.275,1.308,0,3.513-2.15,5.327-5.062" transform="translate(-1549.265 -924.479)" fill="#212424"/>
+                                                <path d="M1577.664,924c2.615,0,5.232.422,5.232,1.9,0,3-1.9,6.625-2.869,6.625-1.73,0-3.882-4.81-3.882-7.216,0-1.1.422-1.307,1.518-1.307" transform="translate(-1566.822 -924.004)" fill="#212424"/>
+                                              </g>
+                                              <g transform="translate(1752 629)">
+                                                  <rect id="Rectangle_146" data-name="Rectangle 146" width="22" height="22" fill="none"/>
+                                              </g>
+                                            </g>
+                                          </svg>
+                                    </f:link.external>
+                                </f:then>
+                            </f:if>
+                         </div>
+	                </td>
 	            </tr>
 	        </f:if>
 	    </f:for>

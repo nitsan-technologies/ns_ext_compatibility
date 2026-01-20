@@ -1,35 +1,35 @@
-<table class="typo3-extension-list t3-table table table-striped table-hover" cellspacing="0">
+<table class="ns-ext-datatable typo3-extension-list t3-table table table-striped table-hover" cellspacing="0">
 	<thead>
 		<tr class="x-grid3-header">
-			<th colspan="2"><h2><f:translate key="sysInfo"/></h2></th>
+			<th colspan="2"><f:translate key="sysInfo"/></th>
 		</tr>
 	</thead>
 	<tbody>
 		<tr class="bgColor6">
 			<td width="50%"><f:translate key="currentTypo3Version"/></td>
-			<td><strong>{sysDetail.typo3version}</strong></td>
+			<td>{sysDetail.typo3version}</td>
 		</tr>
 		<tr class="bgColor4">
 			<td><f:translate key="targetTypo3Version"/></td>
-			<td><strong>{sysDetail.targetVersion}</strong></td>
+			<td>{sysDetail.targetVersion}</td>
 		</tr>
 		<tr class="bgColor6">
 			<td width="30%"><f:translate key="langague"/></td>
-			<td><strong>{sysDetail.totalLang}</strong></td>
+			<td>{sysDetail.totalLang}</td>
 		</tr>
 		<tr class="bgColor4">
 			<td><f:translate key="totalPagesofSite"/></td>
-			<td><strong>{sysDetail.totalPages}</strong></td>
+			<td>{sysDetail.totalPages}</td>
 		</tr>
         <f:if condition="{sysDetail.totalDomain}">
             <tr class="bgColor6">
                 <td><f:translate key="numberOfDomain"/></td>
-                <td><strong>{sysDetail.totalDomain}</strong></td>
+                <td>{sysDetail.totalDomain}</td>
             </tr>
         </f:if>
 		<tr class="bgColor4">
 			<td><f:translate key="phpVersion"/></td>
-			<td><strong>{sysDetail.phpversion}</strong></td>
+			<td>{sysDetail.phpversion}</td>
 		</tr>
 	</tbody>
 </table>

@@ -1,20 +1,86 @@
-<html xmlns:f="https://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
 <f:layout name="Default" />
 
 <f:section name="Content">
-    <f:be.pageRenderer
-        includeRequireJsModules="{
-            0:'TYPO3/CMS/NsExtCompatibility/Main'
-        }"
-    />
-    <f:flashMessages />
-    <f:render partial="Common/Main" arguments="{overviewReport:overviewReport, sysDetail:sysDetail, targetSystemRequirement:targetSystemRequirement}"/>
-    <div class="ext-report-wrapper">
-        <h2><f:translate key="extensionlist"/></h2>
-        <f:render partial="ExtTable" arguments="{_all}"/>
-        <p class="contactnote"><f:translate key="contactNote"/><f:link.external  uri="https://github.com/nitsan-technologies/ns_ext_compatibility/issues/"  target="_blank"><f:translate key="github"/></f:link.external></p>
+    <div class="tx-ext-compatibility">
+    <f:if condition="{versionType}=='newVersionSecurityRelevant'">
+        <div class="alert alert-danger alert-dismissible" role="alert">
+            <f:translate key="t3-{versionType}"/> <strong>{newVersion}</strong>
+            <button type="button" class="close {f:if(condition: '{sysDetail.typo3version}>=11', then: 'v11-close', else: 'v8-close')}" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    </f:if>
+    <f:if condition="{versionType}=='newVersion'">
+        <div class="alert alert-warning alert-dismissible" role="alert">
+            <f:translate key="t3-{versionType}"/> <strong>{newVersion}</strong>
+            <button type="button" class="close {f:if(condition: '{sysDetail.typo3version}>=11', then: 'v11-close', else: 'v8-close')}" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    </f:if>
+    <f:if condition="{versionType}=='uptodate'">
+        <div class="alert alert-success alert-dismissible" role="alert">
+            <f:translate key="t3-{versionType}"/>
+            <button type="button" class="close {f:if(condition: '{sysDetail.typo3version}>=11', then: 'v11-close', else: 'v8-close')}" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    </f:if>
+    <f:if condition="{versionType}=='versionOutdated'">
+        <div class="alert alert-danger alert-dismissible" role="alert">
+            <f:translate key="t3-{versionType}"/>
+            <button type="button" class="close {f:if(condition: '{sysDetail.typo3version}>=11', then: 'v11-close', else: 'v8-close')}" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    </f:if>
+    <f:if condition="{versionType}=='isDevelopmentVersion'">
+        <div class="alert alert-warning alert-dismissible" role="alert">
+            <f:translate key="t3-{versionType}"/>
+            <button type="button" class="close {f:if(condition: '{sysDetail.typo3version}>=11', then: 'v11-close', else: 'v8-close')}" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    </f:if>
+
+    <f:if condition="{installedVersion}>'7.2.0'">
+        <f:then>
+            <f:if condition="{installedVersion}<{ltsVersion}">
+                <div class="alert alert-notice alert-dismissible" role="alert">
+                    <f:translate key="t3-ltsVersion" arguments="{s: ltsVersion}"/>
+                    <button type="button" class="close {f:if(condition: '{sysDetail.typo3version}>=11', then: 'v11-close', else: 'v8-close')}" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            </f:if>
+        </f:then>
+        <f:else>
+            <f:if condition="{installedVersion}<{ltsVersion}">
+                <div class="typo3-message message-notice">
+                    <f:translate key="t3-ltsVersion" arguments="{s: ltsVersion}"/>
+                </div>
+            </f:if>
+        </f:else>
+    </f:if>
+
+    <f:render partial="Common/Main" arguments="{overviewReport:overviewReport,sysDetail:sysDetail,targetSystemRequirement:targetSystemRequirement}"/>
+
+    <div class="ext-report-wrapper ns-ext-report-list-main">
+        <h2 class="ns-ext-name"><f:translate key="extensionlist"/></h2>
+        <f:comment>
+           <!-- Render Extension table Start -->
+        </f:comment>
+        <div class="ns-ext-report-list-table-wrap">
+            <f:render partial="ExtTable" arguments="{_all}"/>
+        </div>
+        <f:comment>
+           <!-- Render Extension table End -->
+        </f:comment>
+        <p class="contact-note">
+            <span class="contact-note__icon fa fa-github"></span>
+            <f:translate key="contactNote"/> <f:link.external  uri="https://github.com/nitsan-technologies/ns_ext_compatibility/issues/"  target="_blank"><f:translate key="github"/></f:link.external>
+        </p>
+    </div>
     </div>
     <f:render partial="Common/NsModel" />
 </f:section>
-
-</html>

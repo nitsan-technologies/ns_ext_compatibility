@@ -1,32 +1,32 @@
-<table class="typo3-extension-list t3-table table table-striped table-hover" cellspacing="0">
+<table class="ns-ext-datatable typo3-extension-list t3-table table table-striped table-hover" cellspacing="0">
 	<thead>
 		<tr class="x-grid3-header">
-			<th colspan="2"><h2><f:translate key="overviewReport"/></h2></th>
+			<th colspan="2"><f:translate key="overviewReport"/></th>
 		</tr>
 	</thead>
 	<tbody>
 		<tr class="bgColor6">
 			<td width="50%"><f:translate key="totalInstalledExt"/></td>
-			<td><strong>{overviewReport.totalInstalled}</strong></td>
+			<td>{overviewReport.totalInstalled}</td>
 		</tr>
 		<tr class="bgColor4">
 			<td><f:translate key="totalNonInstalledExt"/></td>
-			<td><strong>{overviewReport.totalNonInstalled}</strong></td>
+			<td>{overviewReport.totalNonInstalled}</td>
 		</tr>
-
-		<f:if condition="{typo3version}<13">
+		<f:if condition="{typo3version} < 13">
 			<f:if condition="{targetVersion}>=12">
-				<tr class="bgColor6">
+				<tr  class="bgColor6" >
 					<td><f:translate key="totalCompatible12"/></td>
-					<td><strong>{overviewReport.totalCompatible12}</strong></td>
+					<td>{overviewReport.totalCompatible12}</td>
 				</tr>
 			</f:if>
 			<f:if condition="{targetVersion}>=13">
 				<tr class="bgColor6">
 					<td><f:translate key="totalCompatible13"/></td>
-					<td><strong>{overviewReport.totalCompatible13}</strong></td>
+					<td>{overviewReport.totalCompatible13}</td>
 				</tr>
 			</f:if>
 		</f:if>
+		</tr>
 	</tbody>
 </table>

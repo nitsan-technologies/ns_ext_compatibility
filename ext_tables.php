@@ -3,7 +3,7 @@
 use NITSAN\NsExtCompatibility\Task\SendExtensionsReportTask;
 use NITSAN\NsExtCompatibility\Task\SendExtensionsReportTaskAdditionalFieldProvider;
 
-defined('TYPO3') or die;
+defined('TYPO3') || die('Access denied.');
 
 $_EXTKEY = 'ns_ext_compatibility';
 
