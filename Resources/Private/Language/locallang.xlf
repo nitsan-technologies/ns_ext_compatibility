@@ -433,7 +433,7 @@
 				<source>No update available!</source>
 			</trans-unit>
 			<trans-unit id="t3-newVersionSecurityRelevant">
-				<source>There is a new version of TYPO3 available, updating is security relevant. Please update to version %s</source>
+				<source>There is a new version of TYPO3 available, updating is security relevant. Please update to version</source>
 			</trans-unit>
 			<trans-unit id="t3-newVersion">
 				<source>There is a new version of TYPO3 available. You can update to version</source>
