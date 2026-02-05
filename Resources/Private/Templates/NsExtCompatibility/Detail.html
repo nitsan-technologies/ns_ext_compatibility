@@ -1,6 +1,6 @@
 <div class="modal-header">
     <h4 class="modal-title">{extension.title}</h4>
-    <button type="button" class="close" {f:if(condition: '{sysDetail.typo3version}>11', then: 'data-bs-dismiss', else: 'data-dismiss')}="modal">&times;</button>
+    <button type="button" class="close" {f:if(condition: " {sysDetail.typo3version} > 11", then: 'data-bs-dismiss', else: 'data-dismiss')}="modal">&times;</button>
 </div>
 <div class="modal-body">
     <table class="ns-ext-datatable typo3-extension-list t3-table table table-striped table-hover">

@@ -14,6 +14,7 @@
         <div class="alert alert-warning alert-dismissible" role="alert">
             <f:translate key="t3-{versionType}"/> <strong>{newVersion}</strong>
             <button type="button" class="close {f:if(condition: '{sysDetail.typo3version}>=11', then: 'v11-close', else: 'v8-close')}" data-dismiss="alert" aria-label="Close">
+                <f:debug>{sysDetail.typo3version}</f:debug>
                 <span aria-hidden="true">&times;</span>
             </button>
         </div>
