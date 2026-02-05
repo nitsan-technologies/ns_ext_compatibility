@@ -160,6 +160,15 @@ class NsExtCompatibilityController extends ActionController
 
         //Check typo3 target version from extension settings end
         $targetSystemRequirement = $this->getSysRequirementForTargetVersion($sysDetail['targetVersion']);
+          foreach ($targetSystemRequirement as $name => &$module) {
+        if (isset($module['required']) && is_array($module['required'])) {
+            $module['required'] = implode(', ', $module['required']);
+        }
+        if (isset($module['current']) && is_array($module['current'])) {
+            $module['current'] = implode(', ', $module['current']);
+        }
+    }
+    unset($module);
         //call getAllExtensions() method for fetch extension list
         $assignArray = $this->getAllExtensions($sysDetail['targetVersion']);
         $assignArray['sysDetail'] = $sysDetail;
@@ -171,7 +180,7 @@ class NsExtCompatibilityController extends ActionController
 
         $view = $this->initializeModuleTemplate($this->request);
         $view->assignMultiple($assignArray);
-        return $view->renderResponse();
+        return $view->renderResponse("NsExtCompatibility/List");
     }
 
     /*
@@ -210,7 +219,7 @@ class NsExtCompatibilityController extends ActionController
         ];
 
         $this->view->assignMultiple($allVersionRecords);
-
+        // \TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($allVersionRecords,__FILE__.''.__LINE__);die;
         return $this->htmlResponse();
     }
 
@@ -493,65 +502,72 @@ class NsExtCompatibilityController extends ActionController
     /**
      * This method is used for get System requirement for target typo3 version
      **/
-    public function getSysRequirementForTargetVersion($targetVersion)
-    {
-        try {
-            exec('convert -version', $imgmagic);
-            if ((int)VersionNumberUtility::getNumericTypo3Version() > 7) {
-                preg_match('@[0-9]+\.[0-9]+\.[0-9]+@', shell_exec('mysql -V'), $mysqlVersion);
-                list($mysqlVersion) = $this->getMysqlVersion();
-            } else {
-                preg_match('@[0-9]+\.[0-9]+\.[0-9]+@', shell_exec('mysql -V'), $mysqlVersion);
-            }
-        } catch (\Exception $e) {
-            $this->addFlashMessage($e->getMessage(), 'Exception: ' . $e->getCode(), ContextualFeedbackSeverity::ERROR);
+public function getSysRequirementForTargetVersion($targetVersion): array
+{
+    // Initialize mysqlVersion as empty string
+    $mysqlVersionString = '';
+    
+    try {
+        exec('convert -version', $imgmagic);
+        if ((int)VersionNumberUtility::getNumericTypo3Version() > 7) {
+            $mysqlVersionArray = $this->getMysqlVersion();
+            // Extract string from array
+            $mysqlVersionString = is_array($mysqlVersionArray) && isset($mysqlVersionArray[0]) 
+                ? (string)$mysqlVersionArray[0] 
+                : '';
+        } else {
+            preg_match('@[0-9]+\.[0-9]+\.[0-9]+@', shell_exec('mysql -V'), $matches);
+            $mysqlVersionString = $matches[0] ?? '';
         }
-
-        $versions = [
-            '12.x' => ['php' => '8.1', 'mysql' => '8.0'],
-            '13.x' => ['php' => '8.2', 'mysql' => '8.0']
-        ];
-
-        $typo3Config = [];
-        foreach ($versions as $version => $requirements) {
-            $typo3Config[$version] = [
-                'php' => [
-                    'required' => $requirements['php'],
-                    'current' => substr(phpversion(), 0, 6),
-                ],
-                'mysql' => [
-                    'required' => $requirements['mysql'],
-                    'current' => $mysqlVersion ,
-                ],
-                'imageMagick' => [
-                    'required' => explode('.', $version)[0] < 7 ? '-' : '6',
-                    'current' => substr($imgmagic[0], 21, 5),
-                ],
-                'maxExecutionTime' => [
-                    'required' => '240',
-                    'current' => ini_get('max_execution_time'),
-                ],
-                'memoryLimit' => [
-                    'required' => '128M',
-                    'current' => ini_get('memory_limit'),
-                ],
-                'maxInputVars' => [
-                    'required' => '1500',
-                    'current' => ini_get('max_input_vars'),
-                ],
-                'uploadMaxSize' => [
-                    'required' => '200M',
-                    'current' => ini_get('upload_max_filesize'),
-                ],
-                'postMaxSize' => [
-                    'required' => '800M',
-                    'current' => ini_get('post_max_size'),
-                ],
-            ];
-        }
-
-        return $typo3Config[$targetVersion];
+    } catch (\Exception $e) {
+        $this->addFlashMessage($e->getMessage(), 'Exception: ' . $e->getCode(), ContextualFeedbackSeverity::ERROR);
     }
+
+    $versions = [
+        '12.x' => ['php' => '8.1', 'mysql' => '8.0'],
+        '13.x' => ['php' => '8.2', 'mysql' => '8.0']
+    ];
+
+    $typo3Config = [];
+    foreach ($versions as $version => $requirements) {
+        $typo3Config[$version] = [
+            'php' => [
+                'required' => $requirements['php'],
+                'current' => substr(phpversion(), 0, 6),
+            ],
+            'mysql' => [
+                'required' => $requirements['mysql'],
+                'current' => $mysqlVersionString, // Now it's a string
+            ],
+            'imageMagick' => [
+                'required' => explode('.', $version)[0] < 7 ? '-' : '6',
+                'current' => isset($imgmagic[0]) ? substr($imgmagic[0], 21, 5) : '',
+            ],
+            'maxExecutionTime' => [
+                'required' => '240',
+                'current' => ini_get('max_execution_time'),
+            ],
+            'memoryLimit' => [
+                'required' => '128M',
+                'current' => ini_get('memory_limit'),
+            ],
+            'maxInputVars' => [
+                'required' => '1500',
+                'current' => ini_get('max_input_vars'),
+            ],
+            'uploadMaxSize' => [
+                'required' => '200M',
+                'current' => ini_get('upload_max_filesize'),
+            ],
+            'postMaxSize' => [
+                'required' => '800M',
+                'current' => ini_get('post_max_size'),
+            ],
+        ];
+    }
+
+    return $typo3Config[$targetVersion] ?? [];
+}
 
     /**
      * @param string $key
