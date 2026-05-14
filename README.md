@@ -1,4 +1,4 @@
-# Upgrade Extensions https://t3planet.de/en/typo3-upgrade-extension-compatibility
+# Upgrade Extensions Compatibility
 
 - Live Frontend Demo: https://t3-extension.t3planet.de/pro/ext-compatibility
 - Free version: https://extensions.typo3.org/extension/ns_ext_compatibility/
