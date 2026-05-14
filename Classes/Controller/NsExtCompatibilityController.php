@@ -51,6 +51,8 @@ use TYPO3\CMS\Extbase\Utility\LocalizationUtility as Localize;
 use TYPO3\CMS\Extensionmanager\Domain\Repository\ExtensionRepository;
 use NITSAN\NsExtCompatibility\Domain\Repository\NsExtCompatibilityRepository;
 use \TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
+use NITSAN\NsExtCompatibility\Controller\pdf;
+
 
 
 /**
@@ -485,10 +487,10 @@ class NsExtCompatibilityController extends ActionController
     public function getSysDetail(): array
     {
         $sysDetail = [];
-        $extConfig = $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['ns_ext_compatibility'];
+        $extConfig = $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['ns_ext_compatibility'] ?? [];
         $sysDetail['phpversion'] = substr(phpversion(), 0, 6);
 
-        $sysDetail['targetVersion'] = $extConfig['typo3TargetVersion'];
+        $sysDetail['targetVersion'] = (string)($extConfig['typo3TargetVersion'] ?? '13.x');
 
         $sysDetail['sitename'] = $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'];
         $sysDetail['typo3version'] = VersionNumberUtility::getNumericTypo3Version();
@@ -564,6 +566,14 @@ public function getSysRequirementForTargetVersion($targetVersion): array
                 'current' => ini_get('post_max_size'),
             ],
         ];
+    }
+
+    $targetVersion = is_string($targetVersion) ? $targetVersion : '';
+    if (!isset($typo3Config[$targetVersion])) {
+        $targetVersion = '13.x';
+    }
+    if (!isset($typo3Config[$targetVersion])) {
+        $targetVersion = (string)array_key_first($typo3Config);
     }
 
     return $typo3Config[$targetVersion] ?? [];

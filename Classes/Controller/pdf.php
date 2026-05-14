@@ -5,21 +5,25 @@ namespace NITSAN\NsExtCompatibility\Controller;
 use FPDF;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility as Localize;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 
 class PDF extends FPDF
 {
     // Page header
     public function Header()
     {
-        $extConfig = $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['ns_ext_compatibility'];
+        $extConfig = $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['ns_ext_compatibility'] ?? [];
         $sitename = $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'];
         $header = Localize::translate('typo3upgrad1', 'ns_ext_compatibility', ['sitename' => $sitename]);
 
         // Logo
-        if ($extConfig['pdflogo'] != '') {
+        if (!empty($extConfig['pdflogo'])) {
             $this->Image($extConfig['pdflogo'], 10, 8, 50, 10);
         } else {
-            $this->Image(Environment::getExtensionsPath().'/ns_ext_compatibility/Resources/Public/Icons/t3planet-logo.png', 10, 8, 50);
+            $defaultLogoPath = ExtensionManagementUtility::extPath('ns_ext_compatibility') . 'Resources/Public/Icons/t3planet-logo.png';
+            if (is_file($defaultLogoPath)) {
+                $this->Image($defaultLogoPath, 10, 8, 50);
+            }
         }
         // Arial bold 15
         $this->SetFont('Arial', 'B', 16);
@@ -256,14 +260,15 @@ class PDF extends FPDF
     // Page footer
     public function Footer()
     {
-        $extConfig = $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['ns_ext_compatibility'];
+        $extConfig = $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['ns_ext_compatibility'] ?? [];
+        $copyrightText = (string)($extConfig['pdfcopyright'] ?? '');
 
         // Position at 1.5 cm from bottom
         $this->SetY(-15);
         $this->SetFont('Arial', 'I', 10);
         // Copyright
-        if ($extConfig['pdfcopyright'] != '') {
-            $this->Cell(120, 10, iconv('UTF-8', 'ISO-8859-1', '© ') . $extConfig['pdfcopyright'], 0, 'L', false);
+        if ($copyrightText !== '') {
+            $this->Cell(120, 10, iconv('UTF-8', 'ISO-8859-1', '© ') . $copyrightText, 0, 'L', false);
         }
         // Page number
         $this->Cell(0, -10, ' Page ' . $this->PageNo() . '/{nb}', 0, 0, 'R');
