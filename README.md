@@ -4,4 +4,4 @@
 - Free version: https://extensions.typo3.org/extension/ns_ext_compatibility/
 - Premium version: https://t3planet.de/en/typo3-upgrade-extension-compatibility
 - Documentation: https://docs.t3planet.de/en/latest/ExtNsExtCompatibility/Index.html
-- Changelog: https://t3planet.de/en/typo3-upgrade-extension-compatibility
+- Changelog: https://github.com/nitsan-technologies/ns_ext_compatibility/releases
