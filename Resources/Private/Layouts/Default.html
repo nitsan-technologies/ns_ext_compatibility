@@ -1,7 +1,20 @@
 <link rel="stylesheet" type="text/css" href="{f:uri.resource(path:'Css/main.css', extensionName: 'ns_ext_compatibility')}" media="all">
+<link rel="stylesheet" type="text/css" href="{f:uri.resource(path:'Css/backend-premium-strip.css', extensionName: 'ns_ext_compatibility')}" media="all">
 <f:be.pageRenderer
     includeJsFiles="{
       0:'TYPO3/CMS/NsExtCompatibility/Main'
    }"
 />
+<f:if condition="{trialUrl}">
+    <div class="ns-ext-compatibility-premium-strip d-flex flex-wrap align-items-center justify-content-between gap-3">
+        <div class="d-flex align-items-center gap-3">
+            <span class="ns-ext-compatibility-premium-strip-icon"><core:icon identifier="actions-rocket" size="small" /></span>
+            <div>
+                <div class="ns-ext-compatibility-premium-strip-headline"><f:translate key="premium.strip.headline" extensionName="ns_ext_compatibility" /></div>
+                <div class="ns-ext-compatibility-premium-strip-description"><f:translate key="premium.strip.description" extensionName="ns_ext_compatibility" /></div>
+            </div>
+        </div>
+        <a href="{trialUrl}" class="btn btn-primary"><f:translate key="premium.strip.trial" extensionName="ns_ext_compatibility" /> <span aria-hidden="true">&rarr;</span></a>
+    </div>
+</f:if>
 <f:render section="Content" />

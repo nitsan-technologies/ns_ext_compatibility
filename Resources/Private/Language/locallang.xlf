@@ -9,6 +9,15 @@
 			<trans-unit id="mlang_tabs_tab">
 				<source>Extension Report</source>
 			</trans-unit>
+			<trans-unit id="premium.strip.headline" xml:space="preserve">
+				<source>You're using the free version of NS Extension Compatibility</source>
+			</trans-unit>
+			<trans-unit id="premium.strip.description" xml:space="preserve">
+				<source>Unlock premium features and get more out of NS Extension Compatibility.</source>
+			</trans-unit>
+			<trans-unit id="premium.strip.trial" xml:space="preserve">
+				<source>Start Free Trial</source>
+			</trans-unit>
 			<trans-unit id="warning.TERUpdateText">
 				<source>Please kindly update your extension table from Extensions Module > Get Extensions, Because your last updated date is %s</source>
 			</trans-unit>

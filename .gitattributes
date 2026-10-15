@@ -1,0 +1,7 @@
+/.gitattributes export-ignore
+/.github export-ignore
+/.gitignore export-ignore
+/AGENTS.md export-ignore
+/CLAUDE.md export-ignore
+/context export-ignore
+/tasks export-ignore
