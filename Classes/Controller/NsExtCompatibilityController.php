@@ -36,6 +36,8 @@ namespace NITSAN\NsExtCompatibility\Controller;
 use Exception;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException;
+use TYPO3\CMS\Backend\Routing\UriBuilder as BackendUriBuilder;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Core\Core\Environment;
@@ -60,6 +62,9 @@ use NITSAN\NsExtCompatibility\Controller\pdf;
  */
 class NsExtCompatibilityController extends ActionController
 {
+    protected const NS_LICENSE_MODULE = 'nitsan_nslicensemodule';
+    protected const NS_LICENSE_FREE_SECTION_ANCHOR = '#free-section';
+
     protected $NsExtCompatibilityRepository;
     protected $extensionRepository;
     protected $remoteRegistry;
@@ -179,6 +184,7 @@ class NsExtCompatibilityController extends ActionController
         $assignArray['installedVersion'] = $this->currentVersion;
         $assignArray['versionType'] = $versionType;
         $assignArray['newVersion'] = $versionNew;
+        $assignArray['trialUrl'] = $this->getTrialUrl();
 
         $view = $this->initializeModuleTemplate($this->request);
         $view->assignMultiple($assignArray);
@@ -670,6 +676,20 @@ public function getSysRequirementForTargetVersion($targetVersion): array
         }
         $newExtensionList[] = $extensionListValue;
         return array($newExtensionList);
+    }
+
+    /**
+     * Free-trial link to the ns_license module; empty when ns_license (and its route) is not available.
+     */
+    protected function getTrialUrl(): string
+    {
+        try {
+            return (string)GeneralUtility::makeInstance(BackendUriBuilder::class)
+                ->buildUriFromRoute(self::NS_LICENSE_MODULE, ['trial' => 'ns_ext_compatibility'])
+                . self::NS_LICENSE_FREE_SECTION_ANCHOR;
+        } catch (RouteNotFoundException) {
+            return '';
+        }
     }
 
     protected function initializeModuleTemplate(
